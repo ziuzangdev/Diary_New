@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single"
+        android:id="@+id/gr01">
+        <item
+            android:icon="@drawable/icon_vip_version"
+            android:title="Upgrade to Pro version"/>
+        <item
+            android:icon="@drawable/icon_theme_strock_navdrawer"
+            android:title="Theme"/>
+    </group>
+    <group android:checkableBehavior="single"
+        android:id="@+id/gr02">
+        <item
+            android:icon="@drawable/icon_tag_strock_navdrawer"
+            android:title="Tags manager"/>
+        <item
+            android:icon="@drawable/icon_lock_strock_navdrawer"
+            android:title="Lock Diary"/>
+        <item
+            android:icon="@drawable/icon_backup_strock_navdrawer"
+            android:title="Backup restore"/>
+        <item
+            android:icon="@drawable/icon_export_strock_navdrawer"
+            android:title="Export &amp; Import"/>
+    </group>
+    <group android:checkableBehavior="single"
+        android:id="@+id/gr03">
+        <item
+            android:icon="@drawable/icon_share_strock_navdrawer"
+            android:title="Share app"/>
+        <item
+            android:icon="@drawable/icon_moreapp_strock_navdrawer"
+            android:title="More app"/>
+        <item
+            android:icon="@drawable/icon_feedback_strock_navdrawer"
+            android:title="Send feedback"/>
+        <item
+            android:icon="@drawable/icon_setting_strock_navdrawer"
+            android:title="Setting"/>
+    </group>
+</menu>

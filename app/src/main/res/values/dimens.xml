@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="toolbar_mainactivity">50dp</dimen>
+    <dimen name="navigativebottom_mainactivity">75dp</dimen>
+    <dimen name="toolbar_calandaractivity">50dp</dimen>
+</resources>
