@@ -1,37 +1,27 @@
 package com.project.diary.View.Activity;
 
-import static android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS;
-
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.core.view.GravityCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
+import com.project.diary.Control.Activity.MainActivityControl;
 import com.project.diary.databinding.ActivityMainBinding;
-
-import com.project.diary.R;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
+    private MainActivityControl control;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showCustomUI();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        control = new MainActivityControl(MainActivity.this);
+        control.showCustomUI();
         setContentView(binding.getRoot());
         addControls();
         addEvents();
@@ -50,13 +40,5 @@ public class MainActivity extends AppCompatActivity {
         binding.navigationView.setItemIconTintList(null);
     }
 
-    private void showCustomUI() {
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            getWindow().getDecorView().getWindowInsetsController().setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS);
-        }
-    }
+
 }
