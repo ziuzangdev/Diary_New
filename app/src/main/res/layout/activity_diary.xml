@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Fresh_Guacamole_05"
+    tools:context=".View.Activity.DiaryActivity">
+
+<!--    Toolbar 1-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_mainactivity"
+        android:orientation="vertical"
+        android:gravity="left |center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_close_stroke"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_mainactivity"
+        android:orientation="horizontal"
+        android:gravity="right|center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_template_black"
+            android:layout_marginRight="20dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_view_mode_black"
+            android:layout_marginRight="20dp"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="33dp"
+            android:layout_height="17dp"
+            app:cardBackgroundColor="@color/Fresh_Guacamole_04"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="3dp"
+            android:layout_marginRight="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_bold"
+                    android:textSize="7dp"
+                    android:textColor="@color/white"
+                    android:text="SAVE"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+<!--    Toolbar 2-->
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_mainactivity"
+    android:layout_marginTop="@dimen/toolbar_mainactivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="left |top"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp">
+
+<!--        Date Layout-->
+        <include
+            layout="@layout/layout_date"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right |top"
+        android:orientation="vertical"
+        android:layout_marginRight="20dp">
+        <androidx.cardview.widget.CardView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            app:cardBackgroundColor="#0D000000"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="100dp">
+            <TextView
+                android:id="@+id/txtEmojiStatus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+</RelativeLayout>

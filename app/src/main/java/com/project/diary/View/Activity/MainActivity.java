@@ -1,7 +1,10 @@
 package com.project.diary.View.Activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -32,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        binding.imgOpenCalanderActivity.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CalandarActivity.class);
+                startActivity(intent);
             }
         });
     }

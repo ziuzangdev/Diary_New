@@ -90,7 +90,6 @@ public class CalandarActivity extends AppCompatActivity {
                 });
                thread.start();
                 if(position == 1){
-                    Toast.makeText(CalandarActivity.this, calendarFragments.get(0).getSelectedDate().toString(), Toast.LENGTH_SHORT).show();
                     calendarFragments.add(0, new CalendarFragment(calendarFragments.get(0).getSelectedDate().minusMonths(1)));
                     calendarFragmentAdapter.notifyDataSetChanged();
                     binding.vpCalendar.setCurrentItem(2,true);
@@ -101,7 +100,6 @@ public class CalandarActivity extends AppCompatActivity {
                             .plusMonths(1)));
                     calendarFragmentAdapter.notifyDataSetChanged();
                 }
-                Toast.makeText(CalandarActivity.this, calendarFragments.get(calendarFragments.size() - 1).getSelectedDate().toString(), Toast.LENGTH_SHORT).show();
                 binding.txtMonth.setText(monthFromDate(calendarFragments.get(position).getSelectedDate()));
                 binding.txtYear.setText(yearFomDate(calendarFragments.get(position).getSelectedDate()));
             }

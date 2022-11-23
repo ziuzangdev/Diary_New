@@ -14,6 +14,10 @@ public class RootControl {
         this.context = context;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     public void showCustomUI() {
         View decorView = ((Activity)context).getWindow().getDecorView();
         decorView.setSystemUiVisibility(
