@@ -13,6 +13,7 @@
         android:orientation="horizontal"
         android:gravity="left |center">
         <ImageView
+            android:id="@+id/imgBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_back_black"
@@ -226,6 +227,7 @@
         android:orientation="vertical"
         android:gravity="bottom |right">
         <androidx.cardview.widget.CardView
+            android:id="@+id/cvNewDiary"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="20dp"

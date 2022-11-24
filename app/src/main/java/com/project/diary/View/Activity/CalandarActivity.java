@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -61,8 +62,24 @@ public class CalandarActivity extends AppCompatActivity {
                     if(calendarFragments.get(i).getSelectedDate().toString().equals(LocalDate.now().toString())){
                         binding.vpCalendar.setCurrentItem(i, true);
                         calendarFragments.get(i).getCalendarAdapter().cvBtnTodayEvent(dayFromDate(LocalDate.now()));
+                        break;
                     }
                 }
+            }
+        });
+
+        binding.cvNewDiary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CalandarActivity.this, DiaryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

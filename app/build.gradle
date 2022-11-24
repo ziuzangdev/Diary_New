@@ -35,6 +35,9 @@ dependencies {
     def emojiViewVersion = "1.5.2"
     def emojiViewProvider = "AppleProvider"
 
+    //Text Editor
+    implementation 'jp.wasabeef:richeditor-android:2.0.0'
+
     //Emoji Library
     implementation "io.github.aghajari:AXEmojiView:$emojiViewVersion"
     implementation "io.github.aghajari:AXEmojiView-$emojiViewProvider:$emojiViewVersion"
