@@ -12,6 +12,7 @@ import android.view.View;
 import androidx.core.view.GravityCompat;
 
 import com.project.diary.Control.Activity.MainActivityControl;
+import com.project.diary.Model.SQLite.SQLite;
 import com.project.diary.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         control = new MainActivityControl(MainActivity.this);
         control.showCustomUI();
         setContentView(binding.getRoot());
+        SQLite sqLite = new SQLite(MainActivity.this);
         addControls();
         addEvents();
     }
