@@ -17,19 +17,29 @@ import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 import com.project.diary.Model.Diary.Diary;
+import com.project.diary.Model.Diary.DiaryData;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * This class include all logic of task "Interact with database" <br>
+ * If you chance logic related to database, you must do it in this class
+ */
 public class SQLiteControl{
     private static final String DATABASE_NAME = "Diary.db";
 
     private static final String DB_PATH_SUFFIX = "/databases/";
 
+    /**
+     * This variable is the latest version of database that the app has <br>
+     * It must have the same value with "Version" in table "Detail" that database file in assets folder has.
+     */
     private static final int DATABASE_VERSION = 1;
 
     private SQLiteDatabase database = null;
@@ -42,6 +52,9 @@ public class SQLiteControl{
     }
 
 
+    /**
+     * Call this method to start process copy database in assets folder into user device
+     */
     public void processCopy() {
         //private app
         File dbFile = context.getDatabasePath(DATABASE_NAME);
@@ -60,17 +73,29 @@ public class SQLiteControl{
         }
     }
 
+    /**
+     * This method will call {@link  SQLiteControl#checkVersionDatabase()} to check {@link SQLiteControl#DATABASE_VERSION} with "Version" in table "Detail" that database file in assets folder has <br>
+     * If result not are the same, it will call {@link SQLiteControl#overrideDatabase()}
+     */
     private void checkVersionDatabase(){
         if (!isCurrentVersion()) {
             overrideDatabase();
         }
     }
+
+    /**
+     * This method will overwrite the newer version database over the old version
+     */
     private void overrideDatabase() {
         //Do something
     }
 
 
-
+    /**
+     * Check {@link SQLiteControl#DATABASE_VERSION} with "Version" in table "Detail" that database file in assets folder has
+     * @return true if they are the same <br>
+     * false if they not are the same
+     */
     private boolean isCurrentVersion() {
         database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
         Cursor cursor = database.query("Detail",null,null,null,null,null,null);
@@ -116,7 +141,14 @@ public class SQLiteControl{
         }
     }
 
-    public boolean insertDataToDatabase(Diary diary){
+
+    /**
+     * Insert new data into new row in database
+     * @param diary an object data need insert into database
+     * @return true if insert completed <br>
+     * false if not complete
+     */
+    public boolean insertData(Diary diary){
         database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
         ContentValues contentValues = new ContentValues();
         Gson gson = new Gson();
@@ -129,5 +161,68 @@ public class SQLiteControl{
         }else{
             return true;
         }
+    }
+
+    /**
+     * Remove a row of data in the database
+     * @param TABLE_NAME Table has row data need remove
+     * @param Key An Key of Data need remove (Key is {@link Diary#getId()})
+     */
+    public void removeData(String TABLE_NAME, String Key) {
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        database.delete(TABLE_NAME, "id=?", new String[]{Key});
+    }
+
+    /**
+     * Remove multiple rows of data in the database
+     * @param TABLE_NAME Table has row data need remove
+     * @param Keys Array of Key of Data need remove (Key is {@link Diary#getId()})
+     */
+    public void removeData(String TABLE_NAME, String[] Keys) {
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        database.delete(TABLE_NAME, "id=?", Keys);
+    }
+
+    /**
+     * Overwrite a row over an existing row in the database
+     * @param contentValues Object contains all new data
+     * @param TABLE_NAME Table has row data need overwrite
+     * @param Key An Key of Data need overwrite (Key is {@link Diary#getId()})
+     */
+    public void updateData(ContentValues contentValues, String TABLE_NAME, String Key){
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        database.update(TABLE_NAME, contentValues, "id=?", new String[]{Key});
+    }
+
+    /**
+     * Read singly row in database
+     * @param TABLE_NAME Table has row data need read
+     * @param Key An Key of Data need read (Key is {@link Diary#getId()})
+     * @return New Object has data you need
+     */
+    public Diary readData(String TABLE_NAME, String Key){
+        Diary diary = null;
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        Cursor cursor=database.query(TABLE_NAME,null,null,null,null,null,null);
+        while (cursor.moveToNext()){
+            if (cursor.getString(0).equals(Key)){
+                diary = new Diary.Builder()
+                        .tittle(cursor.getString(1))
+                        .date(cursor.getString(2))
+                        .status(cursor.getString(3))
+                        .diaryData(new Gson().fromJson(cursor.getString(4), DiaryData.class))
+                        .build();
+                cursor.close();
+            }
+        }
+        return diary;
+    }
+
+    public ArrayList<Diary> readData(String TABLE_NAME, String[] Keys){
+        ArrayList<Diary> diaries = new ArrayList<>();
+        for(String Key : Keys){
+            diaries.add(readData(TABLE_NAME, Key));
+        }
+        return  diaries;
     }
 }
