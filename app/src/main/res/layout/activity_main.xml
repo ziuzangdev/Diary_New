@@ -105,9 +105,25 @@
             android:layout_marginTop="@dimen/toolbar_mainactivity"
             android:layout_marginBottom="@dimen/navigativebottom_mainactivity"/>
 
-        <!--    Navigation Drawer-->
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom |center"
+        android:layout_marginBottom="@dimen/navigativebottom_mainactivity"
+        android:orientation="vertical">
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_speed="1.2"
+            app:lottie_fileName="guildcreatediary.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+    </LinearLayout>
     </RelativeLayout>
+
+    <!--    Navigation Drawer-->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         app:itemIconTint="@null"
