@@ -1,8 +1,10 @@
 package com.project.diary.Control.Activity;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import com.project.diary.Control.RootControl;
+import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.Emoji.Emoji;
 
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class ActivityDiaryControl extends RootControl {
     }
 
     public String initStatus() {
-
-        return NO_DATA_STATE;
+        return emojis.get(0).getEmojiText();
     }
+
 }

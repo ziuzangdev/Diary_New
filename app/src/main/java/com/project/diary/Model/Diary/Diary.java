@@ -63,11 +63,11 @@ public class Diary {
                         + "Please set the value by \"tittle()\". "
                         + "The properties \"diaryData\", \"tittle\", \"id\", \"status\" and \"date\" are required.");
             }
-            if(this.id == null){
-                throw new NullPointerException("The property \"id\" is null. "
-                        + "Please set the value by \"id()\". "
-                        + "The properties \"diaryData\", \"tittle\", \"id\", \"status\" and \"date\" are required.");
-            }
+//            if(this.id == null){
+//                throw new NullPointerException("The property \"id\" is null. "
+//                        + "Please set the value by \"id()\". "
+//                        + "The properties \"diaryData\", \"tittle\", \"id\", \"status\" and \"date\" are required.");
+//            }
             if(this.status == null){
                 throw new NullPointerException("The property \"status\" is null. "
                         + "Please set the value by \"status()\". "

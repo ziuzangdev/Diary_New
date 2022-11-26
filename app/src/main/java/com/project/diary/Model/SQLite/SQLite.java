@@ -11,4 +11,8 @@ public class SQLite extends RootControl {
         super(context);
         sqLiteControl = new SQLiteControl(context);
     }
+
+    public SQLiteControl getSqLiteControl() {
+        return sqLiteControl;
+    }
 }

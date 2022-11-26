@@ -37,6 +37,7 @@
             android:src="@drawable/icon_view_mode_black"
             android:layout_marginRight="20dp"/>
         <androidx.cardview.widget.CardView
+            android:id="@+id/cvSave"
             android:layout_width="33dp"
             android:layout_height="17dp"
             app:cardBackgroundColor="@color/Fresh_Guacamole_04"
@@ -106,7 +107,9 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:orientation="vertical">
-        <TextView
+        <EditText
+            android:id="@+id/txtTittle"
+            android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"

@@ -148,7 +148,7 @@ public class SQLiteControl{
      * @return true if insert completed <br>
      * false if not complete
      */
-    public boolean insertData(Diary diary){
+    public int insertData(Diary diary){
         database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
         ContentValues contentValues = new ContentValues();
         Gson gson = new Gson();
@@ -156,11 +156,7 @@ public class SQLiteControl{
         contentValues.put("status", diary.getStatus());
         contentValues.put("date", diary.getDate());
         contentValues.put("diaryData", gson.toJson(diary.getDiaryData()));
-        if(database.insert("Diary", null, contentValues) == -1){
-            return false;
-        }else{
-            return true;
-        }
+        return (int) database.insert("Diary", null, contentValues);
     }
 
     /**
@@ -185,13 +181,18 @@ public class SQLiteControl{
 
     /**
      * Overwrite a row over an existing row in the database
-     * @param contentValues Object contains all new data
+     * @param diary Object contains all new data
      * @param TABLE_NAME Table has row data need overwrite
-     * @param Key An Key of Data need overwrite (Key is {@link Diary#getId()})
      */
-    public void updateData(ContentValues contentValues, String TABLE_NAME, String Key){
+    public void updateData(Diary diary, String TABLE_NAME){
+        ContentValues contentValues = new ContentValues();
+        Gson gson = new Gson();
+        contentValues.put("tittle", diary.getTittle());
+        contentValues.put("status", diary.getStatus());
+        contentValues.put("date", diary.getDate());
+        contentValues.put("diaryData", gson.toJson(diary.getDiaryData()));
         database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
-        database.update(TABLE_NAME, contentValues, "id=?", new String[]{Key});
+        database.update(TABLE_NAME, contentValues, "id=?", new String[]{diary.getId()});
     }
 
     /**

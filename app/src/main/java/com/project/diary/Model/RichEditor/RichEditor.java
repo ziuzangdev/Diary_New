@@ -404,4 +404,9 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
             }
         });
     }
+
+    public void insertHtml(String content) {
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.insertHTML('" + content + "');");
+    }
 }

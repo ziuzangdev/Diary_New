@@ -35,4 +35,11 @@ public class DiaryData {
         this.data = builder.data;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 }
