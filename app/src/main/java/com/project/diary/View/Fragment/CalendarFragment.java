@@ -154,16 +154,4 @@ public class CalendarFragment extends Fragment {
         return date.format(formatter);
     }
 
-//    public void previousMonthAction(View view)
-//    {
-//        selectedDate = selectedDate.minusMonths(1);
-//        setMonthView();
-//    }
-//
-//    public void nextMonthAction(View view)
-//    {
-//        selectedDate = selectedDate.plusMonths(1);
-//        setMonthView();
-//    }
-
 }
