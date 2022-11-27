@@ -14,5 +14,6 @@
     <color name="Fresh_Guacamole_03">#A8EAD5</color>
     <color name="Fresh_Guacamole_04">#3EBDC6</color>
     <color name="Fresh_Guacamole_05">#D6EDF7</color>
+    <color name="not_choose_state">#4D000000</color>
 
 </resources>

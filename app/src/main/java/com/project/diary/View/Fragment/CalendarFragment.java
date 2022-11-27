@@ -13,8 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.project.diary.Control.Adapter.CalendarAdapter;
-import com.project.diary.R;
+import com.project.diary.Control.Adapter.Calendar.CalendarAdapter;
 import com.project.diary.databinding.FragmentCalendarBinding;
 
 import java.time.LocalDate;

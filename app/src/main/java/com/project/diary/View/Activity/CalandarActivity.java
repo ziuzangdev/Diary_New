@@ -2,32 +2,19 @@ package com.project.diary.View.Activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.project.diary.Control.Activity.CalandarActivityControl;
-import com.project.diary.Control.Activity.MainActivityControl;
-import com.project.diary.Control.Adapter.AllCalendarAdapter;
-import com.project.diary.Control.Adapter.CalendarAdapter;
-import com.project.diary.Control.Adapter.CalendarFragmentAdapter;
-import com.project.diary.R;
+import com.project.diary.Control.Adapter.Calendar.CalendarFragmentAdapter;
 import com.project.diary.View.Fragment.CalendarFragment;
 import com.project.diary.databinding.ActivityCalandarBinding;
-import com.project.diary.databinding.ActivityMainBinding;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 @RequiresApi(api = Build.VERSION_CODES.O)

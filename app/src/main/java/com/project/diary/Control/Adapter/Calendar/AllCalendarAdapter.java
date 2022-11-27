@@ -1,4 +1,4 @@
-package com.project.diary.Control.Adapter;
+package com.project.diary.Control.Adapter.Calendar;
 
 import android.content.Context;
 import android.os.Build;
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.diary.R;
-import com.project.diary.View.Activity.CalandarActivity;
 import com.project.diary.databinding.ActivityCalandarBinding;
 
 import java.time.LocalDate;

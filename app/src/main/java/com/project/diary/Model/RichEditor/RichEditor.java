@@ -1,6 +1,7 @@
 package com.project.diary.Model.RichEditor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.webkit.WebView;
 
 import com.project.diary.R;
+import com.project.diary.View.Activity.MediaActivity;
 import com.project.diary.databinding.ActivityDiaryBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -365,7 +367,8 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getContext(), MediaActivity.class);
+                getContext().startActivity(intent);
             }
         });
 
