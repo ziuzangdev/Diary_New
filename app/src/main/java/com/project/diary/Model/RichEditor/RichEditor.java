@@ -1,26 +1,69 @@
 package com.project.diary.Model.RichEditor;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.aghajari.emojiview.view.AXEmojiPopup;
+import com.google.android.material.button.MaterialButton;
+import com.project.diary.Model.Audio.AudioRecorder;
 import com.project.diary.R;
+import com.project.diary.View.Activity.DiaryActivity;
 import com.project.diary.View.Activity.MediaActivity;
 import com.project.diary.databinding.ActivityDiaryBinding;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import jp.wasabeef.richeditor.Utils;
 
 public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
     private RichEditor mEditor;
 
     private ActivityDiaryBinding binding;
 
+
+    private Timer T;
+    private long secondCount = 0;
+
+    private AXEmojiPopup emojiPopup;
+
+    private AudioRecorder audioRecorder;
+
+    private boolean isClickTextTool = false;
+
+    private boolean isCheckForVoiceDialog = false;
     public RichEditor(Context context) {
         super(context);
         mEditor = this;
@@ -41,6 +84,10 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
 
     public void setBinding(ActivityDiaryBinding binding) {
         this.binding = binding;
+    }
+
+    public void setEmojiPopup(AXEmojiPopup emojiPopup) {
+        this.emojiPopup = emojiPopup;
     }
 
     private void initRichEditor() {
@@ -279,9 +326,110 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         super.insertImage(url, alt, width, height);
     }
 
+
+
+
+    public Uri bitmapToUriConverter(Bitmap mBitmap) {
+        Uri uri = null;
+        try {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, 100, 100);
+
+            // Decode bitmap with inSampleSize set
+            options.inJustDecodeBounds = false;
+            Bitmap newBitmap = Bitmap.createScaledBitmap(mBitmap, 200, 200,
+                    true);
+            File file = new File( ((Activity)getContext()).getFilesDir(), "Image"
+                    + new Random().nextInt() + ".jpeg");
+            FileOutputStream out =((Activity)getContext()).openFileOutput(file.getName(),
+                    Context.MODE_WORLD_READABLE);
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            //get absolute path
+            String realPath = file.getAbsolutePath();
+            File f = new File(realPath);
+            uri = Uri.fromFile(f);
+
+        } catch (Exception e) {
+            Log.e("Your Error Message", e.getMessage());
+        }
+        return uri;
+    }
+
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static String toBase64(Bitmap bitmap, String type) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        switch (type) {
+            case "jpg": case "jpeg":
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                break;
+            case "png":
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                break;
+        }
+        byte[] bytes = baos.toByteArray();
+
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
+    }
+
     @Override
     public void insertVideo(String url) {
         super.insertVideo(url);
+//        exec("javascript:RE.prepareInsert();");
+//        exec("javascript:RE.insertHTML('</p><video src=\"" + url + "controls>\n" + "</video><br><br>')");
+    }
+
+    public void insertImageAsBase64(Bitmap bitmap) {
+        String tag = "data:image/" + "png" + ";base64, ";
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.insertImage('" + tag + convert(bitmap) + "','');");
+    }
+
+    public Bitmap convert(String base64Str) throws IllegalArgumentException
+    {
+        byte[] decodedBytes = Base64.decode(
+                base64Str.substring(base64Str.indexOf(",")  + 1),
+                Base64.DEFAULT
+        );
+
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+
+    public String convert(Bitmap bitmap)
+    {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+    }
+    public void insertVideo(String url, String alt) {
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.insertVideo('" + url + "', '" + alt + "');");
     }
 
     @Override
@@ -360,7 +508,7 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnEmoji.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                emojiPopup.show();
             }
         });
 
@@ -368,7 +516,7 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), MediaActivity.class);
-                getContext().startActivity(intent);
+                ((Activity)getContext()).startActivityForResult(intent, DiaryActivity.REQUEST_CODE_MEDIA);
             }
         });
 
@@ -376,6 +524,27 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        binding.imgbtnBold.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setBold();
+            }
+        });
+
+        binding.imgbtnItalic.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setItalic();
+            }
+        });
+
+        binding.imgbtnUnderline.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setUnderline();
             }
         });
 
@@ -396,6 +565,12 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnTextTool.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                isClickTextTool = !isClickTextTool;
+                if(isClickTextTool){
+                    binding.cvTextTool.setVisibility(View.VISIBLE);
+                }else{
+                    binding.cvTextTool.setVisibility(View.GONE);
+                }
 
             }
         });
@@ -403,7 +578,83 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnVoice.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                boolean isCheck = false;
+                Dialog dialog = new Dialog(getContext(), R.style.Dialog);
+                dialog.setContentView(R.layout.dialog_audio_recoder);
+                dialog.setCanceledOnTouchOutside(true);
+                RadioButton rbtnImageRecoder = dialog.findViewById(R.id.rbtnImageRecoder);
+                MaterialButton mbtnStartRecoder = dialog.findViewById(R.id.mbtnStartRecoder);
+                MaterialButton mbtnNext = dialog.findViewById(R.id.mbtnNext);
+                LinearLayout Root = dialog.findViewById(R.id.Root);
+                TextView txtTimerRecorder = dialog.findViewById(R.id.txtTimerRecorder);
+                View.OnClickListener recordAudioEvents = new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        isCheckForVoiceDialog = !isCheckForVoiceDialog;
+                        rbtnImageRecoder.setChecked(isCheckForVoiceDialog);
+                        if(isCheckForVoiceDialog){
+                            mbtnNext.setVisibility(View.GONE);
+                            mbtnStartRecoder.setText("STOP");
+                            audioRecorder = new AudioRecorder("RecordDiary", getContext());
+                            try {
+                                audioRecorder.start();
+                                T=new Timer();
+                                T.scheduleAtFixedRate(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        ((Activity)getContext()).runOnUiThread(new Runnable()
+                                        {
+                                            @SuppressLint("DefaultLocale")
+                                            @Override
+                                            public void run()
+                                            {
+                                                secondCount++;
+                                                txtTimerRecorder.setText(String.format("%02d:%02d:%02d", secondCount / 3600,
+                                                        (secondCount % 3600) / 60, (secondCount % 60)));
+                                            }
+                                        });
+                                    }
+                                }, 1000, 1000);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }else{
+                            mbtnStartRecoder.setText("START");
+                            try {
+                                audioRecorder.stop();
+                                mbtnNext.setVisibility(View.VISIBLE);
+                                T.cancel();
+                                secondCount = 0;
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                };
+                rbtnImageRecoder.setOnClickListener(recordAudioEvents);
+                mbtnStartRecoder.setOnClickListener(recordAudioEvents);
+                mbtnNext.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        audioRecorder.saveRecorder();
+                        try {
+                            audioRecorder.playarcoding(audioRecorder.path);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        focusEditor();
+                        insertHtml("<audio src=\"content://" + audioRecorder.path + "\" controls></audio><br>");
+                        //(audioRecorder.path);
+                        dialog.dismiss();
+                    }
+                });
+                Root.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
     }
@@ -412,4 +663,10 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         exec("javascript:RE.prepareInsert();");
         exec("javascript:RE.insertHTML('" + content + "');");
     }
+
+    public void closeAllPopup() {
+        emojiPopup.dismiss();
+        binding.cvTextTool.setVisibility(View.GONE);
+    }
+
 }

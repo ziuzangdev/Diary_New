@@ -9,36 +9,35 @@
         android:gravity="bottom">
         <TextView
             android:id="@+id/some_id"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="31"
             android:fontFamily="@font/inter_bold"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             />
         <TextView
             android:id="@+id/oct_2022"
-            android:layout_width="28dp"
-            android:layout_height="7dp"
-            android:text="Oct 2022"
-
-            android:fontFamily="@font/inter_bold"
-            android:textSize="6sp"
-            android:textColor="@color/black"
-            />
-        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="1.5dp"
-            android:layout_marginLeft="3dp"
-            android:src="@drawable/icon_morearrow_stroke"/>
+            android:text="Oct 2022"
+            android:textSize="10sp"
+            android:fontFamily="@font/inter_bold"
+            android:textColor="@color/black"
+            />
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="1.5dp"-->
+<!--            android:layout_marginLeft="3dp"-->
+<!--            android:src="@drawable/icon_morearrow_stroke"/>-->
     </LinearLayout>
         <View
             android:id="@+id/rectangle_4"
-            android:layout_width="17dp"
+            android:layout_width="21dp"
             android:layout_height="3dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="0.5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="1dp"
             android:background="#7F3EBDC6"
             />
 

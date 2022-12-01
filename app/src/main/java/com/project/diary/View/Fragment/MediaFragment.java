@@ -68,6 +68,9 @@ public class MediaFragment extends Fragment {
 
     }
 
+    public RcvMediaAdapter getRcvMediaAdapter() {
+        return rcvMediaAdapter;
+    }
 
     public boolean isRunning() {
         return isRunning;

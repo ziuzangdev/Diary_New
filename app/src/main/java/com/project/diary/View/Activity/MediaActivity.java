@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -46,6 +48,8 @@ public class MediaActivity extends AppCompatActivity {
     }
 
     private void addEvents() {
+
+
         binding.vpMedia.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -76,7 +80,19 @@ public class MediaActivity extends AppCompatActivity {
         binding.cvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ArrayList<String> pathChooseImage = new ArrayList<>();
+                ArrayList<String> pathChooseVideo = new ArrayList<>();
+                if(fragments.get(0).getRcvMediaAdapter().getPathChose() != null){
+                    pathChooseImage.addAll(fragments.get(0).getRcvMediaAdapter().getPathChose());
+                }
+                if(fragments.get(1).getRcvMediaAdapter().getPathChose() != null){
+                    pathChooseVideo.addAll(fragments.get(1).getRcvMediaAdapter().getPathChose());
+                }
+                Intent resultIntent = new Intent();
+                resultIntent.putStringArrayListExtra("pathChooseImage", pathChooseImage);
+                resultIntent.putStringArrayListExtra("pathChooseVideo", pathChooseVideo);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
             }
         });
     }
@@ -93,7 +109,7 @@ public class MediaActivity extends AppCompatActivity {
     }
 
     /**
-     * Init two ViewPager(One to load all Image, Another to load all Video)
+     * Init two ViewPager(Once to load all Image, Another to load all Video)
      */
     private void initFragments() {
         fragments = new ArrayList<>();
@@ -136,6 +152,6 @@ public class MediaActivity extends AppCompatActivity {
             }
         });
         threadImage.start();
-        threadVideo.start();
+        //threadVideo.start();
     }
 }

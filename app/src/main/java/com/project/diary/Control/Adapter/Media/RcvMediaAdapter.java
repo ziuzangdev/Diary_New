@@ -45,6 +45,10 @@ public class RcvMediaAdapter extends RecyclerView.Adapter<RcvMediaAdapter.ViewHo
         pathChose = new ArrayList<>();
     }
 
+    public ArrayList<String> getPathChose() {
+        return pathChose;
+    }
+
     @NonNull
     @Override
     public RcvMediaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
