@@ -112,6 +112,10 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 if(chooseList.size() == 0){
+                    binding.ToolbarView3.setVisibility(View.GONE);
+                    binding.ToolbarView4.setVisibility(View.GONE);
+                    binding.ToolbarView1.setVisibility(View.VISIBLE);
+                    binding.ToolbarView2.setVisibility(View.VISIBLE);
                     isChooseMode = false;
                 }else{
                     isChooseMode = true;
@@ -131,6 +135,15 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
                     }
 
                 }
+                if(chooseList.size() == 0){
+                    binding.ToolbarView3.setVisibility(View.GONE);
+                    binding.ToolbarView4.setVisibility(View.GONE);
+                    binding.ToolbarView1.setVisibility(View.VISIBLE);
+                    binding.ToolbarView2.setVisibility(View.VISIBLE);
+                    isChooseMode = false;
+                }else{
+                    isChooseMode = true;
+                }
             }
         });
 
@@ -138,6 +151,10 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
             @Override
             public boolean onLongClick(View v) {
                 if(chooseList.size() == 0){
+                    binding.ToolbarView3.setVisibility(View.GONE);
+                    binding.ToolbarView4.setVisibility(View.GONE);
+                    binding.ToolbarView1.setVisibility(View.VISIBLE);
+                    binding.ToolbarView2.setVisibility(View.VISIBLE);
                     isChooseMode = false;
                 }else{
                     isChooseMode = true;
@@ -150,6 +167,10 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
                     chooseList.add(diaries.get(position));
                 }
                 if(chooseList.size() == 0){
+                    binding.ToolbarView3.setVisibility(View.GONE);
+                    binding.ToolbarView4.setVisibility(View.GONE);
+                    binding.ToolbarView1.setVisibility(View.VISIBLE);
+                    binding.ToolbarView2.setVisibility(View.VISIBLE);
                     isChooseMode = false;
                 }else{
                     isChooseMode = true;
