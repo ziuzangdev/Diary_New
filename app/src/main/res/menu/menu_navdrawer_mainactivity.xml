@@ -11,9 +11,9 @@
     </group>
     <group android:checkableBehavior="single"
         android:id="@+id/gr02">
-        <item
-            android:icon="@drawable/icon_tag_strock_navdrawer"
-            android:title="Tags manager"/>
+<!--        <item-->
+<!--            android:icon="@drawable/icon_tag_strock_navdrawer"-->
+<!--            android:title="Tags manager"/>-->
         <item
             android:icon="@drawable/icon_lock_strock_navdrawer"
             android:title="Lock Diary"/>

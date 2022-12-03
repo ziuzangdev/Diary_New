@@ -22,16 +22,13 @@
         android:theme="@style/Theme.Diary"
         tools:targetApi="31">
         <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.Activity.CanvasActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
-            tools:node="merge">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
+            tools:node="merge"></activity>
         <activity
             android:name=".View.Activity.MediaActivity"
             android:exported="true"
@@ -41,9 +38,7 @@
             android:name=".View.Activity.DiaryActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
-            tools:node="merge">
-
-        </activity>
+            tools:node="merge"></activity>
         <activity
             android:name=".View.Activity.CalandarActivity"
             android:exported="true"
@@ -53,7 +48,13 @@
             android:name=".View.Activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
-            tools:node="merge"></activity>
+            tools:node="merge">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

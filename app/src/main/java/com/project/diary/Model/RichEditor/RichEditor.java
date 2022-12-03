@@ -34,6 +34,7 @@ import com.aghajari.emojiview.view.AXEmojiPopup;
 import com.google.android.material.button.MaterialButton;
 import com.project.diary.Model.Audio.AudioRecorder;
 import com.project.diary.R;
+import com.project.diary.View.Activity.CanvasActivity;
 import com.project.diary.View.Activity.DiaryActivity;
 import com.project.diary.View.Activity.MediaActivity;
 import com.project.diary.databinding.ActivityDiaryBinding;
@@ -501,7 +502,8 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnBrush.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getContext(), CanvasActivity.class);
+                ((Activity)getContext()).startActivityForResult(intent, DiaryActivity.REQUEST_CODE_DRAW_CANVAS);
             }
         });
 
@@ -523,7 +525,7 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnList.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setNumbers();
             }
         });
 
@@ -660,6 +662,7 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
     }
 
     public void insertHtml(String content) {
+        focusEditor();
         exec("javascript:RE.prepareInsert();");
         exec("javascript:RE.insertHTML('" + content + "');");
     }

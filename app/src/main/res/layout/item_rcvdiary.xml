@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        app:cardElevation="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#F3FAFD"
+        app:cardCornerRadius="20dp"
+        android:layout_margin="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+<!--            Date and status-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left |top"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp">
+                    <include
+                        layout="@layout/layout_date"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right |top"
+                    android:orientation="vertical"
+                    android:layout_marginRight="20dp">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        app:cardBackgroundColor="#0D000000"
+                        app:cardElevation="0dp"
+                        android:layout_marginTop="5dp"
+                        app:cardCornerRadius="100dp">
+                        <TextView
+                            android:gravity="center"
+                            android:id="@+id/txtEmojiStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+<!--            Name Diary-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp">
+                <TextView
+                    android:id="@+id/txtName"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:fontFamily="@font/inter_bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+
+<!--            Data Diary-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#797D7E"
+                    android:textSize="10sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:text="Java thường được gọi là ngôn ngữ WORA (Viết một lần, chạy ở mọi nơi), khiến nó
+trở thành ngôn ngữ lý tưởng cho các ứng dụng phi tập trung dựa trên đám mây..."/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvMediaDemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/Root"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/nomal_mode"/>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

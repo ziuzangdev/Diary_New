@@ -1,5 +1,6 @@
 package com.project.diary.Control.Adapter.ColorPcker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -58,7 +59,7 @@ public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RcvColorPickerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RcvColorPickerAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if(richEditor != null){
             holder.color_item.setBackgroundColor(Color.parseColor(color.get(position)));
             holder.color_item.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +73,7 @@ public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAd
             holder.color_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   drawView.setColor(Color.parseColor(color.get(position)));
+                   drawView.getDrawPaint().setColor((Color.parseColor(color.get(position))));
                 }
             });
         }

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -13,8 +15,10 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.project.diary.Control.Activity.ActivityDiaryControl;
+import com.project.diary.Control.Activity.CanvasActivityControl;
 import com.project.diary.Control.Adapter.ColorPcker.RcvColorPickerAdapter;
 import com.project.diary.R;
 import com.project.diary.databinding.ActivityCanvasBinding;
@@ -22,6 +26,8 @@ import com.project.diary.databinding.ActivityDiaryBinding;
 
 public class CanvasActivity extends AppCompatActivity {
     private ActivityCanvasBinding binding;
+
+    private CanvasActivityControl control;
     private RcvColorPickerAdapter rcvColorPickerAdapter;
 
     @Override
@@ -29,19 +35,39 @@ public class CanvasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
         binding = ActivityCanvasBinding.inflate(getLayoutInflater());
+        control = new CanvasActivityControl(CanvasActivity.this);
+        control.showCustomUI();
         setContentView(binding.getRoot());
         addControls();
         addEvents();
     }
 
     private void addEvents() {
+        binding.cvNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String path = null;
+                        path = binding.vDrawView.saveDraw();
+                        while (path == null){}
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("pathDraw", path);
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+                    }
+                });
+                thread.start();
+            }
+        });
         binding.rtgGroupPaintTool.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.rbtnPaintTool){
-                    binding.vDrawView.enableEraserMode(false);
+                    binding.vDrawView.onClickEraser(false);
                 }else if(checkedId == R.id.rbtnEraser){
-                    binding.vDrawView.enableEraserMode(true);
+                    binding.vDrawView.onClickEraser(true);
                 }
             }
         });
@@ -49,21 +75,21 @@ public class CanvasActivity extends AppCompatActivity {
         binding.imgUndo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.vDrawView.undo();
+                binding.vDrawView.onClickUndo();
             }
         });
 
         binding.imgRedo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.vDrawView.redo();
+                binding.vDrawView.onClickRedo();
             }
         });
         binding.sbStrokeWidth.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 binding.txtStrokeWidth.setText(String.valueOf(progress));
-                binding.vDrawView.setStrokeWidth(progress);
+                binding.vDrawView.getDrawPaint().setStrokeWidth(progress);
             }
 
             @Override
@@ -79,18 +105,6 @@ public class CanvasActivity extends AppCompatActivity {
     }
 
     private void addControls() {
-        ViewTreeObserver vto = binding.vDrawView.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                binding.vDrawView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                int width = binding.vDrawView.getMeasuredWidth();
-                int height = binding.vDrawView.getMeasuredHeight();
-                binding.vDrawView.init(height, width);
-                binding.vDrawView.setStrokeWidth(15);
-                binding.sbStrokeWidth.setProgress(15);
-            }
-        });
         initColorPicker();
     }
 

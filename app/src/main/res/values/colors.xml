@@ -26,4 +26,6 @@
     <color name="darkPrimaryDark">#1B242D</color>
     <color name="darkAccent">#82ADD9</color>
     <color name="white_transperent">#40ffffff</color>
+    <color name="choose_mode">#26000000</color>
+    <color name="nomal_mode">#00000000</color>
 </resources>

@@ -2,6 +2,7 @@ package com.project.diary.View.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,17 +33,20 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.diary.Control.Activity.ActivityDiaryControl;
 import com.project.diary.Control.Adapter.ColorPcker.RcvColorPickerAdapter;
+import com.project.diary.Control.Adapter.Emoji.RcvStatusPickerAdapter;
 import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.Diary.DiaryData;
 import com.project.diary.Model.RichEditor.RichEditor;
@@ -90,11 +94,17 @@ public class DiaryActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_MEDIA = 1;
 
+    public static final int REQUEST_CODE_DRAW_CANVAS = 2;
+
     private float MOVE_THRESHOLD_DP;
 
     private ArrayList<Video> videos;
 
     private AXEmojiPopup emojiPopup;
+
+    public Diary getDiary() {
+        return diary;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,35 +118,34 @@ public class DiaryActivity extends AppCompatActivity {
         addEvents();
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ArrayList<String> pathChooseImage;
-        ArrayList<String> pathChooseVideo;
-        if(videos == null){
-            videos = new ArrayList<>();
-        }
+        richEditor.focusEditor();
         if(requestCode == REQUEST_CODE_MEDIA){
             if(resultCode == Activity.RESULT_OK){
+                ArrayList<String> pathChooseImage;
                 pathChooseImage = new ArrayList<>();
-                pathChooseVideo = new ArrayList<>();
                 try{
                     pathChooseImage = Objects.requireNonNull(data).getStringArrayListExtra("pathChooseImage");
-                    pathChooseVideo = Objects.requireNonNull(data).getStringArrayListExtra("pathChooseVideo");
                 }catch (Exception ignore){}
-                richEditor.focusEditor();
                 if(pathChooseImage.size() > 0){
                    for(String path : pathChooseImage){
                        richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
                    }
+//                   diary.getMediaPaths().clear();
+//                   diary.getMediaPaths().addAll(control.pullLinks(richEditor.getHtml()));
                 }
-//                if(pathChooseVideo.size() > 0){
-//                    for(String path : pathChooseVideo){
-//                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MINI_KIND);
-//                        richEditor.insertImageAsBase64(thumb);
-//                    }
-//                }
             }
+        }else if(requestCode == REQUEST_CODE_DRAW_CANVAS){
+            if(resultCode == RESULT_OK){
+                String path = Objects.requireNonNull(data).getStringExtra("pathDraw");
+                richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
+            }
+//            diary.getMediaPaths().clear();
+//            diary.getMediaPaths().addAll(control.pullLinks(richEditor.getHtml()));
+            System.out.println(richEditor.getHtml());
         }
     }
 
@@ -206,32 +215,6 @@ public class DiaryActivity extends AppCompatActivity {
             }
         });
 
-
-//        richEditor.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        mDownPosX = event.getX();
-//                        mDownPosY = event.getY();
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        mUpPosX = event.getX();
-//                        mUpPosY = event.getY();
-//                        if ((Math.abs(mUpPosX - mDownPosX) < MOVE_THRESHOLD_DP) && (Math.abs(mUpPosY - mDownPosY) < MOVE_THRESHOLD_DP)) {
-//                                WebView.HitTestResult hr = ((WebView)v).getHitTestResult();
-//                                if(hr.getType() == WebView.HitTestResult.IMAGE_TYPE){
-//                                    Toast.makeText(DiaryActivity.this, hr.getExtra().toString(), Toast.LENGTH_SHORT).show();
-//                                }
-//                        }
-//
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
-
-
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,7 +227,7 @@ public class DiaryActivity extends AppCompatActivity {
             @Override
             public void onTextChange(String text) {
                 System.out.println(text);
-                diaryData.setData(text);
+                diary.getDiaryData().setData(text);
             }
         });
 
@@ -267,17 +250,45 @@ public class DiaryActivity extends AppCompatActivity {
         binding.cvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(diary.getId() != null){
+                if(diary.getId() == null){
                     int id = sqLite.getSqLiteControl().insertData(diary);
                     if(id != -1){
+                        Toast.makeText(DiaryActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                         diary.setId(String.valueOf(id));
+                    }else{
+                        Toast.makeText(DiaryActivity.this, "Can't Save", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     sqLite.getSqLiteControl().updateData(diary, "Diary");
+                    Toast.makeText(DiaryActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
+
+        binding.cvStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(DiaryActivity.this, R.style.Dialog);
+                dialog.setContentView(R.layout.dialog_status_picker);
+                dialog.setCanceledOnTouchOutside(true);
+                RecyclerView rcvStatus = dialog.findViewById(R.id.rcvStatus);
+                RcvStatusPickerAdapter rcvStatusPickerAdapter = new RcvStatusPickerAdapter(control.getEmojis(), dialog, binding, DiaryActivity.this);
+                LinearLayout Root = dialog.findViewById(R.id.Root);
+                Root.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                rcvStatus.setHasFixedSize(true);
+                rcvStatus.setLayoutManager(new GridLayoutManager(DiaryActivity.this, 4));
+                rcvStatus.setAdapter(rcvStatusPickerAdapter);
+                dialog.show();
+            }
+        });
+
+
     }
 
     private void initTextToolChoose() {
@@ -354,12 +365,30 @@ public class DiaryActivity extends AppCompatActivity {
     }
 
     private void initDiaryObject() {
-        diary = new Diary.Builder()
-                .tittle(binding.txtTittle.getText().toString())
-                .date(LocalDate.now().toString())
-                .status(statusInPackage)
-                .diaryData(diaryData)
-                .build();
+        Bundle bundle = getIntent().getExtras();
+        String id = null;
+        try{
+            id = bundle.getString("ID_DIARY");
+        }catch (Exception e){}
+        if(id != null){
+            diary = sqLite.getSqLiteControl().readData("Diary", id);
+            addDataToDiary();
+        }else{
+            diary = new Diary.Builder()
+                    .tittle(binding.txtTittle.getText().toString())
+                    .date(LocalDate.now().toString())
+                    .status(statusInPackage)
+                    .background(getResources().getColor(R.color.Fresh_Guacamole_05, null))
+                    .mediaPaths(new ArrayList<>())
+                    .diaryData(diaryData)
+                    .build();
+        }
+    }
+
+    private void addDataToDiary() {
+        binding.txtTittle.setText(diary.getTittle());
+        binding.txtEmojiStatus.setText(diary.getStatus());
+        richEditor.insertHtml(diary.getDiaryData().getData());
     }
 
     private void initStatus() {

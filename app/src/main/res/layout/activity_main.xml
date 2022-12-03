@@ -16,6 +16,7 @@
         android:background="@drawable/p41_bg_theme">
         <!--    Toolbar-->
         <LinearLayout
+            android:id="@+id/ToolbarView1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_mainactivity"
             android:orientation="vertical"
@@ -28,15 +29,74 @@
                 android:src="@drawable/icon_menu_black"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ToolbarView2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_mainactivity"
             android:orientation="vertical"
             android:gravity="center |right"
             android:layout_marginRight="20dp">
             <ImageView
+                android:id="@+id/imgSearchOpen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_search_black"/>
+        </LinearLayout>
+        <LinearLayout
+           android:visibility="gone"
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_mainactivity"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center |left">
+                <ImageView
+                    android:id="@+id/imgSearchClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_close_stroke"
+                    android:layout_marginRight="20dp"/>
+                <EditText
+                    android:id="@+id/edtxtSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="Search here ..."
+                    android:maxLines="1"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ToolbarView3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_mainactivity"
+            android:orientation="vertical"
+            android:gravity="center |left"
+            android:layout_marginLeft="20dp">
+            <ImageView
+                android:id="@+id/imgCloseDeleteMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_back_black"/>
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ToolbarView4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_mainactivity"
+            android:orientation="vertical"
+            android:gravity="center |right"
+            android:layout_marginRight="20dp">
+            <ImageView
+                android:id="@+id/imgDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_delete"/>
         </LinearLayout>
 
         <!--    Navigation Bottom-->
@@ -100,6 +160,9 @@
 
         <!--    RecycleView Diary Item-->
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvDiary"
+            android:scrollbars="none"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/toolbar_mainactivity"
@@ -121,6 +184,7 @@
             app:lottie_autoPlay="true"
             app:lottie_loop="true"/>
     </LinearLayout>
+
     </RelativeLayout>
 
     <!--    Navigation Drawer-->

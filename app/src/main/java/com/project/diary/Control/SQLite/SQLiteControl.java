@@ -152,10 +152,7 @@ public class SQLiteControl{
         database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
         ContentValues contentValues = new ContentValues();
         Gson gson = new Gson();
-        contentValues.put("tittle", diary.getTittle());
-        contentValues.put("status", diary.getStatus());
-        contentValues.put("date", diary.getDate());
-        contentValues.put("diaryData", gson.toJson(diary.getDiaryData()));
+        contentValues.put("data", gson.toJson(diary));
         return (int) database.insert("Diary", null, contentValues);
     }
 
@@ -187,10 +184,7 @@ public class SQLiteControl{
     public void updateData(Diary diary, String TABLE_NAME){
         ContentValues contentValues = new ContentValues();
         Gson gson = new Gson();
-        contentValues.put("tittle", diary.getTittle());
-        contentValues.put("status", diary.getStatus());
-        contentValues.put("date", diary.getDate());
-        contentValues.put("diaryData", gson.toJson(diary.getDiaryData()));
+        contentValues.put("data", gson.toJson(diary));
         database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
         database.update(TABLE_NAME, contentValues, "id=?", new String[]{diary.getId()});
     }
@@ -207,18 +201,27 @@ public class SQLiteControl{
         Cursor cursor=database.query(TABLE_NAME,null,null,null,null,null,null);
         while (cursor.moveToNext()){
             if (cursor.getString(0).equals(Key)){
-                diary = new Diary.Builder()
-                        .tittle(cursor.getString(1))
-                        .date(cursor.getString(2))
-                        .status(cursor.getString(3))
-                        .diaryData(new Gson().fromJson(cursor.getString(4), DiaryData.class))
-                        .build();
-                cursor.close();
+                diary = new Gson().fromJson(cursor.getString(1), Diary.class);
+                diary.setId(cursor.getString(0));
+                break;
             }
         }
+        cursor.close();
         return diary;
     }
 
+    public ArrayList<Diary> readData(String TABLE_NAME){
+        ArrayList<Diary> diaries = new ArrayList<>();
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        Cursor cursor=database.query(TABLE_NAME,null,null,null,null,null,null);
+        while (cursor.moveToNext()){
+            Diary diary = new Gson().fromJson(cursor.getString(1), Diary.class);
+            diary.setId(cursor.getString(0));
+            diaries.add(diary);
+        }
+        cursor.close();
+        return  diaries;
+    }
     public ArrayList<Diary> readData(String TABLE_NAME, String[] Keys){
         ArrayList<Diary> diaries = new ArrayList<>();
         for(String Key : Keys){
@@ -226,4 +229,6 @@ public class SQLiteControl{
         }
         return  diaries;
     }
+
+
 }
