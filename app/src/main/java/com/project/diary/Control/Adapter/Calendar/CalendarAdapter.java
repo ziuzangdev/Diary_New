@@ -3,16 +3,20 @@ package com.project.diary.Control.Adapter.Calendar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.diary.R;
+import com.project.diary.View.Activity.CalandarActivity;
+import com.project.diary.View.Fragment.CalendarFragment;
 
 import java.util.ArrayList;
 
@@ -23,8 +27,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
     private Context context;
 
-    public CalendarAdapter(ArrayList<String> daysOfMonth) {
+    private CalendarFragment calendarFragment;
+
+    private Context activityContext;
+
+    public CalendarAdapter(ArrayList<String> daysOfMonth, Context activityContext, CalendarFragment calendarFragment) {
         this.daysOfMonth = daysOfMonth;
+        this.activityContext = activityContext;
+        this.calendarFragment = calendarFragment;
     }
 
     @NonNull
@@ -50,9 +60,12 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         holder.dayOfMonth.setText(daysOfMonth.get(position));
 
         holder.dayOfMonth.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
                 dateToday = daysOfMonth.get(position);
+                ((CalandarActivity)activityContext).setCurrentDateChoose(calendarFragment);
                 notifyDataSetChanged();
             }
         });
@@ -71,8 +84,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
 
     public String getDateToday() {
-
-        return "fff";
+        return dateToday;
     }
 
     public void setDateToday(String dateToday) {

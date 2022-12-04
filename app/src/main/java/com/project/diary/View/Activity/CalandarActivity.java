@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -78,34 +79,31 @@ public class CalandarActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for(int i=0; i< calendarFragments.size(); i++){
-                            if(i != position){
-                                if(calendarFragments.get(i).getCalendarAdapter() != null){
-                                    if(calendarFragments.get(i).getCalendarAdapter().getDateToday() != null){
-                                        calendarFragments.get(i).getCalendarAdapter().setDateToday(null);
-                                    }
-                                }
+                    binding.txtMonth.setText(monthFromDate(calendarFragments.get(position).getSelectedDate()));
+                    binding.txtYear.setText(yearFomDate(calendarFragments.get(position).getSelectedDate()));
+                    if(position == 1){
+                        CalendarFragment calendarFragment = new CalendarFragment(calendarFragmentAdapter
+                                .getFirstLocalDate()
+                                .minusMonths(1),
+                                CalandarActivity.this);
+                            if(!calendarFragment.isAdded()){
+                                calendarFragments.add(0, calendarFragment);
                             }
+                            calendarFragmentAdapter.chanceData();
+                            binding.vpCalendar.setCurrentItem(2, true);
+                    }else if(position == calendarFragments.size()-2){
+                        CalendarFragment calendarFragment = new CalendarFragment(calendarFragments.
+                                get(calendarFragments.size() - 1)
+                                .getSelectedDate()
+                                .plusMonths(1), CalandarActivity.this);
+                        if(!calendarFragment.isAdded()){
+                            calendarFragments.add(calendarFragment);
                         }
+                        calendarFragmentAdapter.setCalendarFragments(calendarFragments);
+                        calendarFragmentAdapter.chanceData();
+
                     }
-                });
-               thread.start();
-                if(position == 1){
-                    calendarFragments.add(0, new CalendarFragment(calendarFragments.get(0).getSelectedDate().minusMonths(1)));
-                    calendarFragmentAdapter.notifyDataSetChanged();
-                    binding.vpCalendar.setCurrentItem(2,true);
-                }else if(position == calendarFragments.size()-2){
-                    calendarFragments.add(new CalendarFragment(calendarFragments.
-                            get(calendarFragments.size() - 1)
-                            .getSelectedDate()
-                            .plusMonths(1)));
-                    calendarFragmentAdapter.notifyDataSetChanged();
-                }
-                binding.txtMonth.setText(monthFromDate(calendarFragments.get(position).getSelectedDate()));
-                binding.txtYear.setText(yearFomDate(calendarFragments.get(position).getSelectedDate()));
+                    binding.txtYear.setText(yearFomDate(calendarFragments.get(position).getSelectedDate()));
             }
 
             @Override
@@ -122,16 +120,35 @@ public class CalandarActivity extends AppCompatActivity {
         initViewPagerCalendar();
     }
 
+    public void setCurrentDateChoose(CalendarFragment calendarFragment){
+        Thread thread = new Thread(new Runnable() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void run() {
+                for(CalendarFragment calendarFragmentTemp : calendarFragments){
+                    if(calendarFragmentTemp != calendarFragment){
+                        if(calendarFragmentTemp.getCalendarAdapter() != null){
+                            calendarFragmentTemp.getCalendarAdapter().setDateToday(null);
+                            calendarFragmentTemp.getCalendarAdapter().notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+        });
+        thread.start();
+    }
+
     private void initViewPagerCalendar() {
         calendarFragments = new ArrayList<>();
-        calendarFragments.add(new CalendarFragment(LocalDate.now().minusMonths(2)));
-        calendarFragments.add(new CalendarFragment(LocalDate.now().minusMonths(1)));
-        calendarFragments.add(new CalendarFragment(LocalDate.now()));
-        calendarFragments.add(new CalendarFragment(LocalDate.now().plusMonths(1)));
-        calendarFragments.add(new CalendarFragment(LocalDate.now().plusMonths(2)));
+        calendarFragments.add(new CalendarFragment(LocalDate.now().minusMonths(2), CalandarActivity.this));
+        calendarFragments.add(new CalendarFragment(LocalDate.now().minusMonths(1), CalandarActivity.this));
+        calendarFragments.add(new CalendarFragment(LocalDate.now(), CalandarActivity.this));
+        calendarFragments.add(new CalendarFragment(LocalDate.now().plusMonths(1), CalandarActivity.this));
+        calendarFragments.add(new CalendarFragment(LocalDate.now().plusMonths(2), CalandarActivity.this));
         calendarFragmentAdapter = new CalendarFragmentAdapter(getSupportFragmentManager(),calendarFragments);
         binding.vpCalendar.setAdapter(calendarFragmentAdapter);
         binding.vpCalendar.setCurrentItem(2,true);
+        binding.vpCalendar.setOffscreenPageLimit(1000);
         getSupportFragmentManager().executePendingTransactions();
     }
 

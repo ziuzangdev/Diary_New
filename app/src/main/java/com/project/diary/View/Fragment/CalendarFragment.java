@@ -46,12 +46,33 @@ public class CalendarFragment extends Fragment {
 
     private CalendarAdapter calendarAdapter;
 
+    private Context activityContext;
+
+    public Context getActivityContext() {
+        return activityContext;
+    }
+
+    public void setActivityContext(Context activityContext) {
+        this.activityContext = activityContext;
+    }
+
+    public void setCalendarAdapter(CalendarAdapter calendarAdapter) {
+        this.calendarAdapter = calendarAdapter;
+    }
+
     public CalendarAdapter getCalendarAdapter() {
         return calendarAdapter;
     }
 
-    public CalendarFragment(LocalDate selectedDate) {
+    public CalendarFragment(LocalDate selectedDate, Context activityContext) {
         this.selectedDate = selectedDate;
+        this.activityContext = activityContext;
+    }
+
+    public CalendarFragment(LocalDate selectedDate, Context activityContext, CalendarAdapter calendarAdapter) {
+        this.selectedDate = selectedDate;
+        this.calendarAdapter = calendarAdapter;
+        this.activityContext = activityContext;
     }
 
     public CalendarFragment() {
@@ -61,18 +82,11 @@ public class CalendarFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CalendarFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CalendarFragment newInstance(String param1, String param2) {
-        CalendarFragment fragment = new CalendarFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+    public static CalendarFragment newInstance(CalendarFragment calendarFragment) {
+        CalendarFragment fragment = new CalendarFragment(calendarFragment.getSelectedDate(), calendarFragment.getActivityContext());
         return fragment;
     }
 
@@ -113,7 +127,9 @@ public class CalendarFragment extends Fragment {
     private void setMonthView()
     {
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
-        calendarAdapter = new CalendarAdapter(daysInMonth);
+        if(calendarAdapter == null){
+            calendarAdapter = new CalendarAdapter(daysInMonth, activityContext, CalendarFragment.this);
+        }
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 7);
         binding.rcvCalendarCell.setLayoutManager(layoutManager);
         binding.rcvCalendarCell.setAdapter(calendarAdapter);
