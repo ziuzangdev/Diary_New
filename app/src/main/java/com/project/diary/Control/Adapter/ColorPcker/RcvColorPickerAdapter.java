@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.project.diary.Control.Adapter.Calendar.CalendarAdapter;
 import com.project.diary.Model.Painting.DrawView;
 import com.project.diary.Model.RichEditor.RichEditor;
 import com.project.diary.R;

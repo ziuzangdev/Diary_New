@@ -36,6 +36,10 @@ dependencies {
     def emojiViewProvider = "AppleProvider"
     def lottieVersion = "5.2.0"
 
+    //Calendar
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
+
     //Jsoup
     implementation 'org.jsoup:jsoup:1.15.3'
 
