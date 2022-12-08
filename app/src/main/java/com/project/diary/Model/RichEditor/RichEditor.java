@@ -2,10 +2,15 @@ package com.project.diary.Model.RichEditor;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.app.Activity.RESULT_OK;
 
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +32,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -314,6 +321,7 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
 
     @Override
     public void insertImage(String url, String alt) {
+        focusEditor();
         super.insertImage(url, alt);
     }
 
@@ -517,8 +525,6 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MediaActivity.class);
-                ((Activity)getContext()).startActivityForResult(intent, DiaryActivity.REQUEST_CODE_MEDIA);
             }
         });
 

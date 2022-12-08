@@ -21,22 +21,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_close_stroke"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            android:background="?selectableItemBackgroundBorderless"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ToolSave"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_mainactivity"
         android:orientation="horizontal"
         android:gravity="right|center">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/icon_template_black"
+            android:background="?selectableItemBackgroundBorderless"
             android:layout_marginRight="20dp"/>
         <ImageView
+            android:id="@+id/imgWatchMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_view_mode_black"
+            android:background="?selectableItemBackgroundBorderless"
             android:layout_marginRight="20dp"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/cvSave"
@@ -76,6 +81,7 @@
 
 <!--        Date Layout-->
         <include
+            android:id="@+id/dateLayout"
             layout="@layout/layout_date"/>
     </LinearLayout>
     <LinearLayout
@@ -88,6 +94,7 @@
             android:id="@+id/cvStatus"
             android:layout_width="26dp"
             android:layout_height="26dp"
+            android:background="?selectableItemBackgroundBorderless"
             app:cardBackgroundColor="#0D000000"
             app:cardElevation="0dp"
             app:cardCornerRadius="100dp">
@@ -132,133 +139,141 @@
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ToolTextTool"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center |bottom">
 
 <!--        Main tool-->
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            app:cardElevation="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            app:cardCornerRadius="10dp">
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:overScrollMode="never"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none"
-                android:overScrollMode="never"
-                android:layout_gravity="center">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-                    <ImageButton
-                        android:id="@+id/imgbtnBackground"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_background_black"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnBold"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_bold"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnItalic"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_italic"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnUnderline"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_underline"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnImage"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_iamge_black"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnSticker"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_sticker_black"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnEmoji"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_emoji_black"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnTextTool"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_texttool_black"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnList"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_list_black"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:visibility="gone"
-                        android:id="@+id/imgbtnTag"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_tag_black"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:visibility="gone"
-                        android:id="@+id/imgbtnVoice"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_voice_black"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                    <ImageButton
-                        android:id="@+id/imgbtnBrush"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_brush_black"
-                        android:layout_marginRight="15dp"
-                        android:background="@null"/>
-                </LinearLayout>
-            </HorizontalScrollView>
-        </androidx.cardview.widget.CardView>
+                android:orientation="vertical">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    app:cardElevation="0dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardCornerRadius="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="left | center">
+                        <ImageButton
+                            android:id="@+id/imgbtnBackground"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_background_black"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginLeft="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnBold"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_bold"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnItalic"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_italic"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnUnderline"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_underline"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnImage"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_iamge_black"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnSticker"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_sticker_black"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnEmoji"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_emoji_black"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnTextTool"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_texttool_black"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnList"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_list_black"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:visibility="gone"
+                            android:id="@+id/imgbtnTag"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_tag_black"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:visibility="gone"
+                            android:id="@+id/imgbtnVoice"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_voice_black"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                        <ImageButton
+                            android:id="@+id/imgbtnBrush"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_brush_black"
+                            android:layout_marginRight="15dp"
+                            android:background="?selectableItemBackgroundBorderless"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+
+        </HorizontalScrollView>
 
     </LinearLayout>
     <LinearLayout
@@ -304,6 +319,7 @@
                             android:id="@+id/imgCompleteTextTool"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:background="?selectableItemBackgroundBorderless"
                             android:src="@drawable/baseline_check_24"/>
                     </LinearLayout>
                     <LinearLayout
@@ -315,6 +331,7 @@
                             android:id="@+id/imgCloseTextTool"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:background="?selectableItemBackgroundBorderless"
                             android:src="@drawable/icon_close_stroke"/>
                     </LinearLayout>
                 </RelativeLayout>
@@ -336,21 +353,21 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/icon_align_text_left"
-                            android:background="@null"/>
+                            android:background="?selectableItemBackgroundBorderless"/>
                         <ImageButton
                             android:id="@+id/imgbtnAlignCenter"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/icon_align_text_center"
-                            android:background="@null"/>
+                            android:background="?selectableItemBackgroundBorderless"/>
                         <ImageButton
                             android:id="@+id/imgbtnAlignRight"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/icon_align_text_right"
-                            android:background="@null"/>
+                            android:background="?selectableItemBackgroundBorderless"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -366,21 +383,21 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/icon_h1"
-                            android:background="@null"/>
+                            android:background="?selectableItemBackgroundBorderless"/>
                         <ImageButton
                             android:id="@+id/imgbtnH2"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/icon_h2"
-                            android:background="@null"/>
+                            android:background="?selectableItemBackgroundBorderless"/>
                         <ImageButton
                             android:id="@+id/imgbtnH3"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:src="@drawable/icon_h3"
-                            android:background="@null"/>
+                            android:background="?selectableItemBackgroundBorderless"/>
                     </LinearLayout>
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView

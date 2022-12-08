@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+        android:maxSdkVersion="32"
+        tools:replace="android:maxSdkVersion" />
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         android:minSdkVersion="30" />
@@ -22,13 +23,41 @@
         android:theme="@style/Theme.Diary"
         tools:targetApi="31">
         <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
+            android:name=".View.Activity.SecurityPasswordActivity"
+            android:exported="false"
+            android:label="@string/title_activity_lock_app"
+            android:theme="@style/Theme.Diary.NoActionBar" />
+        <activity
+            android:name=".View.Activity.MyLockScreenActivity"
+            android:exported="false"
+            android:label="@string/title_activity_lock_app"
+            android:theme="@style/Theme.Diary.NoActionBar" />
+        <activity
+            android:name=".LockAppActivity"
+            android:exported="false"
+            android:label="@string/title_activity_lock_app"
+            android:theme="@style/Theme.Diary.NoActionBar" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.project.diary.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".View.Activity.LockAppActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Diary.NoActionBar"
+            tools:node="merge" />
         <activity
             android:name=".View.Activity.CanvasActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
-            tools:node="merge"></activity>
+            tools:node="merge" />
         <activity
             android:name=".View.Activity.MediaActivity"
             android:exported="true"
@@ -38,7 +67,8 @@
             android:name=".View.Activity.DiaryActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
-            tools:node="merge"></activity>
+            android:windowSoftInputMode="adjustResize"
+            tools:node="merge" />
         <activity
             android:name=".View.Activity.CalandarActivity"
             android:exported="true"

@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.project.diary.Control.Activity.CalandarActivityControl;
+import com.project.diary.Control.Adapter.Diary.RcvCalandarDiaryAdapter;
+import com.project.diary.Control.Adapter.Diary.RcvDiaryAdapter;
 import com.project.diary.databinding.ActivityCalandarBinding;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -29,7 +31,31 @@ public class CalandarActivity extends AppCompatActivity {
 
     private CalandarActivityControl control;
 
-    private LinearLayoutManager layoutManager;
+    private CalendarDay calendarDay;
+
+    public ActivityCalandarBinding getBinding() {
+        return binding;
+    }
+
+    public void setBinding(ActivityCalandarBinding binding) {
+        this.binding = binding;
+    }
+
+    public CalandarActivityControl getControl() {
+        return control;
+    }
+
+    public void setControl(CalandarActivityControl control) {
+        this.control = control;
+    }
+
+    public CalendarDay getCalendarDay() {
+        return calendarDay;
+    }
+
+    public void setCalendarDay(CalendarDay calendarDay) {
+        this.calendarDay = calendarDay;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -53,7 +79,9 @@ public class CalandarActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                binding.txtSelectedDate.setText( getMonth(date.getMonth())+" " + date.getDay() + ", " + date.getYear() + "");
+                calendarDay = date;
+                binding.txtSelectedDate.setText( getMonth(calendarDay.getMonth())+" " + calendarDay.getDay() + ", " + calendarDay.getYear() + "");
+                initRcvDiary();
             }
         });
 
@@ -77,32 +105,42 @@ public class CalandarActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void addControls() {
-        binding.calendarView.setDateSelected(CalendarDay.today(), true);
+        calendarDay = CalendarDay.today();
+        binding.calendarView.setDateSelected(calendarDay, true);
+        binding.txtSelectedDate.setText( getMonth(calendarDay.getMonth())+" " + calendarDay.getDay() + ", " + calendarDay.getYear() + "");
+        initRcvDiary();
     }
+    public void initRcvDiary() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                control.InitRcvDiaryItem();
+                control.initDiariesOnDate(calendarDay);
+                if(control.getDiariesOnDate().size() > 0){
+                    control.setRcvCalandarDiaryAdapter(new RcvCalandarDiaryAdapter(control.getDiariesOnDate(), CalandarActivity.this));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.txtNoDiary.setVisibility(View.GONE);
+                            binding.rcvDiary.setVisibility(View.VISIBLE);
+                            binding.rcvDiary.setHasFixedSize(true);
+                            binding.rcvDiary.setLayoutManager(new LinearLayoutManager(CalandarActivity.this));
+                            binding.rcvDiary.setAdapter(control.getRcvCalandarDiaryAdapter());
+                        }
+                    });
+                }else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.txtNoDiary.setVisibility(View.VISIBLE);
+                            binding.rcvDiary.setVisibility(View.GONE);
+                        }
+                    });
+                }
 
-
-
-    private String monthFromDate(LocalDate date)
-    {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM");
-        return date.format(formatter);
+            }
+        });
+        thread.start();
     }
-
-    private String yearFomDate(LocalDate date)
-    {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
-        return date.format(formatter);
-    }
-
-    private String dayFromDate(LocalDate date)
-    {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d");
-        return date.format(formatter);
-    }
-
-
-
-
-
 
 }

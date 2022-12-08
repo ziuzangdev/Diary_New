@@ -27,6 +27,7 @@ import com.project.diary.databinding.ActivityMainBinding;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 
 public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHolder> {
@@ -92,7 +93,9 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         View view = inflater.inflate(R.layout.item_rcvdiary, parent, false);
         return new RcvDiaryAdapter.ViewHolder(view);
     }
-
+    public String getMonth(int month) {
+        return new DateFormatSymbols().getMonths()[month-1];
+    }
     @Override
     public void onBindViewHolder(@NonNull RcvDiaryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if(!isChooseMode){
@@ -101,10 +104,9 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         holder.txtName.setText(diaries.get(position).getTittle());
         holder.txtData.setText(diaries.get(position).getDiaryData().getData().replaceAll("\\<.*?>", ""));
         holder.txtEmojiStatus.setText(diaries.get(position).getStatus());
-//        RcvMediaDemoAdapter rcvMediaDemoAdapter = new RcvMediaDemoAdapter(diaries.get(position).getMediaPaths());
-//        holder.rcvMediaDemo.setHasFixedSize(true);
-//        holder.rcvMediaDemo.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
-//        holder.rcvMediaDemo.setAdapter(rcvMediaDemoAdapter);
+        holder.txtDay.setText(String.valueOf(diaries.get(position).getDate().getDay()));
+        holder.txtYear.setText(String.valueOf(diaries.get(position).getDate().getYear()));
+        holder.txtMonth.setText(getMonth(diaries.get(position).getDate().getMonth()).substring(0,3));
 
         //Events
         holder.Root.setOnClickListener(new View.OnClickListener() {
@@ -192,10 +194,16 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName,
                 txtData,
-                txtEmojiStatus;
+                txtEmojiStatus,
+        txtDay,
+        txtMonth,
+        txtYear;
         LinearLayout Root;
 
+        View Date;
+
         RecyclerView rcvMediaDemo;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.txtName);
@@ -203,6 +211,10 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
             txtEmojiStatus = itemView.findViewById(R.id.txtEmojiStatus);
             Root = itemView.findViewById(R.id.Root);
             rcvMediaDemo = itemView.findViewById(R.id.rcvMediaDemo);
+            Date = itemView.findViewById(R.id.Date);
+            txtDay = Date.findViewById(R.id.txtDay);
+            txtMonth = Date.findViewById(R.id.txtMonth);
+            txtYear = Date.findViewById(R.id.txtYear);
         }
     }
 }

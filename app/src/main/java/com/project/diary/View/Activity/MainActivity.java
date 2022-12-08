@@ -4,20 +4,31 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.navigation.NavigationView;
+import com.project.diary.Control.Activity.LockAppActivityControl;
 import com.project.diary.Control.Activity.MainActivityControl;
 import com.project.diary.Control.Adapter.Diary.RcvDiaryAdapter;
 import com.project.diary.Model.Diary.Diary;
+import com.project.diary.Model.Lock.ISecurityPassword;
+import com.project.diary.Model.Lock.MyLock;
+import com.project.diary.Model.Lock.SecurityPassword;
 import com.project.diary.Model.SQLite.SQLite;
+import com.project.diary.R;
 import com.project.diary.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,9 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
     private MainActivityControl control;
 
+    private LockAppActivityControl lockAppActivityControl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lockAppActivityControl = new LockAppActivityControl(MainActivity.this);
+        if(lockAppActivityControl.isLockMode()){
+            MyLock.checkPassword(MainActivity.this);
+        }
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         control = new MainActivityControl(MainActivity.this);
         control.showCustomUI();
@@ -37,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         addEvents();
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -44,6 +63,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addEvents() {
+        binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId() == R.id.menu_item_lockapp){
+                    Intent intent = new Intent(MainActivity.this, LockAppActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+        MyLock.forgotPassword(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ISecurityPassword securityPassword = new SecurityPassword(MainActivity.this);
+                if(securityPassword.isHasPassword()){
+                    Intent intent = new Intent(MainActivity.this, SecurityPasswordActivity.class);
+                    intent.putExtra(MyLock.FORGOT_PASS_MODE, MyLock.FORGOT_PASS_MODE);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(MainActivity.this, "You have not set up a security question!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         binding.edtxtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -26,7 +26,8 @@
                 android:id="@+id/imgNavigationDrawer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_menu_black"/>
+                android:src="@drawable/icon_menu_black"
+                android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ToolbarView2"
@@ -39,7 +40,8 @@
                 android:id="@+id/imgSearchOpen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_search_black"/>
+                android:src="@drawable/icon_search_black"
+                android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
         <LinearLayout
            android:visibility="gone"
@@ -82,7 +84,8 @@
                 android:id="@+id/imgCloseDeleteMode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_back_black"/>
+                android:src="@drawable/icon_back_black"
+                android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
         <LinearLayout
             android:visibility="gone"
@@ -96,7 +99,8 @@
                 android:id="@+id/imgDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_delete"/>
+                android:src="@drawable/icon_delete"
+                android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
 
         <!--    Navigation Bottom-->
@@ -118,6 +122,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         app:cardBackgroundColor="@color/Fresh_Guacamole_04"
+                        android:foreground="?android:attr/selectableItemBackground"
                         app:cardCornerRadius="100dp">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -141,7 +146,8 @@
                         android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/btnshowcalendar"/>
+                        android:src="@drawable/btnshowcalendar"
+                        android:background="?selectableItemBackgroundBorderless"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -153,7 +159,8 @@
                         android:layout_marginRight="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/btnshowmine"/>
+                        android:src="@drawable/btnshowmine"
+                        android:background="?selectableItemBackgroundBorderless"/>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

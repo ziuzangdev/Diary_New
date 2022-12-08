@@ -3,12 +3,15 @@ package com.project.diary.View.Activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Instrumentation;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -20,8 +23,14 @@ import com.aghajari.emojiview.view.AXEmojiPopup;
 import com.aghajari.emojiview.view.AXEmojiPopupLayout;
 import com.aghajari.emojiview.view.AXEmojiView;
 import com.aghajari.emojiview.view.AXStickerView;
+import com.asksira.bsimagepicker.BSImagePicker;
+import com.asksira.bsimagepicker.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +42,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.navigation.NavController;
@@ -47,6 +58,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.project.diary.Control.Activity.ActivityDiaryControl;
 import com.project.diary.Control.Adapter.ColorPcker.RcvColorPickerAdapter;
 import com.project.diary.Control.Adapter.Emoji.RcvStatusPickerAdapter;
+import com.project.diary.Control.Ultil.FileUtils;
+import com.project.diary.Model.Calendar.MyMaterialCalendarView;
 import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.Diary.DiaryData;
 import com.project.diary.Model.RichEditor.RichEditor;
@@ -55,15 +68,30 @@ import com.project.diary.Model.Video.Video;
 import com.project.diary.databinding.ActivityDiaryBinding;
 
 import com.project.diary.R;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.Intrinsics;
+
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class DiaryActivity extends AppCompatActivity {
+public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.OnSingleImageSelectedListener,
+        BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener{
     private ActivityDiaryBinding binding;
 
     private ActivityDiaryControl control;
@@ -87,6 +115,8 @@ public class DiaryActivity extends AppCompatActivity {
     private boolean isCLickTextColor = false;
 
     private boolean isClickTextTool = false;
+
+    private boolean isWatchMode = false;
 
     private boolean isRunning;
 
@@ -125,30 +155,27 @@ public class DiaryActivity extends AppCompatActivity {
         richEditor.focusEditor();
         if(requestCode == REQUEST_CODE_MEDIA){
             if(resultCode == Activity.RESULT_OK){
-                ArrayList<String> pathChooseImage;
-                pathChooseImage = new ArrayList<>();
-                try{
-                    pathChooseImage = Objects.requireNonNull(data).getStringArrayListExtra("pathChooseImage");
-                }catch (Exception ignore){}
-                if(pathChooseImage.size() > 0){
-                   for(String path : pathChooseImage){
-                       richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
-                   }
-//                   diary.getMediaPaths().clear();
-//                   diary.getMediaPaths().addAll(control.pullLinks(richEditor.getHtml()));
-                }
+
             }
         }else if(requestCode == REQUEST_CODE_DRAW_CANVAS){
             if(resultCode == RESULT_OK){
                 String path = Objects.requireNonNull(data).getStringExtra("pathDraw");
                 richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
             }
-//            diary.getMediaPaths().clear();
-//            diary.getMediaPaths().addAll(control.pullLinks(richEditor.getHtml()));
             System.out.println(richEditor.getHtml());
         }
     }
-
+    public String getMonth(int month) {
+        return new DateFormatSymbols().getMonths()[month-1];
+    }
+    public String getRealPathFromURI(Uri contentUri)
+    {
+        String[] proj = { MediaStore.Audio.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
     @SuppressLint("ClickableViewAccessibility")
     private void addEvents() {
 
@@ -196,6 +223,78 @@ public class DiaryActivity extends AppCompatActivity {
         binding.imgbtnAlignRight.setOnClickListener(toolEvents);
         binding.imgCloseTextTool.setOnClickListener(textToolEvents);
         binding.imgCompleteTextTool.setOnClickListener(textToolEvents);
+
+        binding.imgbtnImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BSImagePicker pickerDialog = new BSImagePicker.Builder("com.project.diary.fileprovider")
+                        .setMaximumDisplayingImages(Integer.MAX_VALUE)
+                        .isMultiSelect()
+                        .setMinimumMultiSelectCount(1)
+                        .build();
+                pickerDialog.show(getSupportFragmentManager(), "picker");
+            }
+        });
+
+        binding.imgWatchMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isWatchMode = !isWatchMode;
+                binding.ToolSave.setVisibility(View.GONE);
+                binding.ToolTextTool.setVisibility(View.GONE);
+                binding.dateLayout.txtDate.setClickable(false);
+                binding.cvStatus.setClickable(false);
+                richEditor.setInputEnabled(false);
+            }
+        });
+
+        binding.dateLayout.txtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(DiaryActivity.this, R.style.Dialog);
+                dialog.setContentView(R.layout.dialog_calandar);
+                dialog.setCanceledOnTouchOutside(true);
+                MyMaterialCalendarView calendarView = dialog.findViewById(R.id.calendarView);
+                LinearLayout Root = dialog.findViewById(R.id.Root);
+                TextView txtClose = dialog.findViewById(R.id.txtClose);
+                TextView txtToday = dialog.findViewById(R.id.txtToday);
+                txtClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                txtToday.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        calendarView.setCurrentDate(CalendarDay.today());
+                        calendarView.setDateSelected(CalendarDay.today(), true);
+                        diary.setDate(CalendarDay.today());
+                        binding.dateLayout.txtDay.setText(String.valueOf(diary.getDate().getDay()));
+                        binding.dateLayout.txtYear.setText(String.valueOf(diary.getDate().getYear()));
+                        binding.dateLayout.txtMonth.setText(getMonth(diary.getDate().getMonth()).substring(0, 2));
+                    }
+                });
+                Root.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+                    @Override
+                    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                        diary.setDate(date);
+                        binding.dateLayout.txtDay.setText(String.valueOf(diary.getDate().getDay()));
+                        binding.dateLayout.txtYear.setText(String.valueOf(diary.getDate().getYear()));
+                        binding.dateLayout.txtMonth.setText(getMonth(diary.getDate().getMonth()).substring(0, 3));
+                    }
+                });
+
+                dialog.show();
+            }
+        });
         richEditor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,8 +317,17 @@ public class DiaryActivity extends AppCompatActivity {
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isRunning = false;
-                finish();
+                if(isWatchMode){
+                    isWatchMode = false;
+                    binding.ToolSave.setVisibility(View.VISIBLE);
+                    binding.ToolTextTool.setVisibility(View.VISIBLE);
+                    binding.dateLayout.txtDate.setClickable(true);
+                    binding.cvStatus.setClickable(true);
+                    richEditor.setInputEnabled(true);
+                }else{
+                    isRunning = false;
+                    finish();
+                }
             }
         });
 
@@ -376,13 +484,16 @@ public class DiaryActivity extends AppCompatActivity {
         }else{
             diary = new Diary.Builder()
                     .tittle(binding.txtTittle.getText().toString())
-                    .date(LocalDate.now().toString())
+                    .date(CalendarDay.today())
                     .status(statusInPackage)
                     .background(getResources().getColor(R.color.Fresh_Guacamole_05, null))
                     .mediaPaths(new ArrayList<>())
                     .diaryData(diaryData)
                     .build();
         }
+        binding.dateLayout.txtDay.setText(String.valueOf(diary.getDate().getDay()));
+        binding.dateLayout.txtYear.setText(String.valueOf(diary.getDate().getYear()));
+        binding.dateLayout.txtMonth.setText(getMonth(diary.getDate().getMonth()).substring(0, 3));
     }
 
     private void addDataToDiary() {
@@ -408,4 +519,44 @@ public class DiaryActivity extends AppCompatActivity {
        richEditor.initAllEvents();
     }
 
+    @Override
+    public void loadImage(Uri imageUri, ImageView ivImage) {
+
+    }
+
+    @Override
+    public void onMultiImageSelected(List<Uri> uriList, String tag) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(Uri uri : uriList){
+                    String path = FileUtils.getPath(DiaryActivity.this, uri);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
+                        }
+                    });
+                }
+            }
+        });
+        thread.start();
+    }
+
+    @Override
+    public void onCancelled(boolean isMultiSelecting, String tag) {
+
+    }
+
+    @Override
+    public void onSingleImageSelected(Uri uri, String tag) {
+        String path = FileUtils.getPath(DiaryActivity.this, uri);
+        System.out.println(path);
+        richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
 }

@@ -18,6 +18,9 @@ import androidx.annotation.RequiresApi;
 import com.google.gson.Gson;
 import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.Diary.DiaryData;
+import com.project.diary.Model.Lock.ISecurityPassword;
+import com.project.diary.Model.Lock.SecurityPassword;
+import com.project.diary.Model.Lock.SecurityPasswordGson;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -228,6 +231,51 @@ public class SQLiteControl{
             diaries.add(readData(TABLE_NAME, Key));
         }
         return  diaries;
+    }
+
+    public boolean isLockMode(){
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        Cursor cursor=database.query("Detail",null,null,null,null,null,null);
+        cursor.moveToFirst();
+        if(cursor.getInt(1) == 0){
+            cursor.close();
+            return false;
+        }else{
+            cursor.close();
+            return true;
+        }
+    }
+
+    public SecurityPassword getSecurityPassword(){
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        Cursor cursor=database.query("Detail",null,null,null,null,null,null);
+        cursor.moveToFirst();
+        SecurityPasswordGson securityPasswordGson = new Gson().fromJson(cursor.getString(3), SecurityPasswordGson.class);
+        if(securityPasswordGson != null){
+            SecurityPassword securityPassword = new SecurityPassword();
+            securityPassword.initQuestionAndPassword(securityPasswordGson.getQUESTION(), securityPasswordGson.getANSWER());
+            return securityPassword;
+        }else{
+            return null;
+        }
+
+    }
+
+    public void updateLockMode(int lockMode){
+        ContentValues contentValues = new ContentValues();
+        Gson gson = new Gson();
+        contentValues.put("isPassword", lockMode);
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        database.update("Detail", contentValues, "key=?", new String[]{"trikay"});
+    }
+
+    public void updateSecurityPassword(ISecurityPassword securityPassword){
+        ContentValues contentValues = new ContentValues();
+        Gson gson = new Gson();
+        SecurityPasswordGson securityPasswordGson = new SecurityPasswordGson(securityPassword.getQUESTION(), securityPassword.getANSWER());
+        contentValues.put("securityPassword", gson.toJson(securityPasswordGson));
+        database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        database.update("Detail", contentValues, "key=?", new String[]{"trikay"});
     }
 
 

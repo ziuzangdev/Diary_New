@@ -1,6 +1,8 @@
 package com.project.diary.Model.Diary;
 
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.util.ArrayList;
 
 public class Diary {
@@ -9,7 +11,7 @@ public class Diary {
     private String tittle;
     private String id;
     private String status;
-    private String date;
+    private CalendarDay date;
     private int background;
     private ArrayList<String> mediaPaths;
 
@@ -45,11 +47,11 @@ public class Diary {
         this.status = status;
     }
 
-    public String getDate() {
+    public CalendarDay getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(CalendarDay date) {
         this.date = date;
     }
 
@@ -75,14 +77,14 @@ public class Diary {
         private String tittle;
         private String id;
         private String status;
-        private String date;
+        private CalendarDay date;
         private int background;
         private ArrayList<String> mediaPaths;
 
         public Builder() {
         }
 
-        Builder(DiaryData diaryData, String tittle, String id, String status, String date, int background, ArrayList<String> mediaPaths) {
+        Builder(DiaryData diaryData, String tittle, String id, String status, CalendarDay date, int background, ArrayList<String> mediaPaths) {
             this.diaryData = diaryData;
             this.tittle = tittle;
             this.id = id;
@@ -112,7 +114,7 @@ public class Diary {
             return Builder.this;
         }
 
-        public Builder date(String date){
+        public Builder date(CalendarDay date){
             this.date = date;
             return Builder.this;
         }
