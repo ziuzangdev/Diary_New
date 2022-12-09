@@ -22,8 +22,9 @@
             android:icon="@drawable/icon_backup_strock_navdrawer"
             android:title="Backup restore"/>
         <item
+            android:id="@+id/menu_item_exportimport"
             android:icon="@drawable/icon_export_strock_navdrawer"
-            android:title="Export &amp; Import"/>
+            android:title="Export"/>
     </group>
     <group android:checkableBehavior="single"
         android:id="@+id/gr03">

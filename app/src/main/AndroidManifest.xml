@@ -23,6 +23,12 @@
         android:theme="@style/Theme.Diary"
         tools:targetApi="31">
         <activity
+            android:name=".View.Activity.ExportImportActivity"
+            android:exported="true"
+            android:label="@string/title_activity_lock_app"
+            android:theme="@style/Theme.Diary.NoActionBar">
+        </activity>
+        <activity
             android:name=".View.Activity.SecurityPasswordActivity"
             android:exported="false"
             android:label="@string/title_activity_lock_app"
@@ -41,6 +47,15 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.project.diary.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.package.name.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

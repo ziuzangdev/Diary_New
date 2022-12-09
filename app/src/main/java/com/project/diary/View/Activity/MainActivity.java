@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 if(item.getItemId() == R.id.menu_item_lockapp){
                     Intent intent = new Intent(MainActivity.this, LockAppActivity.class);
                     startActivity(intent);
+                }else if(item.getItemId() == R.id.menu_item_exportimport){
+                    Intent intent = new Intent(MainActivity.this, ExportImportActivity.class);
+                    startActivity(intent);
                 }
                 return false;
             }

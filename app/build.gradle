@@ -33,8 +33,14 @@ android {
 
 dependencies {
     def emojiViewVersion = "1.5.2"
-    def emojiViewProvider = "AppleProvider"
     def lottieVersion = "5.2.0"
+
+    //Progess bar
+    implementation 'com.github.iammert:TileProgressView:0.1'
+
+    //Webview to PDF
+    implementation 'com.github.pramodkr123:ConvertWebViewToPdfDemo:1.0.4'
+
     //Lock Screen
     implementation 'com.github.p32929:AndroidAppLockscreen:1.2'
 
@@ -54,7 +60,6 @@ dependencies {
     //Emoji Library
     implementation 'com.google.code.gson:gson:2.10'
     implementation "io.github.aghajari:AXEmojiView:$emojiViewVersion"
-    implementation "io.github.aghajari:AXEmojiView-$emojiViewProvider:$emojiViewVersion"
     implementation "io.github.aghajari:AXEmojiView-FacebookProvider:$emojiViewVersion"
 
     //Image Picker
