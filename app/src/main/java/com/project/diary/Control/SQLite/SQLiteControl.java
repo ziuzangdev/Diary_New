@@ -37,7 +37,7 @@ import java.util.Calendar;
 public class SQLiteControl{
     private static final String DATABASE_NAME = "Diary.db";
 
-    private static final String DB_PATH_SUFFIX = "/databases/";
+    public static final String DB_PATH_SUFFIX = "/databases/";
 
     /**
      * This variable is the latest version of database that the app has <br>
@@ -276,6 +276,19 @@ public class SQLiteControl{
         contentValues.put("securityPassword", gson.toJson(securityPasswordGson));
         database = context.openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
         database.update("Detail", contentValues, "key=?", new String[]{"trikay"});
+    }
+
+    public void importDatabase(File file){
+        ArrayList<Diary> diaries = new ArrayList<>();
+        database = SQLiteDatabase.openOrCreateDatabase(file, null);
+        Cursor cursor=database.query("Diary",null,null,null,null,null,null);
+        while (cursor.moveToNext()){
+            Diary diary = new Gson().fromJson(cursor.getString(1), Diary.class);
+            diary.setId(cursor.getString(0));
+            diaries.add(diary);
+        }
+        cursor.close();
+        System.out.println("kkkkkkkkkkkkkkkk" + diaries.size());
     }
 
 

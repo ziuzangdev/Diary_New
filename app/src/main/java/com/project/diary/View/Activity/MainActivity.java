@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 }else if(item.getItemId() == R.id.menu_item_exportimport){
                     Intent intent = new Intent(MainActivity.this, ExportImportActivity.class);
                     startActivity(intent);
+                }else if(item.getItemId() == R.id.menu_item_backuprestore){
+                    Intent intent = new Intent(MainActivity.this, BackupRestoreActivity.class);
+                    startActivity(intent);
                 }
                 return false;
             }

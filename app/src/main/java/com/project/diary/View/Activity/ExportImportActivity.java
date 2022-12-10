@@ -3,6 +3,7 @@ package com.project.diary.View.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.normal.TedPermission;
 import com.project.diary.Control.Activity.CalandarActivityControl;
 import com.project.diary.Control.Activity.ExportImportActivityControl;
 import com.project.diary.Model.Calendar.MyMaterialCalendarView;
@@ -19,7 +22,9 @@ import com.project.diary.databinding.ActivityExportImportBinding;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-public class ExportImportActivity extends AppCompatActivity {
+import java.util.List;
+
+public class ExportImportActivity extends AppCompatActivity implements PermissionListener {
     private ActivityExportImportBinding binding;
 
     private ExportImportActivityControl control;
@@ -34,8 +39,11 @@ public class ExportImportActivity extends AppCompatActivity {
         control = new ExportImportActivityControl(ExportImportActivity.this, binding);
         control.showCustomUI();
         setContentView(binding.getRoot());
-        addControls();
-        addEvents();
+        TedPermission.create()
+                .setPermissionListener(this)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();
     }
 
     private void addEvents() {
@@ -78,4 +86,14 @@ public class ExportImportActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onPermissionGranted() {
+        addControls();
+        addEvents();
+    }
+
+    @Override
+    public void onPermissionDenied(List<String> deniedPermissions) {
+
+    }
 }
