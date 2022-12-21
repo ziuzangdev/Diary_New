@@ -1,6 +1,7 @@
 package com.project.diary.View.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.PathParser;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -17,14 +20,20 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.devs.vectorchildfinder.VectorChildFinder;
+import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.project.diary.Control.Activity.ActivityDiaryControl;
 import com.project.diary.Control.Activity.CanvasActivityControl;
+import com.project.diary.Control.Activity.IThemeManager;
 import com.project.diary.Control.Adapter.ColorPcker.RcvColorPickerAdapter;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 import com.project.diary.R;
 import com.project.diary.databinding.ActivityCanvasBinding;
 import com.project.diary.databinding.ActivityDiaryBinding;
 
-public class CanvasActivity extends AppCompatActivity {
+import java.util.List;
+
+public class CanvasActivity extends AppCompatActivity implements IThemeManager {
     private ActivityCanvasBinding binding;
 
     private CanvasActivityControl control;
@@ -43,6 +52,12 @@ public class CanvasActivity extends AppCompatActivity {
     }
 
     private void addEvents() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         binding.cvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +120,7 @@ public class CanvasActivity extends AppCompatActivity {
     }
 
     private void addControls() {
+        initTheme();
         initColorPicker();
     }
 
@@ -113,5 +129,14 @@ public class CanvasActivity extends AppCompatActivity {
         binding.rcvColorPicker.setHasFixedSize(true);
         binding.rcvColorPicker.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         binding.rcvColorPicker.setAdapter(rcvColorPickerAdapter);
+    }
+
+    @Override
+    public void initTheme() {
+        AppThemeManager appThemeManager = control.getAppThemeManager();
+        binding.Root.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[4]));
+        binding.llNext.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
+        binding.llSeekbar.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
+        appThemeManager.setStateButtonForRatioButtonCanvas(binding);
     }
 }

@@ -3,13 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission
-        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -23,15 +19,25 @@
         android:theme="@style/Theme.Diary"
         tools:targetApi="31">
         <activity
+            android:name=".View.Activity.ThemeActivity"
+            android:exported="true"
+            android:label="@string/title_activity_lock_app"
+            android:theme="@style/Theme.Diary.NoActionBar" />
+        <activity
+            android:name=".View.Activity.MineActivity"
+            android:exported="true"
+            android:label="@string/title_activity_lock_app"
+            android:theme="@style/Theme.Diary.NoActionBar" />
+        <activity
             android:name=".View.Activity.BackupRestoreActivity"
             android:exported="true"
             android:label="@string/title_activity_lock_app"
-            android:theme="@style/Theme.Diary.NoActionBar"></activity>
+            android:theme="@style/Theme.Diary.NoActionBar" />
         <activity
             android:name=".View.Activity.ExportImportActivity"
             android:exported="true"
             android:label="@string/title_activity_lock_app"
-            android:theme="@style/Theme.Diary.NoActionBar"></activity>
+            android:theme="@style/Theme.Diary.NoActionBar" />
         <activity
             android:name=".View.Activity.SecurityPasswordActivity"
             android:exported="false"
@@ -50,7 +56,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="com.package.name.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -60,12 +66,21 @@
         </provider>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.package.name.fileprovider"
+            android:authorities="com.project.diary.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
+        </provider>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.project.diary.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths2" />
         </provider>
 
         <activity
@@ -98,6 +113,7 @@
             android:name=".View.Activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
+            android:windowSoftInputMode="adjustPan"
             tools:node="merge">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

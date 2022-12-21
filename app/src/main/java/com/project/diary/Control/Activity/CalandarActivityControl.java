@@ -7,6 +7,7 @@ import androidx.annotation.WorkerThread;
 import com.project.diary.Control.Adapter.Diary.RcvCalandarDiaryAdapter;
 import com.project.diary.Control.RootControl;
 import com.project.diary.Model.Diary.Diary;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
@@ -16,6 +17,12 @@ public class CalandarActivityControl extends MainActivityControl {
 
     private ArrayList<Diary> diariesOnDate;
 
+    private AppThemeManager appThemeManager;
+
+    @Override
+    public AppThemeManager getAppThemeManager() {
+        return appThemeManager;
+    }
 
     @WorkerThread
     public void initDiariesOnDate(CalendarDay calendarDay) {
@@ -55,5 +62,6 @@ public class CalandarActivityControl extends MainActivityControl {
 
     public CalandarActivityControl(Context context) {
         super(context);
+        appThemeManager = new AppThemeManager(context);
     }
 }

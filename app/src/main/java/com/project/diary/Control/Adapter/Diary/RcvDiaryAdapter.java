@@ -3,6 +3,7 @@ package com.project.diary.Control.Adapter.Diary;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.util.TimeZone;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +26,15 @@ import com.project.diary.View.Activity.DiaryActivity;
 import com.project.diary.View.Activity.MainActivity;
 import com.project.diary.databinding.ActivityMainBinding;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.w3c.dom.Text;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHolder> {
     private Context context;
@@ -36,6 +42,8 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
 
 
     private ArrayList<Diary> chooseList;
+
+    private ArrayList<RcvMediaDemo> rcvMediaDemos;
 
     private boolean isChooseMode;
 
@@ -48,8 +56,14 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         this.binding = binding;
         this.activityContext = activityContext;
         chooseList = new ArrayList<>();
+        rcvMediaDemos = new ArrayList<>();
         isChooseMode = false;
         initEvents();
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void clear() {
+        diaries.clear();
+        notifyDataSetChanged();
     }
 
     private void initEvents() {
@@ -80,6 +94,7 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
                 binding.ToolbarView4.setVisibility(View.GONE);
                 binding.ToolbarView1.setVisibility(View.VISIBLE);
                 binding.ToolbarView2.setVisibility(View.VISIBLE);
+                clear();
                 ((MainActivity)activityContext).initRcvDiary();
             }
         });
@@ -94,20 +109,26 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         return new RcvDiaryAdapter.ViewHolder(view);
     }
     public String getMonth(int month) {
-        return new DateFormatSymbols().getMonths()[month-1];
+        DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(Locale.US);
+        return dateFormatSymbols.getMonths()[month-1];
     }
     @Override
     public void onBindViewHolder(@NonNull RcvDiaryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if(!isChooseMode){
             holder.Root.setBackgroundColor(context.getResources().getColor(R.color.nomal_mode, null));
         }
-        holder.txtName.setText(diaries.get(position).getTittle());
-        holder.txtData.setText(diaries.get(position).getDiaryData().getData().replaceAll("\\<.*?>", ""));
+        holder.txtName.setText(displayTittle(diaries.get(position).getTittle()));
+        holder.txtData.setText(removeAllHtmlTag(diaries.get(position).getDiaryData().getData()));
         holder.txtEmojiStatus.setText(diaries.get(position).getStatus());
         holder.txtDay.setText(String.valueOf(diaries.get(position).getDate().getDay()));
         holder.txtYear.setText(String.valueOf(diaries.get(position).getDate().getYear()));
         holder.txtMonth.setText(getMonth(diaries.get(position).getDate().getMonth()).substring(0,3));
 
+        //Recycleview Medias
+        RcvMediaDemo rcvMediaDemo = new RcvMediaDemo(diaries.get(position).getMediaPaths(), activityContext);
+        holder.rcvMediaDemo.setLayoutManager(new LinearLayoutManager(activityContext, RecyclerView.HORIZONTAL, false));
+        holder.rcvMediaDemo.setHasFixedSize(true);
+        holder.rcvMediaDemo.setAdapter(rcvMediaDemo);
         //Events
         holder.Root.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -184,6 +205,44 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
                 return true;
             }
         });
+
+
+    }
+
+    private String displayTittle(String tittle) {
+        if(tittle.equals("")){
+            return "No tittle";
+        }else{
+            return tittle;
+        }
+    }
+
+    private String removeAllHtmlTag(String html) {
+        System.out.println("----------------------------");
+        String strippedHtml = html;
+
+        // Loại bỏ các tag img
+        strippedHtml = strippedHtml.replaceAll("<img[^>]*>", "");
+
+        // Loại bỏ các tag HTML khác
+        strippedHtml = strippedHtml.replaceAll("<(?!li|/li)[^>]*>", "");
+        System.out.println("Remove all html not <li>: " + strippedHtml);
+        try{
+            int index = strippedHtml.indexOf("<li>");
+            if(index != 0){
+                String firstPart = strippedHtml.substring(0, index);
+                String secondPart = strippedHtml.substring(index);
+                strippedHtml = firstPart + "\n" ;
+                secondPart = secondPart.replaceAll("\\s*<li>\\s*", "");
+                secondPart = secondPart.replaceAll("\\s*</li>\\s*", "\n");
+                return strippedHtml + secondPart;
+            }else{
+                strippedHtml = strippedHtml.replaceAll("\\s*<li>\\s*", "");
+                strippedHtml = strippedHtml.replaceAll("\\s*</li>\\s*", "\n");
+                System.out.println("Text after remove all HTML: " + strippedHtml);
+            }
+        }catch (Exception e){}
+        return strippedHtml;
     }
 
     @Override

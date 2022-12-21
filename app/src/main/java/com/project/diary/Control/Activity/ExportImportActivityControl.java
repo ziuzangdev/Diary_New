@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Environment;
+import android.graphics.pdf.PdfDocument;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,20 +19,29 @@ import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.RichEditor.RichEditor;
 import com.project.diary.Model.SQLite.SQLite;
 import com.project.diary.R;
-import com.project.diary.View.Activity.MainActivity;
 import com.project.diary.databinding.ActivityExportImportBinding;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.webviewtopdf.PdfView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
+
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.print.PrintAttributes;
+import android.print.pdf.PrintedPdfDocument;
+
+import java.io.IOException;
 
 public class ExportImportActivityControl extends RootControl {
     private CalendarDay fromDate, toDate;
 
     private Dialog mclvDialog;
+
+    private StringBuilder richEdittextHtml;
 
     private RichEditor richEditor;
 
@@ -201,53 +210,48 @@ public class ExportImportActivityControl extends RootControl {
             @Override
             public void run() {
                 binding.txtStateProgessExportPdf.setText("Exporting Diary...");
-            }
-        });
-        float index = 1f;
-        for(Diary diary : diariesOfficial){
-            float percent = (100f * index) / diariesOfficial.size();
-            index ++;
-            ((Activity)getContext()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+                float index = 1f;
+                richEdittextHtml = new StringBuilder();
+                for(Diary diary : diariesOfficial){
+                    float percent = (100f * index) / diariesOfficial.size();
+                    index ++;
                     binding.tiledProgressView.setProgress(percent);
-                }
-            });
-            ((Activity)getContext()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
                     String date = String.valueOf(diary.getDate().getMonth()) +"-" + String.valueOf(diary.getDate().getDay()) +"-" + String.valueOf(diary.getDate().getYear());
                     binding.mEditor.insertHtml(date + "<BR>" + "<BR>" + "<BR>");
                     binding.mEditor.insertHtml(diary.getDiaryData().getData() + "<BR>" + "<hr>");
                 }
-            });
-        }
-        final String fileName= String.valueOf(System.currentTimeMillis()) + "_"+String.valueOf(CalendarDay.today().getDay())+"_"+
-                String.valueOf(CalendarDay.today().getMonth())+"_"+String.valueOf(CalendarDay.today().getYear())+".pdf";
-        File directory = new File(getContext().getExternalCacheDir().getAbsolutePath() + "/PDFTest/" + fileName).getParentFile();
-        ((Activity)getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                PdfView.createWebPrintJob(((Activity)getContext()), binding.mEditor, directory, fileName, new PdfView.Callback() {
-
-                    @Override
-                    public void success(String path) {
-                        PdfView.openPdfFile(((Activity)getContext()),getContext().getString(R.string.app_name),"Do you want to open the pdf file?"+fileName,path);
-                        binding.tiledProgressView.setProgress(100f);
-                        binding.tiledProgressView.setColor(Color.parseColor("#FFFFFFFF"));
-                        binding.tiledProgressView.setLoadingColor(Color.parseColor("#4CAF50"));
-                        binding.txtStateProgessExportPdf.setText("Completed");
-                    }
-
-                    @Override
-                    public void failure() {
-                        binding.txtStateProgessExportPdf.setText("Fail");
-                        binding.tiledProgressView.setProgress(100f);
-                        binding.tiledProgressView.setColor(Color.parseColor("#E53935"));
-                    }
-                });
+                final String fileName= String.valueOf(System.currentTimeMillis()) + "_"+String.valueOf(CalendarDay.today().getDay())+"_"+
+                        String.valueOf(CalendarDay.today().getMonth())+"_"+String.valueOf(CalendarDay.today().getYear())+".pdf";
+                String filePath = getContext().getExternalCacheDir().getAbsolutePath() + "/PDFTest/" + fileName;
+                //TODO TEST THIS
+                exportToPdf( binding.mEditor ,filePath);
             }
         });
-
     }
+    public void exportToPdf(RichEditor editor, String filePath) {
+//        // First, create a Document object
+//        Document document = new Document();
+//
+//        try {
+//            // Next, create a PdfWriter and set the output file
+//            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+//
+//            // Open the document for writing
+//            document.open();
+//
+//            // Get the HTML content from the RichEditor
+//            String html = editor.getHtml();
+//
+//            // Use the HTMLWorker class to parse the HTML and add it to the document
+//            HTMLWorker htmlWorker = new HTMLWorker(document);
+//            htmlWorker.parse(new StringReader(html));
+//
+//            // Close the document
+//            document.close();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
 }

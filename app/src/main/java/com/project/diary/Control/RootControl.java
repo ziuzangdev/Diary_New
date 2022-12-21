@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -61,4 +63,5 @@ public class RootControl {
         long s = time / 1000;
         return String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
     }
+
 }

@@ -25,6 +25,7 @@
         <item
             android:id="@+id/menu_item_exportimport"
             android:icon="@drawable/icon_export_strock_navdrawer"
+            android:visible="false"
             android:title="Export"/>
     </group>
     <group android:checkableBehavior="single"

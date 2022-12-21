@@ -2,25 +2,59 @@ package com.project.diary.Control.Activity;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Base64;
 
 import com.project.diary.Control.RootControl;
 import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.Emoji.Emoji;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ActivityDiaryControl extends RootControl {
 
-    ArrayList<Emoji> emojis;
-    String[] emojiText = new String[]{"\ud83d\ude00", "\ud83d\ude03", "\ud83d\ude04", "\ud83d\ude01", "\ud83d\ude06", "\ud83d\ude05", "\ud83d\ude02", "\ud83e\udd23", "\ud83e\udd72", "☺", "\ud83d\ude0a", "\ud83d\ude07", "\ud83d\ude42", "\ud83d\ude43", "\ud83d\ude09", "\ud83d\ude0c", "\ud83d\ude0d", "\ud83e\udd70", "\ud83d\ude18", "\ud83d\ude17", "\ud83d\ude19", "\ud83d\ude1a", "\ud83d\ude0b", "\ud83d\ude1b", "\ud83d\ude1d", "\ud83d\ude1c", "\ud83e\udd2a", "\ud83e\udd28", "\ud83e\uddd0", "\ud83e\udd13", "\ud83d\ude0e", "\ud83e\udd78", "\ud83e\udd29", "\ud83e\udd73", "\ud83d\ude0f", "\ud83d\ude12", "\ud83d\ude1e", "\ud83d\ude14", "\ud83d\ude1f", "\ud83d\ude15", "\ud83d\ude41", "☹"};
+    private ArrayList<Emoji> emojis;
+    private String[] emojiText = new String[]{
+            "\uD83D\uDE00",
+            "\uD83D\uDE06",
+            "\uD83D\uDE05",
+            "\uD83D\uDE02",
+            "\uD83E\uDD70",
+            "\uD83E\uDD2A",
+            "\uD83E\uDD14",
+            "\uD83E\uDD10",
+            "\uD83D\uDE34",
+            "\uD83E\uDD15",
+            "\uD83E\uDD75"
+          };
+
+    private AppThemeManager appThemeManager;
+
+    public AppThemeManager getAppThemeManager() {
+        return appThemeManager;
+    }
+
+    public String[] getEmojiText() {
+        return emojiText;
+    }
 
     public static final String NO_DATA_STATE = "Null";
     public ActivityDiaryControl(Context context) {
         super(context);
         createEmojis();
+        appThemeManager = new AppThemeManager(context);
     }
 
     public ArrayList<Emoji> getEmojis() {
@@ -54,6 +88,52 @@ public class ActivityDiaryControl extends RootControl {
     }
     public String initStatus(){
         return emojis.get(0).getEmojiText();
+    }
+
+    public List<String> getImgTags(String html) {
+        List<String> imgTags = new ArrayList<>();
+        Pattern p = Pattern.compile("<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>");
+        Matcher m = p.matcher(html);
+        while (m.find()) {
+            imgTags.add(m.group());
+        }
+        return imgTags;
+    }
+    public boolean isPath(String path) {
+        File file = new File(path);
+        return file.exists();
+    }
+    public String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return "data:image/png;base64," + Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+    public Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : 1;
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : 1;
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+    public String readAllTextFromImgSrc(String html){
+        String imageSrc = "";
+        Pattern pattern = Pattern.compile("<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>");
+        Matcher matcher = pattern.matcher(html);
+        if(matcher.find()){
+            imageSrc = matcher.group(1);
+        }
+        return imageSrc;
     }
 
 }

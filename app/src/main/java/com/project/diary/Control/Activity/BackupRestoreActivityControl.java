@@ -6,17 +6,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Environment;
-import android.util.Log;
+
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-
-import com.android.dbexporterlibrary.ExportDbUtil;
-import com.android.dbexporterlibrary.ExporterListener;
 import com.google.gson.Gson;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
@@ -24,6 +16,7 @@ import com.project.diary.Control.RootControl;
 import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.Diary.RootDiary;
 import com.project.diary.Model.SQLite.SQLite;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 import com.project.diary.databinding.ActivityBackupRestoreBinding;
 
 import java.io.BufferedReader;
@@ -37,14 +30,21 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BackupRestoreActivityControl extends RootControl implements ExporterListener {
+public class BackupRestoreActivityControl extends RootControl {
     private ActivityBackupRestoreBinding binding;
+
+    private AppThemeManager appThemeManager;
+
+    public AppThemeManager getAppThemeManager() {
+        return appThemeManager;
+    }
 
     private SQLite sqLite;
     public BackupRestoreActivityControl(Context context, ActivityBackupRestoreBinding binding) {
         super(context);
         this.binding = binding;
         sqLite = new SQLite(getContext());
+        appThemeManager = new AppThemeManager(context);
     }
 
     public void backupDiaries() {
@@ -77,17 +77,11 @@ public class BackupRestoreActivityControl extends RootControl implements Exporte
     }
 
 
-    @Override
-    public void fail(@NonNull String s, @NonNull String s1) {
-        System.out.println(s1);
-    }
-
-    @Override
-    public void success(@NonNull String s) {
-        System.out.println(s);
-    }
-
     public void restoreDiaries(String path) {
+        ArrayList<Diary> diaries = sqLite.getSqLiteControl().readData("Diary");
+        for(Diary diary : diaries){
+            sqLite.getSqLiteControl().removeData("Diary", diary.getId());
+        }
         File file = new File(path);
         try{
             StringBuilder text = new StringBuilder();

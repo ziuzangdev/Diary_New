@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +22,9 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 import com.project.diary.Control.Activity.BackupRestoreActivityControl;
 import com.project.diary.Control.Activity.CalandarActivityControl;
+import com.project.diary.Control.Activity.IThemeManager;
 import com.project.diary.Control.Ultil.RealPathUtils;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 import com.project.diary.R;
 import com.project.diary.databinding.ActivityBackupRestoreBinding;
 import com.project.diary.databinding.ActivityCalandarBinding;
@@ -34,7 +37,7 @@ import java.util.List;
 
 import me.rosuh.filepicker.config.FilePickerManager;
 
-public class BackupRestoreActivity extends AppCompatActivity implements PermissionListener {
+public class BackupRestoreActivity extends AppCompatActivity implements PermissionListener, IThemeManager {
     private ActivityBackupRestoreBinding binding;
     private BackupRestoreActivityControl control;
 
@@ -78,7 +81,7 @@ public class BackupRestoreActivity extends AppCompatActivity implements Permissi
     }
 
     private void addControls() {
-        
+        initTheme();
     }
 
     @Override
@@ -103,5 +106,11 @@ public class BackupRestoreActivity extends AppCompatActivity implements Permissi
     @Override
     public void onPermissionDenied(List<String> deniedPermissions) {
 
+    }
+
+    @Override
+    public void initTheme() {
+        AppThemeManager appThemeManager = control.getAppThemeManager();
+        binding.Root.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[4]));
     }
 }

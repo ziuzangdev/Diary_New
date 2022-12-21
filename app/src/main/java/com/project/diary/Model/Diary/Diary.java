@@ -15,6 +15,8 @@ public class Diary {
     private int background;
     private ArrayList<String> mediaPaths;
 
+
+
     public DiaryData getDiaryData() {
         return diaryData;
     }

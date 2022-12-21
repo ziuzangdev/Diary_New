@@ -1,6 +1,12 @@
 package com.project.diary.View.Activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -9,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -20,6 +27,7 @@ import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.navigation.NavigationView;
+import com.project.diary.Control.Activity.IThemeManager;
 import com.project.diary.Control.Activity.LockAppActivityControl;
 import com.project.diary.Control.Activity.MainActivityControl;
 import com.project.diary.Control.Adapter.Diary.RcvDiaryAdapter;
@@ -28,15 +36,18 @@ import com.project.diary.Model.Lock.ISecurityPassword;
 import com.project.diary.Model.Lock.MyLock;
 import com.project.diary.Model.Lock.SecurityPassword;
 import com.project.diary.Model.SQLite.SQLite;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 import com.project.diary.R;
 import com.project.diary.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IThemeManager {
     private ActivityMainBinding binding;
 
     private MainActivityControl control;
 
     private LockAppActivityControl lockAppActivityControl;
+
+    private boolean sortMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +74,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addEvents() {
+        binding.imgMine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MineActivity.class);
+                startActivity(intent);
+            }
+        });
+        binding.imgSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortMode = !sortMode;
+                control.sortArrayListByCalendarDay(control.getDiaries(), sortMode);
+                control.getRcvDiaryAdapter().notifyDataSetChanged();
+            }
+        });
         binding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -74,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }else if(item.getItemId() == R.id.menu_item_backuprestore){
                     Intent intent = new Intent(MainActivity.this, BackupRestoreActivity.class);
+                    startActivity(intent);
+                }else if(item.getItemId() == R.id.menu_item_theme){
+                    Intent intent = new Intent(MainActivity.this, ThemeActivity.class);
                     startActivity(intent);
                 }
                 return false;
@@ -92,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         binding.edtxtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -106,7 +136,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         if(!s.equals("")){
                             for(Diary diary : control.getDiaries()){
-                                if(diary.getTittle().contains(s)){
+                                if(diary.getTittle().contains(s) ||
+                                        diary.getDiaryData().getData().replaceAll("\\<[^>]*>","").contains(s)){
                                     control.getDiariesSearch().add(diary);
                                 }
                             }
@@ -143,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isDisplaySearchView(false);
+                initRcvDiary();
             }
         });
         binding.imgNavigationDrawer.setOnClickListener(new View.OnClickListener() {
@@ -186,9 +218,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addControls() {
+        initTheme();
         binding.navigationView.setItemIconTintList(null);
         initRcvDiary();
     }
+
+
 
     public void initRcvDiary() {
         Thread thread = new Thread(new Runnable() {
@@ -215,5 +250,12 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
-
+    @Override
+    public void initTheme() {
+        AppThemeManager appThemeManager = control.getAppThemeManager();
+        binding.rlBackground.setBackgroundResource(appThemeManager.getBG_THEME());
+        binding.llNewDiary.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
+        binding.navigationView.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[4]));
+        appThemeManager.initMenu(binding.navigationView);
+    }
 }

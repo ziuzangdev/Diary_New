@@ -3,14 +3,12 @@ package com.project.diary.View.Activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Instrumentation;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,17 +17,14 @@ import com.aghajari.emojiview.AXEmojiManager;
 import com.aghajari.emojiview.emoji.Emoji;
 import com.aghajari.emojiview.facebookprovider.AXFacebookEmojiProvider;
 import com.aghajari.emojiview.listener.OnEmojiActions;
+import com.aghajari.emojiview.listener.OnStickerActions;
+import com.aghajari.emojiview.sticker.Sticker;
 import com.aghajari.emojiview.view.AXEmojiPopup;
-import com.aghajari.emojiview.view.AXEmojiPopupLayout;
 import com.aghajari.emojiview.view.AXEmojiView;
 import com.aghajari.emojiview.view.AXStickerView;
 import com.asksira.bsimagepicker.BSImagePicker;
-import com.asksira.bsimagepicker.Utils;
-import com.google.android.material.snackbar.Snackbar;
+import com.bumptech.glide.Glide;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -38,24 +33,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
+import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.diary.Control.Activity.ActivityDiaryControl;
+import com.project.diary.Control.Activity.IThemeManager;
 import com.project.diary.Control.Adapter.ColorPcker.RcvColorPickerAdapter;
 import com.project.diary.Control.Adapter.Emoji.RcvStatusPickerAdapter;
 import com.project.diary.Control.Ultil.FileUtils;
@@ -64,6 +56,8 @@ import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.Diary.DiaryData;
 import com.project.diary.Model.RichEditor.RichEditor;
 import com.project.diary.Model.SQLite.SQLite;
+import com.project.diary.Model.Sticker.WhatsAppProvider;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 import com.project.diary.Model.Video.Video;
 import com.project.diary.databinding.ActivityDiaryBinding;
 
@@ -71,27 +65,18 @@ import com.project.diary.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
+import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
-import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormatSymbols;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.Intrinsics;
-
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.OnSingleImageSelectedListener,
-        BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener{
+        BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener, IThemeManager {
     private ActivityDiaryBinding binding;
 
     private ActivityDiaryControl control;
@@ -108,6 +93,8 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 
     private AXEmojiView emojiView;
 
+    private AXStickerView stickerView;
+
     private Thread subThread;
 
     private RcvColorPickerAdapter rcvColorPickerAdapter;
@@ -117,6 +104,8 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     private boolean isClickTextTool = false;
 
     private boolean isWatchMode = false;
+
+    private boolean isOpenStickerView = false;
 
     private boolean isRunning;
 
@@ -130,7 +119,7 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 
     private ArrayList<Video> videos;
 
-    private AXEmojiPopup emojiPopup;
+    private AXEmojiPopup emojiPopupEmoji, emojiPopupSticker;
 
     public Diary getDiary() {
         return diary;
@@ -161,12 +150,17 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             if(resultCode == RESULT_OK){
                 String path = Objects.requireNonNull(data).getStringExtra("pathDraw");
                 richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
+                richEditor.insertHtml( ""+ "<BR>" + "<BR>");
             }
-            System.out.println(richEditor.getHtml());
         }
     }
+    public int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
+    }
     public String getMonth(int month) {
-        return new DateFormatSymbols().getMonths()[month-1];
+        DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(Locale.US);
+        return dateFormatSymbols.getMonths()[month-1];
     }
     public String getRealPathFromURI(Uri contentUri)
     {
@@ -224,13 +218,19 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         binding.imgCloseTextTool.setOnClickListener(textToolEvents);
         binding.imgCompleteTextTool.setOnClickListener(textToolEvents);
 
+
+
         binding.imgbtnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BSImagePicker pickerDialog = new BSImagePicker.Builder("com.project.diary.fileprovider")
-                        .setMaximumDisplayingImages(Integer.MAX_VALUE)
-                        .isMultiSelect()
-                        .setMinimumMultiSelectCount(1)
+                        .isMultiSelect() //Set this if you want to use multi selection mode.
+                        .setMinimumMultiSelectCount(1) //Default: 1.
+                        .setMultiSelectBarBgColor(android.R.color.white) //Default: #FFFFFF. You can also set it to a translucent color.
+                        .setMultiSelectTextColor(R.color.Fresh_Guacamole_01) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
+                        .setMultiSelectDoneTextColor(R.color.Fresh_Guacamole_01) //Default: #388e3c(Green). This is the color of the "Done" TextView.
+                        .setOverSelectTextColor(R.color.colorPrimaryDark) //Default: #b71c1c. This is the color of the message shown when user tries to select more than maximum select count.
+                        .disableOverSelectionMessage() //You can also decide not to show this over select message.
                         .build();
                 pickerDialog.show(getSupportFragmentManager(), "picker");
             }
@@ -240,6 +240,13 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             @Override
             public void onClick(View v) {
                 isWatchMode = !isWatchMode;
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                layoutParams.setMargins(dpToPx(20), dpToPx(100), dpToPx(20), dpToPx(0));
+                LinearLayout linearLayout = findViewById(R.id.llRichEditor1);
+                linearLayout.setLayoutParams(layoutParams);
                 binding.ToolSave.setVisibility(View.GONE);
                 binding.ToolTextTool.setVisibility(View.GONE);
                 binding.dateLayout.txtDate.setClickable(false);
@@ -255,6 +262,7 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                 dialog.setContentView(R.layout.dialog_calandar);
                 dialog.setCanceledOnTouchOutside(true);
                 MyMaterialCalendarView calendarView = dialog.findViewById(R.id.calendarView);
+                calendarView.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
                 LinearLayout Root = dialog.findViewById(R.id.Root);
                 TextView txtClose = dialog.findViewById(R.id.txtClose);
                 TextView txtToday = dialog.findViewById(R.id.txtToday);
@@ -302,6 +310,27 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             }
         });
 
+//        richEditor.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
+//                    String html = richEditor.getHtml();
+//                    String[] lines = html.split("\n");
+//                    StringBuilder sb = new StringBuilder();
+//                    for (String line : lines) {
+//                        if (line.startsWith("<ol>") || line.startsWith("<ul>")) {
+//                            // remove the serial number from the list item
+//                            line = line.substring(line.indexOf(">") + 1);
+//                        }
+//                        sb.append(line).append("\n");
+//                    }
+//                    richEditor.setHtml(sb.toString());
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
         emojiView.setOnEmojiActionsListener(new OnEmojiActions() {
             @Override
             public void onClick(View view, Emoji emoji, boolean fromRecent, boolean fromVariant) {
@@ -314,11 +343,20 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             }
         });
 
+
+
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isWatchMode){
                     isWatchMode = false;
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    layoutParams.setMargins(dpToPx(20), dpToPx(100), dpToPx(20), dpToPx(65));
+                    LinearLayout linearLayout = findViewById(R.id.llRichEditor1);
+                    linearLayout.setLayoutParams(layoutParams);
                     binding.ToolSave.setVisibility(View.VISIBLE);
                     binding.ToolTextTool.setVisibility(View.VISIBLE);
                     binding.dateLayout.txtDate.setClickable(true);
@@ -336,6 +374,14 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             public void onTextChange(String text) {
                 System.out.println(text);
                 diary.getDiaryData().setData(text);
+                List<String> imgTag = control.getImgTags(diary.getDiaryData().getData());
+                diary.setMediaPaths(new ArrayList<>());
+                for(String s : imgTag){
+                    String path = control.readAllTextFromImgSrc(s);
+                    if(control.isPath(path)){
+                        diary.getMediaPaths().add(path);
+                    }
+                }
             }
         });
 
@@ -377,33 +423,37 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         binding.cvStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(DiaryActivity.this, R.style.Dialog);
-                dialog.setContentView(R.layout.dialog_status_picker);
-                dialog.setCanceledOnTouchOutside(true);
-                RecyclerView rcvStatus = dialog.findViewById(R.id.rcvStatus);
-                RcvStatusPickerAdapter rcvStatusPickerAdapter = new RcvStatusPickerAdapter(control.getEmojis(), dialog, binding, DiaryActivity.this);
-                LinearLayout Root = dialog.findViewById(R.id.Root);
-                Root.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                rcvStatus.setHasFixedSize(true);
-                rcvStatus.setLayoutManager(new GridLayoutManager(DiaryActivity.this, 4));
-                rcvStatus.setAdapter(rcvStatusPickerAdapter);
-                dialog.show();
+                showDialogStatus();
             }
         });
 
 
     }
 
+    private void showDialogStatus(){
+        Dialog dialog = new Dialog(DiaryActivity.this, R.style.Dialog);
+        dialog.setContentView(R.layout.dialog_status_picker);
+        dialog.setCanceledOnTouchOutside(true);
+        RecyclerView rcvStatus = dialog.findViewById(R.id.rcvStatus);
+        RcvStatusPickerAdapter rcvStatusPickerAdapter = new RcvStatusPickerAdapter(control.getEmojis(), dialog, binding, DiaryActivity.this);
+        LinearLayout Root = dialog.findViewById(R.id.Root);
+        Root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        rcvStatus.setHasFixedSize(true);
+        rcvStatus.setLayoutManager(new GridLayoutManager(DiaryActivity.this, 4));
+        rcvStatus.setAdapter(rcvStatusPickerAdapter);
+        dialog.show();
+    }
     private void initTextToolChoose() {
 
     }
 
     private void addControls() {
+        initTheme();
         initSQLite();
         initStatus();
         initRichEditor();
@@ -429,15 +479,18 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     }
 
     private void initSticker() {
-
+//        stickerView = new AXStickerView(DiaryActivity.this , "stickers" , new WhatsAppProvider(DiaryActivity.this));
+//        stickerView.setEditText(binding.edt1);
+//        emojiPopupSticker = new AXEmojiPopup(stickerView);
+//        richEditor.setEmojiPopupSticker(emojiPopupSticker);
     }
 
     private void initEmoji() {
         AXEmojiManager.install(DiaryActivity.this,new AXFacebookEmojiProvider(DiaryActivity.this));
         emojiView = new AXEmojiView(DiaryActivity.this);
         emojiView.setEditText(binding.edt);
-        emojiPopup = new AXEmojiPopup(emojiView);
-        richEditor.setEmojiPopup(emojiPopup);
+        emojiPopupEmoji = new AXEmojiPopup(emojiView);
+        richEditor.setEmojiPopupEmoji(emojiPopupEmoji);
     }
 
     private void initSQLite() {
@@ -490,6 +543,7 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                     .mediaPaths(new ArrayList<>())
                     .diaryData(diaryData)
                     .build();
+            showDialogStatus();
         }
         binding.dateLayout.txtDay.setText(String.valueOf(diary.getDate().getDay()));
         binding.dateLayout.txtYear.setText(String.valueOf(diary.getDate().getYear()));
@@ -521,7 +575,9 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 
     @Override
     public void loadImage(Uri imageUri, ImageView ivImage) {
-
+        Glide.with(DiaryActivity.this)
+                .load(imageUri)
+                .into(ivImage);
     }
 
     @Override
@@ -534,10 +590,16 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
+                            richEditor.insertImage(path, "alt\" style=\"max-width:60%; height:auto");
                         }
                     });
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        richEditor.insertHtml( ""+ "<BR>" + "<BR>");
+                    }
+                });
             }
         });
         thread.start();
@@ -558,5 +620,13 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
+    }
+
+
+    @Override
+    public void initTheme() {
+        AppThemeManager appThemeManager = control.getAppThemeManager();
+        binding.Root.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[4]));
+        binding.llSave.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
     }
 }

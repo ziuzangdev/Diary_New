@@ -10,6 +10,7 @@
     tools:context=".View.Activity.MainActivity">
 
     <RelativeLayout
+        android:id="@+id/rlBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -22,10 +23,10 @@
             android:orientation="vertical"
             android:gravity="center |left"
             android:layout_marginLeft="20dp">
-            <ImageView
+            <ImageButton
                 android:id="@+id/imgNavigationDrawer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/icon_menu_black"
                 android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
@@ -33,14 +34,22 @@
             android:id="@+id/ToolbarView2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_mainactivity"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="center |right"
             android:layout_marginRight="20dp">
-            <ImageView
+
+            <ImageButton
                 android:id="@+id/imgSearchOpen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/icon_search_black"
+                android:layout_marginRight="10dp"
+                android:background="?selectableItemBackgroundBorderless"/>
+            <ImageButton
+                android:id="@+id/imgSort"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/sort"
                 android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
         <LinearLayout
@@ -57,11 +66,12 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center |left">
-                <ImageView
+                <ImageButton
                     android:id="@+id/imgSearchClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/icon_close_stroke"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:layout_marginRight="20dp"/>
                 <EditText
                     android:id="@+id/edtxtSearch"
@@ -80,10 +90,10 @@
             android:orientation="vertical"
             android:gravity="center |left"
             android:layout_marginLeft="20dp">
-            <ImageView
+            <ImageButton
                 android:id="@+id/imgCloseDeleteMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/icon_back_black"
                 android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
@@ -95,14 +105,39 @@
             android:orientation="vertical"
             android:gravity="center |right"
             android:layout_marginRight="20dp">
-            <ImageView
+            <ImageButton
                 android:id="@+id/imgDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/icon_delete"
                 android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>
 
+        <!--    RecycleView Diary Item-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvDiary"
+            android:scrollbars="none"
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/toolbar_mainactivity"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom |center"
+        android:layout_marginBottom="@dimen/navigativebottom_mainactivity"
+        android:orientation="vertical">
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_speed="1.2"
+            app:lottie_fileName="guildcreatediary.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+    </LinearLayout>
         <!--    Navigation Bottom-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -119,12 +154,13 @@
                     android:gravity="center">
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cvNewDiary"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardBackgroundColor="@color/Fresh_Guacamole_04"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardCornerRadius="100dp">
                         <LinearLayout
+                            android:id="@+id/llNewDiary"
+                            android:background="@color/Fresh_Guacamole_04"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
@@ -144,8 +180,8 @@
                     <ImageView
                         android:id="@+id/imgOpenCalanderActivity"
                         android:layout_marginLeft="20dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/btnshowcalendar"
                         android:background="?selectableItemBackgroundBorderless"/>
                 </LinearLayout>
@@ -157,41 +193,13 @@
                     <ImageView
                         android:id="@+id/imgMine"
                         android:layout_marginRight="20dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/btnshowmine"
                         android:background="?selectableItemBackgroundBorderless"/>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-
-        <!--    RecycleView Diary Item-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvDiary"
-            android:scrollbars="none"
-            android:overScrollMode="never"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/toolbar_mainactivity"
-            android:layout_marginBottom="@dimen/navigativebottom_mainactivity"/>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom |center"
-        android:layout_marginBottom="@dimen/navigativebottom_mainactivity"
-        android:orientation="vertical">
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:lottie_speed="1.2"
-            app:lottie_fileName="guildcreatediary.json"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"/>
-    </LinearLayout>
-
     </RelativeLayout>
 
     <!--    Navigation Drawer-->
@@ -202,7 +210,6 @@
         android:layout_height="match_parent"
         app:headerLayout="@layout/navdrawer_header_mainactivity"
         android:layout_gravity="left"
-        android:background="@color/Fresh_Guacamole_05"
-        app:menu="@menu/menu_navdrawer_mainactivity"/>
+        android:background="@color/Fresh_Guacamole_05"/>
 </androidx.drawerlayout.widget.DrawerLayout>
 

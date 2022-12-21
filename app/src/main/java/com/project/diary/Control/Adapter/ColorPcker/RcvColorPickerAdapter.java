@@ -26,26 +26,39 @@ public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAd
     private DrawView drawView;
 
     public RcvColorPickerAdapter(DrawView drawView) {
-        inutColor();
         this.drawView = drawView;
+        inutColor();
     }
 
     public RcvColorPickerAdapter(RichEditor richEditor) {
-        inutColor();
         this.richEditor = richEditor;
+        inutColor();
     }
 
+
+
     private void inutColor() {
-        color = new ArrayList<>();
-        color.add("#000000");
-        color.add("#FFFFFF");
-        color.add("#FFFC00");
-        color.add("#0099FF");
-        color.add("#81C784");
-        color.add("#212121");
-        color.add("#BA68C8");
-        color.add("#D500F9");
-        color.add("#FF3D00");
+        if(richEditor != null){
+            color = new ArrayList<>();
+            color.add("#000000");
+            color.add("#FFFFFF");
+            color.add("#FFFC00");
+            color.add("#0099FF");
+            color.add("#81C784");
+            color.add("#BA68C8");
+            color.add("#D500F9");
+            color.add("#FF3D00");
+        }else if(drawView != null){
+            color = new ArrayList<>();
+            color.add("#FFFC00");
+            color.add("#0099FF");
+            color.add("#81C784");
+            color.add("#212121");
+            color.add("#BA68C8");
+            color.add("#D500F9");
+            color.add("#FF3D00");
+        }
+
     }
 
     @NonNull

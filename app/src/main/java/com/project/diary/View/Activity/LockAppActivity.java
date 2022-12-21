@@ -34,6 +34,12 @@ public class LockAppActivity extends LockscreenHandler {
     }
 
     private void addEvents() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         binding.llSecurityQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -13,10 +13,10 @@
         android:layout_height="@dimen/toolbar_calandaractivity"
         android:orientation="horizontal"
         android:gravity="left |center">
-        <ImageView
+        <ImageButton
             android:id="@+id/imgBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/icon_back_black"
             android:background="?selectableItemBackgroundBorderless"
             android:layout_marginLeft="20dp"/>
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
-            android:textSize="10sp"
+            android:textSize="15sp"
             android:textColor="@color/black"
             android:text="Lock Diary"
             android:layout_marginLeft="20dp"/>
@@ -34,13 +34,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:weightSum="1">
             <TextView
                 android:layout_width="0dp"
@@ -66,6 +66,8 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:orientation="vertical">
                 <TextView
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center |left"
@@ -73,6 +75,8 @@
                     android:fontFamily="@font/inter_medium"
                     android:textSize="15sp"/>
                 <TextView
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center |left"
@@ -89,6 +93,8 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
             <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center |left"
@@ -96,6 +102,8 @@
                 android:fontFamily="@font/inter_medium"
                 android:textSize="15sp"/>
             <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center |left"

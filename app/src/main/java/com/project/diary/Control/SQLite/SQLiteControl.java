@@ -290,6 +290,4 @@ public class SQLiteControl{
         cursor.close();
         System.out.println("kkkkkkkkkkkkkkkk" + diaries.size());
     }
-
-
 }

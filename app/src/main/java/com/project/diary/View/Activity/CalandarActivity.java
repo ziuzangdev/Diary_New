@@ -7,25 +7,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import com.project.diary.Control.Activity.CalandarActivityControl;
+import com.project.diary.Control.Activity.IThemeManager;
 import com.project.diary.Control.Adapter.Diary.RcvCalandarDiaryAdapter;
 import com.project.diary.Control.Adapter.Diary.RcvDiaryAdapter;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
+import com.project.diary.R;
 import com.project.diary.databinding.ActivityCalandarBinding;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class CalandarActivity extends AppCompatActivity {
+public class CalandarActivity extends AppCompatActivity implements IThemeManager {
 
     private ActivityCalandarBinding binding;
 
@@ -70,7 +76,8 @@ public class CalandarActivity extends AppCompatActivity {
     }
 
     public String getMonth(int month) {
-        return new DateFormatSymbols().getMonths()[month-1];
+        DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(Locale.US);
+        return dateFormatSymbols.getMonths()[month-1];
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void addEvents() {
@@ -105,6 +112,8 @@ public class CalandarActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void addControls() {
+        initTheme();
+        binding.calendarView.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
         calendarDay = CalendarDay.today();
         binding.calendarView.setDateSelected(calendarDay, true);
         binding.txtSelectedDate.setText( getMonth(calendarDay.getMonth())+" " + calendarDay.getDay() + ", " + calendarDay.getYear() + "");
@@ -143,4 +152,13 @@ public class CalandarActivity extends AppCompatActivity {
         thread.start();
     }
 
+    @Override
+    public void initTheme() {
+        AppThemeManager appThemeManager = control.getAppThemeManager();
+        binding.Root.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[4]));
+        binding.llCvLast.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[4]));
+        binding.txtSelectedDate.setTextColor(Color.parseColor(appThemeManager.getPaletteColor()[0]));
+        binding.llNewDiary.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
+        binding.calendarView.setSelectionColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
+    }
 }

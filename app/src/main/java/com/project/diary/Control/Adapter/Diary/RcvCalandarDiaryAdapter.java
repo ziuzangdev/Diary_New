@@ -23,6 +23,7 @@ import com.project.diary.databinding.ActivityMainBinding;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RcvCalandarDiaryAdapter extends RecyclerView.Adapter<RcvCalandarDiaryAdapter.ViewHolder> {
     private Context context;
@@ -47,7 +48,8 @@ public class RcvCalandarDiaryAdapter extends RecyclerView.Adapter<RcvCalandarDia
         return new RcvCalandarDiaryAdapter.ViewHolder(view);
     }
     public String getMonth(int month) {
-        return new DateFormatSymbols().getMonths()[month-1];
+        DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(Locale.US);
+        return dateFormatSymbols.getMonths()[month-1];
     }
     @Override
     public void onBindViewHolder(@NonNull RcvCalandarDiaryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {

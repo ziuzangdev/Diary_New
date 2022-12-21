@@ -1,41 +1,24 @@
 package com.project.diary.Model.RichEditor;
 
-import static android.Manifest.permission.RECORD_AUDIO;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.app.Activity.RESULT_OK;
-
 import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.aghajari.emojiview.view.AXEmojiPopup;
 import com.google.android.material.button.MaterialButton;
@@ -43,7 +26,6 @@ import com.project.diary.Model.Audio.AudioRecorder;
 import com.project.diary.R;
 import com.project.diary.View.Activity.CanvasActivity;
 import com.project.diary.View.Activity.DiaryActivity;
-import com.project.diary.View.Activity.MediaActivity;
 import com.project.diary.databinding.ActivityDiaryBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -54,24 +36,25 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import jp.wasabeef.richeditor.Utils;
-
 public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
     private RichEditor mEditor;
 
     private ActivityDiaryBinding binding;
 
+    private  boolean isSetNumber = false;
 
     private Timer T;
     private long secondCount = 0;
 
-    private AXEmojiPopup emojiPopup;
+    private AXEmojiPopup emojiPopupEmoji, emojiPopupSticker;
 
     private AudioRecorder audioRecorder;
 
     private boolean isClickTextTool = false;
 
     private boolean isCheckForVoiceDialog = false;
+
+    private boolean isOpenSticker = false, isOpenEmoji = false;
     public RichEditor(Context context) {
         super(context);
         mEditor = this;
@@ -94,8 +77,12 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         this.binding = binding;
     }
 
-    public void setEmojiPopup(AXEmojiPopup emojiPopup) {
-        this.emojiPopup = emojiPopup;
+    public void setEmojiPopupEmoji(AXEmojiPopup emojiPopupEmoji) {
+        this.emojiPopupEmoji = emojiPopupEmoji;
+    }
+
+    public void setEmojiPopupSticker(AXEmojiPopup emojiPopupSticker) {
+        this.emojiPopupSticker = emojiPopupSticker;
     }
 
     private void initRichEditor() {
@@ -518,7 +505,11 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnEmoji.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                emojiPopup.show();
+               if(emojiPopupEmoji.isShowing()){
+                   emojiPopupEmoji.dismiss();
+               }else{
+                   emojiPopupEmoji.show();
+               }
             }
         });
 
@@ -531,7 +522,12 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnList.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNumbers();
+                isSetNumber = !isSetNumber;
+                if(isSetNumber){
+                    setNumbers();
+                }else{
+                    setOutdent();
+                }
             }
         });
 
@@ -559,7 +555,18 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnSticker.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                focusEditor();
+                isOpenSticker = !isOpenSticker;
+                if(emojiPopupSticker != null){
+                    if(isOpenSticker){
+                        isOpenEmoji = false;
+                        emojiPopupSticker.show();
+                        emojiPopupEmoji.dismiss();
+                    }else{
+                        emojiPopupSticker.dismiss();
+                    }
 
+                }
             }
         });
 
@@ -573,12 +580,13 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnTextTool.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                isClickTextTool = !isClickTextTool;
-                if(isClickTextTool){
-                    binding.cvTextTool.setVisibility(View.VISIBLE);
-                }else{
-                    binding.cvTextTool.setVisibility(View.GONE);
-                }
+                //isClickTextTool = !isClickTextTool;
+//                if(isClickTextTool){
+//                    binding.cvTextTool.setVisibility(View.VISIBLE);
+//                }else{
+//                    binding.cvTextTool.setVisibility(View.GONE);
+//                }
+                binding.cvTextTool.setVisibility(View.VISIBLE);
 
             }
         });
@@ -674,7 +682,7 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
     }
 
     public void closeAllPopup() {
-        emojiPopup.dismiss();
+        emojiPopupEmoji.dismiss();
         binding.cvTextTool.setVisibility(View.GONE);
     }
 

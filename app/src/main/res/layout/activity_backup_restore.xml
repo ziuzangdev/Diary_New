@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.Activity.CalandarActivity"
@@ -13,10 +14,10 @@
         android:layout_height="@dimen/toolbar_calandaractivity"
         android:orientation="horizontal"
         android:gravity="left |center">
-        <ImageView
+        <ImageButton
             android:id="@+id/imgBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/icon_back_black"
             android:background="?selectableItemBackgroundBorderless"
             android:layout_marginLeft="20dp"/>
@@ -24,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
-            android:textSize="10sp"
+            android:textSize="15sp"
             android:textColor="@color/black"
             android:text="Backup &amp; Restore"
             android:layout_marginLeft="20dp"/>
@@ -34,8 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -54,6 +53,8 @@
                     android:textSize="20sp"
                     android:fontFamily="@font/inter_medium"
                     android:gravity="center |left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="Backup"/>
             </LinearLayout>
 
@@ -70,6 +71,8 @@
                     android:gravity="center |left"
                     android:text="Backup diaries"
                     android:fontFamily="@font/inter_medium"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:textSize="15sp"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -77,6 +80,8 @@
                     android:gravity="center |left"
                     android:text="Export all your diary in a single file, then you can use this file to import on any device"
                     android:fontFamily="@font/inter_medium"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:textSize="12sp"/>
             </LinearLayout>
 
@@ -97,6 +102,8 @@
                     android:textSize="20sp"
                     android:fontFamily="@font/inter_medium"
                     android:gravity="center |left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="Restore"/>
             </LinearLayout>
 
@@ -111,6 +118,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center |left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="Restore diaries"
                     android:fontFamily="@font/inter_medium"
                     android:textSize="15sp"/>
@@ -118,6 +127,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center |left"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="Restore all your diaries with a backup file"
                     android:fontFamily="@font/inter_medium"
                     android:textSize="12sp"/>

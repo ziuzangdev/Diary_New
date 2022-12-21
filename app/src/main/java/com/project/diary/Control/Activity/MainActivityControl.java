@@ -8,8 +8,13 @@ import com.project.diary.Control.Adapter.Diary.RcvDiaryAdapter;
 import com.project.diary.Control.RootControl;
 import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.SQLite.SQLite;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class MainActivityControl extends RootControl {
     private ArrayList<Diary> diaries;
@@ -21,6 +26,12 @@ public class MainActivityControl extends RootControl {
     private boolean isRunning;
 
     private RcvDiaryAdapter rcvDiaryAdapter;
+
+    private AppThemeManager appThemeManager;
+
+    public AppThemeManager getAppThemeManager() {
+        return appThemeManager;
+    }
 
     public RcvDiaryAdapter getRcvDiaryAdapter() {
         return rcvDiaryAdapter;
@@ -60,15 +71,52 @@ public class MainActivityControl extends RootControl {
         super(context);
         isRunning = false;
         sqLite = new SQLite(context);
+        appThemeManager = new AppThemeManager(context);
     }
 
     @WorkerThread
     public void InitRcvDiaryItem(){
         isRunning = true;
+        if(diaries != null){
+            diaries.clear();
+        }
         diaries = sqLite.getSqLiteControl().readData("Diary");
         isRunning = false;
     }
+    public void sortArrayListByCalendarDay(ArrayList<Diary> arrayList, boolean isNewest) {
+        if(isNewest){
+            arrayList.sort(new Comparator<Diary>() {
+                @Override
+                public int compare(Diary o1, Diary o2) {
+                    CalendarDay cd1 = o1.getDate();
+                    CalendarDay cd2 = o2.getDate();
+                    if (cd1.isBefore(cd2)) {
+                        return 1;
+                    } else if (cd1.isAfter(cd2)) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+        }else{
+            arrayList.sort(new Comparator<Diary>() {
+                @Override
+                public int compare(Diary o1, Diary o2) {
+                    CalendarDay cd1 = o1.getDate();
+                    CalendarDay cd2 = o2.getDate();
+                    if (cd1.isBefore(cd2)) {
+                        return -1;
+                    } else if (cd1.isAfter(cd2)) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+        }
 
+    }
 
 
 
