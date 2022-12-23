@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.util.TimeZone;
+import android.media.Image;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -123,6 +125,15 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         holder.txtDay.setText(String.valueOf(diaries.get(position).getDate().getDay()));
         holder.txtYear.setText(String.valueOf(diaries.get(position).getDate().getYear()));
         holder.txtMonth.setText(getMonth(diaries.get(position).getDate().getMonth()).substring(0,3));
+        try{
+            if(diaries.get(position).isDraft()){
+                holder.imgDraft.setVisibility(View.VISIBLE);
+                holder.txtDraft.setVisibility(View.VISIBLE);
+            }else{
+                holder.imgDraft.setVisibility(View.GONE);
+                holder.txtDraft.setVisibility(View.GONE);
+            }
+        }catch (Exception e){}
 
         //Recycleview Medias
         RcvMediaDemo rcvMediaDemo = new RcvMediaDemo(diaries.get(position).getMediaPaths(), activityContext);
@@ -256,12 +267,14 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
                 txtEmojiStatus,
         txtDay,
         txtMonth,
-        txtYear;
+        txtYear, txtDraft;
         LinearLayout Root;
 
         View Date;
 
         RecyclerView rcvMediaDemo;
+
+        ImageView imgDraft;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -274,6 +287,8 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
             txtDay = Date.findViewById(R.id.txtDay);
             txtMonth = Date.findViewById(R.id.txtMonth);
             txtYear = Date.findViewById(R.id.txtYear);
+            imgDraft = itemView.findViewById(R.id.imgDraft);
+            txtDraft = itemView.findViewById(R.id.txtDraft);
         }
     }
 }

@@ -80,7 +80,12 @@ public class MainActivityControl extends RootControl {
         if(diaries != null){
             diaries.clear();
         }
-        diaries = sqLite.getSqLiteControl().readData("Diary");
+        ArrayList<Diary> diaries1 = sqLite.getSqLiteControl().readData("Diary");
+        diaries = new ArrayList<>();
+        for(int i = diaries1.size() - 1; i>=0; i--){
+            diaries.add(diaries1.get(i));
+        }
+        sortArrayListByCalendarDay(diaries, true);
         isRunning = false;
     }
     public void sortArrayListByCalendarDay(ArrayList<Diary> arrayList, boolean isNewest) {

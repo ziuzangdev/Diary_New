@@ -62,10 +62,10 @@ public class ColumnChartView extends View {
         int width = getWidth();
         int height = getHeight();
 
-        // Tính khoảng cách giữa các cột
+        // Calculate column spacing
         int columnSpacing = width / (data.size() + 1);
 
-        // Tính chiều cao tối đa của biểu đồ
+        // Calculate maximum height of the chart
         int maxHeight = height - 50;
 
         int maxDataValue = Collections.max(data.values());
@@ -77,7 +77,7 @@ public class ColumnChartView extends View {
             numberSpacing = maxHeight / maxValue;
         }
 
-        // Vẽ trục Ox và Oy
+        // Draw x and y axis
         Paint paint = new Paint();
         paint.setColor(Color.parseColor("#BFBFBF"));
         paint.setStrokeWidth(3);
@@ -95,21 +95,21 @@ public class ColumnChartView extends View {
             canvas.drawText(String.valueOf(i), -1, y, paint);
         }
 
-        // Vẽ các cột
+        // Draw columns
         paint.setColor(Color.parseColor(new AppThemeManager(getContext()).getPaletteColor()[3]));
         int i = 0;
         paint.setTextSize(40);
         for (String key : data.keySet()) {
             int value = data.get(key);
             int columnHeight = numberSpacing * value;
-            int left = columnSpacing * (i + 1) + (columnSpacing - columnWidth) / 2;
+            int left = columnSpacing * (i + 1);
             int top = height - 50 - columnHeight;
             int right = left + columnSpacing - 10;
             int bottom = height - 50;
             canvas.drawRect(left, top, right, bottom, paint);
             int labelX = columnSpacing * (i + 1) + (columnSpacing - columnWidth) / 2 + columnWidth / 2;
-            // Vẽ nhãn bên dưới trục Ox tại vị trí của cột
-            canvas.drawText(key, labelX, height - 7, paint);
+            // Draw label below x axis at the center of the column
+            canvas.drawText(key, labelX - 30, height - 10, paint);
             i++;
         }
     }

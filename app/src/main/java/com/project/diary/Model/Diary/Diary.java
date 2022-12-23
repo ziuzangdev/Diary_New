@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class Diary {
 
     private DiaryData diaryData;
+
+    private boolean isDraft;
     private String tittle;
     private String id;
     private String status;
@@ -16,6 +18,13 @@ public class Diary {
     private ArrayList<String> mediaPaths;
 
 
+    public boolean isDraft() {
+        return isDraft;
+    }
+
+    public void setDraft(boolean draft) {
+        isDraft = draft;
+    }
 
     public DiaryData getDiaryData() {
         return diaryData;
@@ -152,7 +161,6 @@ public class Diary {
                         + "Please set the value by \"date()\". "
                         + "The properties \"diaryData\", \"tittle\", \"status\" and \"date\" are required.");
             }
-
             return new Diary(this);
         }
     }
@@ -165,5 +173,6 @@ public class Diary {
         this.date = builder.date;
         this.background = builder.background;
         this.mediaPaths = builder.mediaPaths;
+        this.isDraft = false;
     }
 }

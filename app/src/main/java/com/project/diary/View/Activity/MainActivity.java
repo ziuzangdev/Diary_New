@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements IThemeManager {
 
     private LockAppActivityControl lockAppActivityControl;
 
-    private boolean sortMode = false;
+    private boolean sortMode = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

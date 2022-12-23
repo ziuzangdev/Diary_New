@@ -591,6 +591,13 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
             }
         });
 
+        binding.imgbtnBackground.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.cvBackgroundDiary.setVisibility(View.VISIBLE);
+            }
+        });
+
         binding.imgbtnVoice.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

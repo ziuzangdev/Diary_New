@@ -27,17 +27,16 @@ public class ActivityDiaryControl extends RootControl {
 
     private ArrayList<Emoji> emojis;
     private String[] emojiText = new String[]{
-            "\uD83D\uDE00",
             "\uD83D\uDE06",
             "\uD83D\uDE05",
             "\uD83D\uDE02",
             "\uD83E\uDD70",
             "\uD83E\uDD2A",
             "\uD83E\uDD14",
-            "\uD83E\uDD10",
             "\uD83D\uDE34",
             "\uD83E\uDD15",
-            "\uD83E\uDD75"
+            "\uD83D\uDE24",
+            "\uD83D\uDE21"
           };
 
     private AppThemeManager appThemeManager;
