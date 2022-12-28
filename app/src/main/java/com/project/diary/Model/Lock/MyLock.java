@@ -35,9 +35,22 @@ public class MyLock extends EasyLock {
         context.startActivity(intent);
     }
 
+    public static void setPassword(Context context) {
+        init(context);
+        Intent intent = new Intent(context, MyLockScreenActivity.class);
+        intent.putExtra("passStatus", "set");
+        context.startActivity(intent);
+    }
     public static void changePassword(Context context, Class activityClassToGo) {
         init(context);
         activityChanger.activityClass(activityClassToGo);
+        Intent intent = new Intent(context, MyLockScreenActivity.class);
+        intent.putExtra("passStatus", "change");
+        context.startActivity(intent);
+    }
+
+    public static void changePassword(Context context) {
+        init(context);
         Intent intent = new Intent(context, MyLockScreenActivity.class);
         intent.putExtra("passStatus", "change");
         context.startActivity(intent);
@@ -62,11 +75,19 @@ public class MyLock extends EasyLock {
             hasPassword = false;
         }
     }
+    public static void checkPasswordNoTask(Context context) {
+        init(context);
+        if (FayazSP.getString("password", null) != null) {
+            hasPassword = true;
+        }else{
+            hasPassword = false;
+        }
+    }
 
 
 
     public static void setBackgroundColor(int backgroundColor) {
-        EasyLock.backgroundColor = backgroundColor;
+        backgroundColor = backgroundColor;
     }
 
     public static void forgotPassword(View.OnClickListener onClickListener) {

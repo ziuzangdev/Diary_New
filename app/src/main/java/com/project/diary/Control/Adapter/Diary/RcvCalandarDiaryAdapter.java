@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.diary.Model.Diary.Diary;
@@ -54,12 +55,21 @@ public class RcvCalandarDiaryAdapter extends RecyclerView.Adapter<RcvCalandarDia
     @Override
     public void onBindViewHolder(@NonNull RcvCalandarDiaryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.txtName.setText(diaries.get(position).getTittle());
-        holder.txtData.setText(diaries.get(position).getDiaryData().getData().replaceAll("\\<.*?>", ""));
+        holder.txtData.setText(removeAllHtmlTag(diaries.get(position).getDiaryData().getData()));
         holder.txtEmojiStatus.setText(diaries.get(position).getStatus());
         holder.txtDay.setText(String.valueOf(diaries.get(position).getDate().getDay()));
         holder.txtYear.setText(String.valueOf(diaries.get(position).getDate().getYear()));
         holder.txtMonth.setText(getMonth(diaries.get(position).getDate().getMonth()).substring(0,3));
 
+        //Recycleview Medias
+        if(diaries.get(position).getMediaPaths().size() > 0){
+            holder.rcvMediaDemo.setVisibility(View.VISIBLE);
+            RcvMediaDemo rcvMediaDemo = new RcvMediaDemo(diaries.get(position).getMediaPaths(), activityContext);
+            holder.rcvMediaDemo.setLayoutManager(new LinearLayoutManager(activityContext, RecyclerView.HORIZONTAL, false));
+            holder.rcvMediaDemo.setHasFixedSize(true);
+            holder.rcvMediaDemo.setAdapter(rcvMediaDemo);
+        }
+        
         //Events
         holder.Root.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -71,7 +81,35 @@ public class RcvCalandarDiaryAdapter extends RecyclerView.Adapter<RcvCalandarDia
             }
         });
     }
+    private String removeAllHtmlTag(String html) {
+        System.out.println("----------------------------");
+        String strippedHtml = html;
 
+        // Loại bỏ các tag img
+        strippedHtml = strippedHtml.replaceAll("<img[^>]*>", "");
+
+        // Loại bỏ các tag HTML khác
+        strippedHtml = strippedHtml.replaceAll("<(?!li|br|/li|/br)[^>]*>", "");
+        strippedHtml = strippedHtml.replaceAll("<br>", "\n");
+        try{
+            int index = strippedHtml.indexOf("<li>");
+            if(index != 0){
+                String firstPart = strippedHtml.substring(0, index);
+                String secondPart = strippedHtml.substring(index);
+                strippedHtml = firstPart + "\n" ;
+                secondPart = secondPart.replaceAll("\\s*<li>\\s*", "");
+                secondPart = secondPart.replaceAll("\\s*</li>\\s*", "\n");
+                return strippedHtml + secondPart;
+            }else{
+                strippedHtml = strippedHtml.replaceAll("\\s*<li>\\s*", "");
+                strippedHtml = strippedHtml.replaceAll("\\s*</li>\\s*", "\n");
+            }
+        }catch (Exception e){}
+        strippedHtml = strippedHtml.replaceAll("&nbsp;", "");
+        strippedHtml = strippedHtml.trim();
+        System.out.println(strippedHtml);
+        return strippedHtml;
+    }
     @Override
     public int getItemCount() {
         return diaries.size();

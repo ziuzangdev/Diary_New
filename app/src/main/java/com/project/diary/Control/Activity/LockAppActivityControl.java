@@ -6,6 +6,7 @@ import com.project.diary.Control.RootControl;
 import com.project.diary.Model.Lock.ISecurityPassword;
 import com.project.diary.Model.Lock.SecurityPassword;
 import com.project.diary.Model.SQLite.SQLite;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 
 public class LockAppActivityControl extends RootControl {
     private boolean isLockMode;
@@ -13,6 +14,12 @@ public class LockAppActivityControl extends RootControl {
     private SQLite sqLite;
 
     private ISecurityPassword iSecurityPassword;
+
+    private AppThemeManager appThemeManager;
+
+    public AppThemeManager getAppThemeManager() {
+        return appThemeManager;
+    }
 
     public ISecurityPassword getiSecurityPassword() {
         return iSecurityPassword;
@@ -27,6 +34,7 @@ public class LockAppActivityControl extends RootControl {
         sqLite = new SQLite(context);
         isLockMode = sqLite.getSqLiteControl().isLockMode();
         iSecurityPassword = new SecurityPassword(getContext());
+        appThemeManager =  new AppThemeManager(context);
     }
 
     public boolean isLockMode() {

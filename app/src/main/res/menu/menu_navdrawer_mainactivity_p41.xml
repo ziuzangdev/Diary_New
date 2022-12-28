@@ -32,15 +32,15 @@
     <group android:checkableBehavior="single"
         android:id="@+id/gr03">
         <item
+            android:id="@+id/menu_item_shareapp"
             android:icon="@drawable/icon_share_strock_navdrawer"
             android:title="Share app"/>
         <item
+            android:id="@+id/menu_item_moreapp"
             android:icon="@drawable/icon_moreapp_strock_navdrawer"
             android:title="More app"/>
         <item
-            android:icon="@drawable/icon_feedback_strock_navdrawer"
-            android:title="Send feedback"/>
-        <item
+            android:id="@+id/menu_item_setting"
             android:icon="@drawable/icon_setting_strock_navdrawer"
             android:title="Setting"/>
     </group>

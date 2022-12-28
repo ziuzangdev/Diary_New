@@ -33,6 +33,8 @@ public class LockAppActivity extends LockscreenHandler {
         addEvents();
     }
 
+
+
     private void addEvents() {
         binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,11 +52,11 @@ public class LockAppActivity extends LockscreenHandler {
         binding.llSettupPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyLock.checkPassword(LockAppActivity.this);
+                MyLock.checkPasswordNoTask(LockAppActivity.this);
                 if(MyLock.hasPassword){
-                    MyLock.changePassword(LockAppActivity.this, LockAppActivity.class);
+                    MyLock.changePassword(LockAppActivity.this);
                 }else{
-                    MyLock.setPassword(LockAppActivity.this, LockAppActivity.class);
+                    MyLock.setPassword(LockAppActivity.this);
                 }
             }
         });
@@ -69,15 +71,12 @@ public class LockAppActivity extends LockscreenHandler {
         MyLock.forgotPassword(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LockAppActivity.this, "haha", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
 
     private void addControl() {
-            if(control.isLockMode()){
-                MyLock.checkPassword(LockAppActivity.this);
-            }
             binding.swEnablePassword.setChecked(control.isLockMode());
             initCurrentStateSwEnablePassword(control.isLockMode());
     }

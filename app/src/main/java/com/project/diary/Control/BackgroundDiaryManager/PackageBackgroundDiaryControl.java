@@ -16,31 +16,23 @@ public final class PackageBackgroundDiaryControl {
 
     static {
         // Initialize data for PackageBackgroundDiary
-        ArrayList<BackgroundDiary> package1Backgrounds = new ArrayList<>();
-        package1Backgrounds.add(new BackgroundDiary("image_1", R.drawable.theme_none));
-        package1Backgrounds.add(new BackgroundDiary("image_2", R.drawable.p41_bg_theme));
-        package1Backgrounds.add(new BackgroundDiary("image_3", R.drawable.p41_bg_theme));
-        package1Backgrounds.add(new BackgroundDiary("image_4", R.drawable.p41_bg_theme));
-        package1Backgrounds.add(new BackgroundDiary("image_5", R.drawable.p41_bg_theme));
-        package1Backgrounds.add(new BackgroundDiary("image_6", R.drawable.p41_bg_theme));
-        package1Backgrounds.add(new BackgroundDiary("image_7", R.drawable.p41_bg_theme));
-        package1Backgrounds.add(new BackgroundDiary("image_8", R.drawable.p41_bg_theme));
-        package1Backgrounds.add(new BackgroundDiary("image_9", R.drawable.p41_bg_theme));
-        package1Backgrounds.add(new BackgroundDiary("image_10", R.drawable.p41_bg_theme));
-        packages.add(new PackageBackgroundDiary("Package 1", package1Backgrounds));
-
         ArrayList<BackgroundDiary> package2Backgrounds = new ArrayList<>();
         package2Backgrounds.add(new BackgroundDiary("image_11", R.drawable.theme_none));
-        package2Backgrounds.add(new BackgroundDiary("image_12", R.drawable.p41_bg_theme));
-        package2Backgrounds.add(new BackgroundDiary("image_13", R.drawable.p41_bg_theme));
-        package2Backgrounds.add(new BackgroundDiary("image_14", R.drawable.p41_bg_theme));
-        package2Backgrounds.add(new BackgroundDiary("image_15", R.drawable.p41_bg_theme));
-        package2Backgrounds.add(new BackgroundDiary("image_16", R.drawable.p41_bg_theme));
-        package2Backgrounds.add(new BackgroundDiary("image_17", R.drawable.p41_bg_theme));
-        package2Backgrounds.add(new BackgroundDiary("image_18", R.drawable.p41_bg_theme));
-        package2Backgrounds.add(new BackgroundDiary("image_19", R.drawable.p41_bg_theme));
-        package2Backgrounds.add(new BackgroundDiary("image_20", R.drawable.p41_bg_theme));
-        packages.add(new PackageBackgroundDiary("Package 2", package2Backgrounds));
+        package2Backgrounds.add(new BackgroundDiary("image_12", R.drawable.bg_cartoon_1_optimized));
+        package2Backgrounds.add(new BackgroundDiary("image_13", R.drawable.bg_cartoon_2_optimized));
+        package2Backgrounds.add(new BackgroundDiary("image_14", R.drawable.bg_cartoon_3_optimized));
+        package2Backgrounds.add(new BackgroundDiary("image_15", R.drawable.bg_cartoon_4_optimized));
+        package2Backgrounds.add(new BackgroundDiary("image_16", R.drawable.bg_cartoon_5_optimized));
+        package2Backgrounds.add(new BackgroundDiary("image_17", R.drawable.bg_cartoon_6_optimized));
+        package2Backgrounds.add(new BackgroundDiary("image_18", R.drawable.bg_cartoon_7_optimized));
+        packages.add(new PackageBackgroundDiary("Cartoon", package2Backgrounds));
+
+        ArrayList<BackgroundDiary> package1Backgrounds = new ArrayList<>();
+        package1Backgrounds.add(new BackgroundDiary("image_1", R.drawable.theme_none));
+        package1Backgrounds.add(new BackgroundDiary("image_3", R.drawable.bg_abstract_2_optimized));
+        package1Backgrounds.add(new BackgroundDiary("image_5", R.drawable.bg_abstract_3_optimized));
+        package1Backgrounds.add(new BackgroundDiary("image_8", R.drawable.bg_abstract_6_optimized));
+        packages.add(new PackageBackgroundDiary("Abstract", package1Backgrounds));
 
         // Initialize data for BackgroundDiary
         backgrounds.addAll(package1Backgrounds);

@@ -9,13 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.aghajari.emojiview.AXEmojiManager;
-import com.aghajari.emojiview.emoji.Emoji;
-import com.aghajari.emojiview.facebookprovider.AXFacebookEmojiProvider;
-import com.aghajari.emojiview.listener.OnEmojiActions;
-import com.aghajari.emojiview.view.AXEmojiPopup;
-import com.aghajari.emojiview.view.AXEmojiView;
-import com.aghajari.emojiview.view.AXStickerView;
 import com.asksira.bsimagepicker.BSImagePicker;
 import com.bumptech.glide.Glide;
 
@@ -26,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +40,7 @@ import com.project.diary.Control.Activity.IThemeManager;
 import com.project.diary.Control.Adapter.ColorPcker.RcvColorPickerAdapter;
 import com.project.diary.Control.Adapter.Emoji.RcvStatusPickerAdapter;
 import com.project.diary.Control.BackgroundDiaryManager.PackageBackgroundDiaryControl;
+import com.project.diary.Control.PreferencesManager.PreferencesManagerAutoMood;
 import com.project.diary.Control.Ultil.FileUtils;
 import com.project.diary.Model.BackgroundDiaryManager.PackageBackgroundDiary;
 import com.project.diary.Model.Calendar.MyMaterialCalendarView;
@@ -72,6 +67,7 @@ import java.util.Objects;
 
 public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener, IThemeManager {
+    private static final String TAG = "DiaryActivity.java";
     private ActivityDiaryBinding binding;
 
     public static final int REQUEST_TEMPLATE = 243;
@@ -87,10 +83,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     private Diary diary;
 
     private DiaryData diaryData;
-
-    private AXEmojiView emojiView;
-
-    private AXStickerView stickerView;
 
     private Thread subThread;
 
@@ -115,9 +107,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     private float MOVE_THRESHOLD_DP;
 
     private ArrayList<Video> videos;
-
-    private AXEmojiPopup emojiPopupEmoji, emojiPopupSticker;
-
     public Diary getDiary() {
         return diary;
     }
@@ -138,7 +127,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        richEditor.focusEditor();
         if(requestCode == REQUEST_CODE_MEDIA){
             if(resultCode == Activity.RESULT_OK){
 
@@ -146,8 +134,9 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         }else if(requestCode == REQUEST_CODE_DRAW_CANVAS){
             if(resultCode == RESULT_OK){
                 String path = Objects.requireNonNull(data).getStringExtra("pathDraw");
-                richEditor.insertImage(path, "alt\" style=\"max-width:50%; height:auto");
-                richEditor.insertHtml( ""+ "<BR>" + "<BR>");
+                String alt = "alt\" style=\"max-width:50%; height:auto";
+                String html = "<img src=\"" + path + "\" alt=\"" + alt + "\" />";
+                richEditor.insertHtml("<BR>" + html +"<BR>");
             }
         }else if(requestCode == DiaryActivity.REQUEST_TEMPLATE){
             if(resultCode == RESULT_OK){
@@ -180,25 +169,54 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 
     @Override
     public void onBackPressed() {
-        if(diary.getId() == null){
-            diary.setDraft(true);
-            int id = sqLite.getSqLiteControl().insertData(diary);
-            if(id != -1){
-                diary.setId(String.valueOf(id));
-            }else{
-            }
+        if(binding.cvTextTool.getVisibility() == View.VISIBLE ||
+        binding.cvBackgroundDiary.getVisibility() == View.VISIBLE){
+            binding.cvBackgroundDiary.setVisibility(View.GONE);
+            binding.cvTextTool.setVisibility(View.GONE);
         }else{
-            Diary diary1 = sqLite.getSqLiteControl().readData("Diary", diary.getId());
-            if(!diary.getDiaryData().getData().equals(diary1.getDiaryData().getData())){
-                diary.setDraft(true);
-                sqLite.getSqLiteControl().updateData(diary, "Diary");
+            if(diary.getId() == null){
+                if(!diary.getDiaryData().getData().equals("") || !binding.txtTittle.getText().toString().equals("")){
+                    diary.setDraft(true);
+                    int id = sqLite.getSqLiteControl().insertData(diary);
+                    if(id != -1){
+                        diary.setId(String.valueOf(id));
+                    }else{
+                    }
+                }
+            }else{
+                Diary diary1 = sqLite.getSqLiteControl().readData("Diary", diary.getId());
+                if(!diary.getDiaryData().getData().equals(diary1.getDiaryData().getData())){
+                    diary.setDraft(true);
+                    sqLite.getSqLiteControl().updateData(diary, "Diary");
+                }
             }
+            finish();
         }
-        finish();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void addEvents() {
+
+        binding.imgbtnIndentLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                richEditor.setOutdent();
+            }
+        });
+
+        binding.imgbtnIndentRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                richEditor.setIndent();
+            }
+        });
+
+        binding.imgbtnListBullet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                richEditor.setBullets();
+            }
+        });
         binding.imgTemplate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,7 +294,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                         .setMultiSelectTextColor(R.color.Fresh_Guacamole_01) //Default: #212121(Dark grey). This is the message in the multi-select bottom bar.
                         .setMultiSelectDoneTextColor(R.color.Fresh_Guacamole_01) //Default: #388e3c(Green). This is the color of the "Done" TextView.
                         .setOverSelectTextColor(R.color.colorPrimaryDark) //Default: #b71c1c. This is the color of the message shown when user tries to select more than maximum select count.
-                        .disableOverSelectionMessage() //You can also decide not to show this over select message.
                         .build();
                 pickerDialog.show(getSupportFragmentManager(), "picker");
             }
@@ -359,38 +376,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             }
         });
 
-//        richEditor.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
-//                    String html = richEditor.getHtml();
-//                    String[] lines = html.split("\n");
-//                    StringBuilder sb = new StringBuilder();
-//                    for (String line : lines) {
-//                        if (line.startsWith("<ol>") || line.startsWith("<ul>")) {
-//                            // remove the serial number from the list item
-//                            line = line.substring(line.indexOf(">") + 1);
-//                        }
-//                        sb.append(line).append("\n");
-//                    }
-//                    richEditor.setHtml(sb.toString());
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
-        emojiView.setOnEmojiActionsListener(new OnEmojiActions() {
-            @Override
-            public void onClick(View view, Emoji emoji, boolean fromRecent, boolean fromVariant) {
-                richEditor.insertHtml(emoji.getUnicode());
-            }
-
-            @Override
-            public boolean onLongClick(View view, Emoji emoji, boolean fromRecent, boolean fromVariant) {
-                return false;
-            }
-        });
 
 
 
@@ -415,11 +400,13 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                 }else{
                     isRunning = false;
                     if(diary.getId() == null){
-                        diary.setDraft(true);
-                        int id = sqLite.getSqLiteControl().insertData(diary);
-                        if(id != -1){
-                            diary.setId(String.valueOf(id));
-                        }else{
+                        if(!diary.getDiaryData().getData().equals("") || !binding.txtTittle.getText().toString().equals("")){
+                            diary.setDraft(true);
+                            int id = sqLite.getSqLiteControl().insertData(diary);
+                            if(id != -1){
+                                diary.setId(String.valueOf(id));
+                            }else{
+                            }
                         }
                     }else{
                         Diary diary1 = sqLite.getSqLiteControl().readData("Diary", diary.getId());
@@ -492,6 +479,20 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             }
         });
 
+        binding.imgbtnBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.cvBackgroundDiary.setVisibility(View.VISIBLE);
+            }
+        });
+
+        binding.imgbtnTextTool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.cvTextTool.setVisibility(View.VISIBLE);
+            }
+        });
+
     }
 
 
@@ -518,19 +519,18 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     }
 
     private void addControls() {
+        binding.mEditor.focusEditor();
         initTheme();
         initSQLite();
         initStatus();
         initRichEditor();
         initDiaryData();
         initDiaryObject();
-        initEmoji();
         initSticker();
         initColorPicker();
         initAudioRecorder();
         initTabBackgroundDiary();
         initSubThreadHandleChangeData();
-
     }
 
     public void setBackground(int idRes){
@@ -582,14 +582,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 //        richEditor.setEmojiPopupSticker(emojiPopupSticker);
     }
 
-    private void initEmoji() {
-        AXEmojiManager.install(DiaryActivity.this,new AXFacebookEmojiProvider(DiaryActivity.this));
-        emojiView = new AXEmojiView(DiaryActivity.this);
-        emojiView.setEditText(binding.edt);
-        emojiPopupEmoji = new AXEmojiPopup(emojiView);
-        richEditor.setEmojiPopupEmoji(emojiPopupEmoji);
-    }
-
     private void initSQLite() {
         sqLite = new SQLite(DiaryActivity.this);
     }
@@ -623,13 +615,16 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     }
 
     private void initDiaryObject() {
+        Log.d(TAG, "==================== initDiaryObject task started ==================");
         Bundle bundle = getIntent().getExtras();
         String id = null;
         try{
             id = bundle.getString("ID_DIARY");
+            Log.d(TAG, "get ID completed");
         }catch (Exception e){}
         if(id != null){
             diary = sqLite.getSqLiteControl().readData("Diary", id);
+            Log.d(TAG, "Real data of ID from database co pleated with data: " + diary.getDiaryData().getData());
             addDataToDiary();
         }else{
             diary = new Diary.Builder()
@@ -640,7 +635,11 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                     .mediaPaths(new ArrayList<>())
                     .diaryData(diaryData)
                     .build();
-            showDialogStatus();
+            PreferencesManagerAutoMood.initializeInstance(getApplicationContext());
+            PreferencesManagerAutoMood prefManager = PreferencesManagerAutoMood.getInstance();
+            if(prefManager.readAutoMood()){
+                showDialogStatus();
+            }
         }
         try{
             binding.Root.setBackgroundResource(diary.getBackground());
@@ -663,6 +662,7 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         binding.txtTittle.setText(diary.getTittle());
         binding.txtEmojiStatus.setText(diary.getStatus());
         richEditor.insertHtml(diary.getDiaryData().getData());
+        Log.d("TAG", "addDataToDiary completed");
     }
 
     private void initStatus() {
@@ -699,16 +699,12 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            richEditor.insertImage(path, "alt\" style=\"max-width:60%; height:auto");
+                            String alt = "alt\" style=\"max-width:50%; height:auto";
+                            String html = "<img src=\"" + path + "\" alt=\"" + alt + "\" />";
+                            richEditor.insertHtml("<BR>" + html +"<BR>");
                         }
                     });
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        richEditor.insertHtml( ""+ "<BR>" + "<BR>");
-                    }
-                });
             }
         });
         thread.start();

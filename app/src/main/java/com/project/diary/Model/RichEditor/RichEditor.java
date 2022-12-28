@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.aghajari.emojiview.view.AXEmojiPopup;
 import com.google.android.material.button.MaterialButton;
 import com.project.diary.Model.Audio.AudioRecorder;
 import com.project.diary.R;
@@ -45,8 +44,6 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
 
     private Timer T;
     private long secondCount = 0;
-
-    private AXEmojiPopup emojiPopupEmoji, emojiPopupSticker;
 
     private AudioRecorder audioRecorder;
 
@@ -77,13 +74,6 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         this.binding = binding;
     }
 
-    public void setEmojiPopupEmoji(AXEmojiPopup emojiPopupEmoji) {
-        this.emojiPopupEmoji = emojiPopupEmoji;
-    }
-
-    public void setEmojiPopupSticker(AXEmojiPopup emojiPopupSticker) {
-        this.emojiPopupSticker = emojiPopupSticker;
-    }
 
     private void initRichEditor() {
         mEditor.setEditorFontSize(12);
@@ -502,16 +492,6 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
             }
         });
 
-        binding.imgbtnEmoji.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               if(emojiPopupEmoji.isShowing()){
-                   emojiPopupEmoji.dismiss();
-               }else{
-                   emojiPopupEmoji.show();
-               }
-            }
-        });
 
         binding.imgbtnImage.setOnClickListener(new OnClickListener() {
             @Override
@@ -552,24 +532,6 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
             }
         });
 
-        binding.imgbtnSticker.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                focusEditor();
-                isOpenSticker = !isOpenSticker;
-                if(emojiPopupSticker != null){
-                    if(isOpenSticker){
-                        isOpenEmoji = false;
-                        emojiPopupSticker.show();
-                        emojiPopupEmoji.dismiss();
-                    }else{
-                        emojiPopupSticker.dismiss();
-                    }
-
-                }
-            }
-        });
-
         binding.imgbtnTag.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -580,23 +542,12 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
         binding.imgbtnTextTool.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //isClickTextTool = !isClickTextTool;
-//                if(isClickTextTool){
-//                    binding.cvTextTool.setVisibility(View.VISIBLE);
-//                }else{
-//                    binding.cvTextTool.setVisibility(View.GONE);
-//                }
                 binding.cvTextTool.setVisibility(View.VISIBLE);
 
             }
         });
 
-        binding.imgbtnBackground.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.cvBackgroundDiary.setVisibility(View.VISIBLE);
-            }
-        });
+
 
         binding.imgbtnVoice.setOnClickListener(new OnClickListener() {
             @Override
@@ -683,14 +634,13 @@ public class RichEditor extends jp.wasabeef.richeditor.RichEditor {
     }
 
     public void insertHtml(String content) {
-        focusEditor();
         exec("javascript:RE.prepareInsert();");
         exec("javascript:RE.insertHTML('" + content + "');");
     }
 
     public void closeAllPopup() {
-        emojiPopupEmoji.dismiss();
         binding.cvTextTool.setVisibility(View.GONE);
+        binding.cvBackgroundDiary.setVisibility(View.GONE);
     }
 
 }

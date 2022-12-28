@@ -15,7 +15,6 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:alpha="0.5"
-            android:background="@drawable/test_background"
             android:scaleType="centerCrop"/>
     </LinearLayout>
     <LinearLayout

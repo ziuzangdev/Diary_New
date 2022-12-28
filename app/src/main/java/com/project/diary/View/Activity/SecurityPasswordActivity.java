@@ -2,20 +2,23 @@ package com.project.diary.View.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.project.diary.Control.Activity.IThemeManager;
 import com.project.diary.Control.Activity.LockAppActivityControl;
 import com.project.diary.Control.Activity.MainActivityControl;
 import com.project.diary.Model.Lock.ISecurityPassword;
 import com.project.diary.Model.Lock.MyLock;
 import com.project.diary.Model.Lock.SecurityPassword;
+import com.project.diary.Model.ThemeManager.AppThemeManager;
 import com.project.diary.R;
 import com.project.diary.databinding.ActivityLockAppBinding;
 import com.project.diary.databinding.ActivitySecurityPasswordBinding;
 
-public class SecurityPasswordActivity extends AppCompatActivity {
+public class SecurityPasswordActivity extends AppCompatActivity implements IThemeManager {
     private ActivitySecurityPasswordBinding binding;
     private LockAppActivityControl control;
 
@@ -53,7 +56,11 @@ public class SecurityPasswordActivity extends AppCompatActivity {
                     }
                 }else{
                     if(ANSWER.equals(control.getiSecurityPassword().getANSWER())){
-                        MyLock.setPassword(SecurityPasswordActivity.this, MainActivity.class);
+                        MyLock.setPassword(SecurityPasswordActivity.this);
+                        Toast.makeText(SecurityPasswordActivity.this, "Correct security question!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }else{
+                        Toast.makeText(SecurityPasswordActivity.this, "Incorrect security question!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -80,5 +87,12 @@ public class SecurityPasswordActivity extends AppCompatActivity {
             binding.edtxtQuestion.setText(control.getiSecurityPassword().getQUESTION());
             binding.mbtnSaveSecurityQuestion.setText("NEXT");
         }
+        initTheme();
+    }
+
+    @Override
+    public void initTheme() {
+        AppThemeManager appThemeManager = control.getAppThemeManager();
+        binding.rlSecurityQuestion.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
     }
 }

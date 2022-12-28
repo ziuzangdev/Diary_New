@@ -13,9 +13,6 @@ import com.project.diary.Model.Diary.Diary;
 import com.project.diary.Model.Emoji.Emoji;
 import com.project.diary.Model.ThemeManager.AppThemeManager;
 
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
@@ -76,14 +73,6 @@ public class ActivityDiaryControl extends RootControl {
             emojis.add(emoji);
         }
 
-    }
-    public ArrayList<String> pullLinks(String html) {
-        ArrayList links = new ArrayList();
-        Elements srcs = Jsoup.parse(html).select("[src]"); //get All tags containing "src"
-        for (int i = 0; i < srcs.size(); i++) {
-            links.add(srcs.get(i).attr("abs:src").toString()); // get links of selected tags
-        }
-        return links;
     }
     public String initStatus(){
         return emojis.get(0).getEmojiText();

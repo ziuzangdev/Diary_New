@@ -7,5 +7,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/p41_bg_theme"/>
+        android:src="@drawable/p41_background_main_1"/>
 </LinearLayout>

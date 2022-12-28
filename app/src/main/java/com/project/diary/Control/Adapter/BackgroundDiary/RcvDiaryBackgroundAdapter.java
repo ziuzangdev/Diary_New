@@ -54,6 +54,7 @@ public class RcvDiaryBackgroundAdapter extends RecyclerView.Adapter<RcvDiaryBack
         });
     }
 
+
     @Override
     public int getItemCount() {
         return packageBackgroundDiary.getBackgroundDiaryArrayList().size();

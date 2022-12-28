@@ -75,6 +75,9 @@ public class Diary {
     }
 
     public ArrayList<String> getMediaPaths() {
+        if(mediaPaths == null){
+            mediaPaths = new ArrayList<>();
+        }
         return mediaPaths;
     }
 

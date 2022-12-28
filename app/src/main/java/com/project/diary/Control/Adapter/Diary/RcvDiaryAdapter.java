@@ -28,10 +28,6 @@ import com.project.diary.View.Activity.DiaryActivity;
 import com.project.diary.View.Activity.MainActivity;
 import com.project.diary.databinding.ActivityMainBinding;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.w3c.dom.Text;
 
 import java.text.DateFormatSymbols;
@@ -136,10 +132,14 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         }catch (Exception e){}
 
         //Recycleview Medias
-        RcvMediaDemo rcvMediaDemo = new RcvMediaDemo(diaries.get(position).getMediaPaths(), activityContext);
-        holder.rcvMediaDemo.setLayoutManager(new LinearLayoutManager(activityContext, RecyclerView.HORIZONTAL, false));
-        holder.rcvMediaDemo.setHasFixedSize(true);
-        holder.rcvMediaDemo.setAdapter(rcvMediaDemo);
+        if(diaries.get(position).getMediaPaths().size() > 0){
+            holder.rcvMediaDemo.setVisibility(View.VISIBLE);
+            RcvMediaDemo rcvMediaDemo = new RcvMediaDemo(diaries.get(position).getMediaPaths(), activityContext);
+            holder.rcvMediaDemo.setLayoutManager(new LinearLayoutManager(activityContext, RecyclerView.HORIZONTAL, false));
+            holder.rcvMediaDemo.setHasFixedSize(true);
+            holder.rcvMediaDemo.setAdapter(rcvMediaDemo);
+        }
+
         //Events
         holder.Root.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -236,8 +236,8 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         strippedHtml = strippedHtml.replaceAll("<img[^>]*>", "");
 
         // Loại bỏ các tag HTML khác
-        strippedHtml = strippedHtml.replaceAll("<(?!li|/li)[^>]*>", "");
-        System.out.println("Remove all html not <li>: " + strippedHtml);
+        strippedHtml = strippedHtml.replaceAll("<(?!li|br|/li|/br)[^>]*>", "");
+        strippedHtml = strippedHtml.replaceAll("<br>", "\n");
         try{
             int index = strippedHtml.indexOf("<li>");
             if(index != 0){
@@ -250,9 +250,11 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
             }else{
                 strippedHtml = strippedHtml.replaceAll("\\s*<li>\\s*", "");
                 strippedHtml = strippedHtml.replaceAll("\\s*</li>\\s*", "\n");
-                System.out.println("Text after remove all HTML: " + strippedHtml);
             }
         }catch (Exception e){}
+        strippedHtml = strippedHtml.replaceAll("&nbsp;", "");
+        strippedHtml = strippedHtml.trim();
+        System.out.println(strippedHtml);
         return strippedHtml;
     }
 

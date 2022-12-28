@@ -38,7 +38,17 @@ public class MineActivityControl extends RootControl {
     public MineActivityControl(Context context) {
         super(context);
         sqLite = new SQLite(context);
-        diaries = sqLite.getSqLiteControl().readData("Diary");
+        ArrayList<Diary> diaries1 = sqLite.getSqLiteControl().readData("Diary");
+        diaries = new ArrayList<>();
+            for(Diary diary : diaries1){
+                try{
+                    if(!diary.isDraft()){
+                        diaries.add(diary);
+                    }
+                }catch (Exception e){
+                    diaries.add(diary);
+                }
+            }
         appThemeManager = new AppThemeManager(context);
     }
     public int getNumberOfConsecutiveDates(ArrayList<Diary> diaryList) {
