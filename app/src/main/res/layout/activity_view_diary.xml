@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/Root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@color/Fresh_Guacamole_05"
+        tools:context=".View.Activity.DiaryActivity">
+        <!--    Toolbar 1-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_mainactivity"
+            android:orientation="vertical"
+            android:gravity="left |center">
+            <ImageButton
+                android:id="@+id/close"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_back_black"
+                android:layout_marginLeft="10dp"
+                android:background="?selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_mainactivity"
+            android:orientation="horizontal"
+            android:gravity="right|center">
+            <ImageButton
+                android:id="@+id/editMode"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/baseline_edit_note_24"
+                android:layout_marginRight="20dp"
+                android:background="?selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+        <!--    Toolbar 2-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_mainactivity"
+            android:layout_marginTop="@dimen/toolbar_mainactivity">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left |top"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp">
+
+                <!--        Date Layout-->
+                <include
+                    android:id="@+id/dateLayout"
+                    layout="@layout/layout_date"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right |top"
+                android:orientation="vertical"
+                android:layout_marginRight="20dp">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvStatus"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    app:cardBackgroundColor="#0D000000"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="100dp">
+                    <TextView
+                        android:gravity="center"
+                        android:text="😀"
+                        android:id="@+id/txtEmojiStatus"
+                        android:textSize="23sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+        <!--    Text Editor-->
+        <LinearLayout
+            android:id="@+id/llRichEditor1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/txtTittle"
+                android:background="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:fontFamily="@font/inter"
+                android:textColor="@color/black"
+                android:hint="Tittle"/>
+            <com.project.diary.Model.RichEditor.RichEditor
+                android:id="@+id/mEditor"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                android:overScrollMode="never"
+                android:background="#00000000"/>
+
+            <!--        TAGS-->
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center |bottom"
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvTextTool"
+                app:cardElevation="10dp"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/white">
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

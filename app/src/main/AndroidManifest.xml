@@ -6,8 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,7 +20,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary"
         tools:targetApi="31">
+        <activity
+            android:name=".ViewDiaryActivity"
+            android:exported="true"
+            android:label="@string/title_activity_lock_app"
+            android:theme="@style/Theme.Diary.NoActionBar" />
+
         <receiver android:name=".Control.Notification.NotificationPublisher" />
+
         <activity
             android:name=".View.Activity.SettingActivity"
             android:exported="true"

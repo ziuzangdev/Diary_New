@@ -68,43 +68,21 @@ import java.util.Objects;
 public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener, IThemeManager {
     private static final String TAG = "DiaryActivity.java";
-    private ActivityDiaryBinding binding;
-
     public static final int REQUEST_TEMPLATE = 243;
-
-    private ActivityDiaryControl control;
-
-    private SQLite sqLite;
-
-    private RichEditor richEditor;
-
-    private String statusInPackage;
-
-    private Diary diary;
-
-    private DiaryData diaryData;
-
-    private Thread subThread;
-
-    private RcvColorPickerAdapter rcvColorPickerAdapter;
-
-    private boolean isCLickTextColor = false;
-
-    private boolean isClickTextTool = false;
-
-    private boolean isWatchMode = false;
-
-    private boolean isOpenStickerView = false;
-
-    private boolean isRunning;
-
-    private float mDownPosX, mDownPosY, mUpPosX, mUpPosY;
-
     public static final int REQUEST_CODE_MEDIA = 1;
-
     public static final int REQUEST_CODE_DRAW_CANVAS = 2;
 
-    private float MOVE_THRESHOLD_DP;
+    private ActivityDiaryBinding binding;
+    private boolean isOpenFromMain = false;
+    private ActivityDiaryControl control;
+    private SQLite sqLite;
+    private RichEditor richEditor;
+    private String statusInPackage;
+    private Diary diary;
+    private DiaryData diaryData;
+    private RcvColorPickerAdapter rcvColorPickerAdapter;
+    private boolean isClickTextTool = false;
+    private boolean isWatchMode = false;
 
     private ArrayList<Video> videos;
     public Diary getDiary() {
@@ -118,7 +96,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         control = new ActivityDiaryControl(DiaryActivity.this);
         control.showCustomUI();
         setContentView(binding.getRoot());
-        MOVE_THRESHOLD_DP = 20.0F * getResources().getDisplayMetrics().density;
         addControls();
         addEvents();
     }
@@ -145,7 +122,9 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                     htmlData = data.getStringExtra("HTML_DATA");
                 }catch (Exception e){}
                 if(htmlData != null){
-                    richEditor.setHtml(htmlData);
+                    diary.getDiaryData().setData(htmlData);
+                    diary.getMediaPaths().clear();
+                    richEditor.setHtml(diary.getDiaryData().getData());
                 }
             }
         }
@@ -157,14 +136,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     public String getMonth(int month) {
         DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(Locale.US);
         return dateFormatSymbols.getMonths()[month-1];
-    }
-    public String getRealPathFromURI(Uri contentUri)
-    {
-        String[] proj = { MediaStore.Audio.Media.DATA };
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
     }
 
     @Override
@@ -197,6 +168,13 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     @SuppressLint("ClickableViewAccessibility")
     private void addEvents() {
 
+        binding.editMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isOpenFromMain = true;
+                enableWatchMode(false);
+            }
+        });
         binding.imgbtnIndentLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,8 +260,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         binding.imgCloseTextTool.setOnClickListener(textToolEvents);
         binding.imgCompleteTextTool.setOnClickListener(textToolEvents);
 
-
-
         binding.imgbtnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -302,22 +278,7 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         binding.imgWatchMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.close.setImageResource(R.drawable.icon_back_black);
-                isWatchMode = !isWatchMode;
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-                layoutParams.setMargins(dpToPx(20), dpToPx(100), dpToPx(20), dpToPx(0));
-                LinearLayout linearLayout = findViewById(R.id.llRichEditor1);
-                linearLayout.setLayoutParams(layoutParams);
-                binding.ToolSave.setVisibility(View.GONE);
-                binding.ToolTextTool.setVisibility(View.GONE);
-                binding.dateLayout.txtDate.setClickable(false);
-                binding.cvStatus.setClickable(false);
-                binding.cvTextTool.setVisibility(View.GONE);
-                binding.cvBackgroundDiary.setVisibility(View.GONE);
-                richEditor.setInputEnabled(false);
+                enableWatchMode(true);
             }
         });
 
@@ -376,29 +337,12 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             }
         });
 
-
-
-
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isWatchMode){
-                    isWatchMode = false;
-                    binding.close.setImageResource(R.drawable.icon_close_stroke);
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.MATCH_PARENT,
-                            RelativeLayout.LayoutParams.WRAP_CONTENT
-                    );
-                    layoutParams.setMargins(dpToPx(20), dpToPx(100), dpToPx(20), dpToPx(65));
-                    LinearLayout linearLayout = findViewById(R.id.llRichEditor1);
-                    linearLayout.setLayoutParams(layoutParams);
-                    binding.ToolSave.setVisibility(View.VISIBLE);
-                    binding.ToolTextTool.setVisibility(View.VISIBLE);
-                    binding.dateLayout.txtDate.setClickable(true);
-                    binding.cvStatus.setClickable(true);
-                    richEditor.setInputEnabled(true);
+                if(isOpenFromMain && isWatchMode){
+                    enableWatchMode(false);
                 }else{
-                    isRunning = false;
                     if(diary.getId() == null){
                         if(!diary.getDiaryData().getData().equals("") || !binding.txtTittle.getText().toString().equals("")){
                             diary.setDraft(true);
@@ -495,7 +439,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 
     }
 
-
     private void showDialogStatus(){
         Dialog dialog = new Dialog(DiaryActivity.this, R.style.Dialog);
         dialog.setContentView(R.layout.dialog_status_picker);
@@ -513,9 +456,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         rcvStatus.setLayoutManager(new GridLayoutManager(DiaryActivity.this, 5));
         rcvStatus.setAdapter(rcvStatusPickerAdapter);
         dialog.show();
-    }
-    private void initTextToolChoose() {
-
     }
 
     private void addControls() {
@@ -562,6 +502,51 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 
         SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         viewPagerTab.setViewPager(viewPager);
+    }
+
+    private void enableWatchMode(boolean isEnable){
+        if(isEnable){
+            binding.llLoadingScene.setVisibility(View.VISIBLE);
+            binding.editMode.setVisibility(View.VISIBLE);
+            isWatchMode = !isWatchMode;
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            layoutParams.setMargins(dpToPx(20), dpToPx(100), dpToPx(20), dpToPx(0));
+            LinearLayout linearLayout = findViewById(R.id.llRichEditor1);
+            linearLayout.setLayoutParams(layoutParams);
+            binding.txtTittle.setClickable(false);
+            binding.txtTittle.setEnabled(false);
+            binding.ToolSave.setVisibility(View.GONE);
+            binding.ToolTextTool.setVisibility(View.GONE);
+            binding.dateLayout.txtDate.setClickable(false);
+            binding.dateLayout.txtDate.setEnabled(false);
+            binding.cvStatus.setClickable(false);
+            binding.cvStatus.setEnabled(false);
+            binding.cvTextTool.setVisibility(View.GONE);
+            binding.cvBackgroundDiary.setVisibility(View.GONE);
+            richEditor.setInputEnabled(false);
+        }else{
+            isWatchMode = false;
+            binding.editMode.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            layoutParams.setMargins(dpToPx(20), dpToPx(100), dpToPx(20), dpToPx(65));
+            LinearLayout linearLayout = findViewById(R.id.llRichEditor1);
+            linearLayout.setLayoutParams(layoutParams);
+            binding.txtTittle.setClickable(true);
+            binding.txtTittle.setEnabled(true);
+            binding.ToolSave.setVisibility(View.VISIBLE);
+            binding.ToolTextTool.setVisibility(View.VISIBLE);
+            binding.dateLayout.txtDate.setClickable(true);
+            binding.dateLayout.txtDate.setEnabled(true);
+            binding.cvStatus.setClickable(true);
+            binding.cvStatus.setEnabled(true);
+            richEditor.setInputEnabled(true);
+        }
     }
 
     private void initAudioRecorder() {
@@ -626,6 +611,7 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             diary = sqLite.getSqLiteControl().readData("Diary", id);
             Log.d(TAG, "Real data of ID from database co pleated with data: " + diary.getDiaryData().getData());
             addDataToDiary();
+            enableWatchMode(true);
         }else{
             diary = new Diary.Builder()
                     .tittle(binding.txtTittle.getText().toString())
@@ -726,7 +712,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
-
 
     @Override
     public void initTheme() {

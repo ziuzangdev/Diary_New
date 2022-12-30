@@ -7,6 +7,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,7 +61,15 @@ public class RcvCalandarDiaryAdapter extends RecyclerView.Adapter<RcvCalandarDia
         holder.txtDay.setText(String.valueOf(diaries.get(position).getDate().getDay()));
         holder.txtYear.setText(String.valueOf(diaries.get(position).getDate().getYear()));
         holder.txtMonth.setText(getMonth(diaries.get(position).getDate().getMonth()).substring(0,3));
-
+        try{
+            if(diaries.get(position).isDraft()){
+                holder.imgDraft.setVisibility(View.VISIBLE);
+                holder.txtDraft.setVisibility(View.VISIBLE);
+            }else{
+                holder.imgDraft.setVisibility(View.GONE);
+                holder.txtDraft.setVisibility(View.GONE);
+            }
+        }catch (Exception e){}
         //Recycleview Medias
         if(diaries.get(position).getMediaPaths().size() > 0){
             holder.rcvMediaDemo.setVisibility(View.VISIBLE);
@@ -121,12 +130,15 @@ public class RcvCalandarDiaryAdapter extends RecyclerView.Adapter<RcvCalandarDia
                 txtEmojiStatus,
                 txtDay,
                 txtMonth,
-                txtYear;
+                txtYear,
+                txtDraft;
         LinearLayout Root;
 
         View Date;
 
         RecyclerView rcvMediaDemo;
+
+        ImageView imgDraft;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -139,6 +151,8 @@ public class RcvCalandarDiaryAdapter extends RecyclerView.Adapter<RcvCalandarDia
             txtDay = Date.findViewById(R.id.txtDay);
             txtMonth = Date.findViewById(R.id.txtMonth);
             txtYear = Date.findViewById(R.id.txtYear);
+            imgDraft = itemView.findViewById(R.id.imgDraft);
+            txtDraft = itemView.findViewById(R.id.txtDraft);
         }
     }
 }

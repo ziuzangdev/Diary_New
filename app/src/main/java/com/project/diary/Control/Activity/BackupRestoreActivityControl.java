@@ -78,10 +78,6 @@ public class BackupRestoreActivityControl extends RootControl {
 
 
     public void restoreDiaries(String path) {
-        ArrayList<Diary> diaries = sqLite.getSqLiteControl().readData("Diary");
-        for(Diary diary : diaries){
-            sqLite.getSqLiteControl().removeData("Diary", diary.getId());
-        }
         File file = new File(path);
         try{
             StringBuilder text = new StringBuilder();
@@ -97,6 +93,10 @@ public class BackupRestoreActivityControl extends RootControl {
             catch (IOException e) {
             }
             RootDiary rootDiary = new Gson().fromJson(text.toString(), RootDiary.class);
+            ArrayList<Diary> diaries = sqLite.getSqLiteControl().readData("Diary");
+            for(Diary diary : diaries){
+                sqLite.getSqLiteControl().removeData("Diary", diary.getId());
+            }
             for(Diary diary : rootDiary.getDiaries()){
                 sqLite.getSqLiteControl().insertData(diary);
             }

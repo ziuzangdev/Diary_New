@@ -79,11 +79,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="left"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
                 <TextView
                     android:id="@+id/txtName"
-                    android:maxLines="1"
-                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Name"
