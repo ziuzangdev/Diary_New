@@ -77,6 +77,7 @@ public class MainActivityControl extends RootControl {
     @WorkerThread
     public void InitRcvDiaryItem(){
         isRunning = true;
+        System.out.println("gkfokodfkodgog");
         if(diaries != null){
             diaries.clear();
         }

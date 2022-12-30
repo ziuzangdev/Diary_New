@@ -85,6 +85,7 @@ public class ThemeActivity extends AppCompatActivity {
         appThemeManager.setID_THEME(ID);
         appThemeManager.initData();
         binding.mbtnGetTheme.setBackgroundColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
+        binding.txtChooseTheme.setTextColor(Color.parseColor(appThemeManager.getPaletteColor()[3]));
         Glide.with(this).load(appThemeManager.getBG_THEME())
                 .apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 3)))
                 .into((binding.imgBackground));

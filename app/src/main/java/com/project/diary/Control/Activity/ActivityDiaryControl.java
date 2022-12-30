@@ -123,5 +123,4 @@ public class ActivityDiaryControl extends RootControl {
         }
         return imageSrc;
     }
-
 }

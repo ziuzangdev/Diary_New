@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -45,9 +46,15 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
 
     private boolean isChooseMode;
 
+    private boolean isSearchMode;
+
     private ActivityMainBinding binding;
 
     private Context activityContext;
+
+    public void setSearchMode(boolean searchMode) {
+        isSearchMode = searchMode;
+    }
 
     public RcvDiaryAdapter(ArrayList<Diary> diaries, ActivityMainBinding binding, Context activityContext) {
         this.diaries = diaries;
@@ -56,6 +63,7 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         chooseList = new ArrayList<>();
         rcvMediaDemos = new ArrayList<>();
         isChooseMode = false;
+        isSearchMode = false;
         initEvents();
     }
     @SuppressLint("NotifyDataSetChanged")
@@ -145,12 +153,14 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                if(chooseList.size() == 0){
+                if(chooseList.size() == 0 && isChooseMode) {
                     binding.ToolbarView3.setVisibility(View.GONE);
                     binding.ToolbarView4.setVisibility(View.GONE);
                     binding.ToolbarView1.setVisibility(View.VISIBLE);
                     binding.ToolbarView2.setVisibility(View.VISIBLE);
                     isChooseMode = false;
+                }else if(chooseList.size() == 0 && !isChooseMode){
+                    //DON'T DO ANY THING
                 }else{
                     isChooseMode = true;
                 }
@@ -162,19 +172,21 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
                         holder.Root.setBackgroundColor(context.getResources().getColor(R.color.choose_mode, null));
                         chooseList.add(diaries.get(position));
                     }else{
-
+                        //((MainActivity)context).isDisplaySearchView(false);
                         Intent intent = new Intent(context, DiaryActivity.class);
                         intent.putExtra("ID_DIARY", diaries.get(position).getId());
                         context.startActivity(intent);
                     }
 
                 }
-                if(chooseList.size() == 0){
+                if(chooseList.size() == 0 && isChooseMode) {
                     binding.ToolbarView3.setVisibility(View.GONE);
                     binding.ToolbarView4.setVisibility(View.GONE);
                     binding.ToolbarView1.setVisibility(View.VISIBLE);
                     binding.ToolbarView2.setVisibility(View.VISIBLE);
                     isChooseMode = false;
+                }else if(chooseList.size() == 0 && !isChooseMode){
+                    //DON'T DO ANY THING
                 }else{
                     isChooseMode = true;
                 }
@@ -184,34 +196,36 @@ public class RcvDiaryAdapter extends RecyclerView.Adapter<RcvDiaryAdapter.ViewHo
         holder.Root.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(chooseList.size() == 0){
-                    binding.ToolbarView3.setVisibility(View.GONE);
-                    binding.ToolbarView4.setVisibility(View.GONE);
-                    binding.ToolbarView1.setVisibility(View.VISIBLE);
-                    binding.ToolbarView2.setVisibility(View.VISIBLE);
-                    isChooseMode = false;
-                }else{
-                    isChooseMode = true;
-                }
-                if(chooseList.contains(diaries.get(position))){
-                    holder.Root.setBackgroundColor(context.getResources().getColor(R.color.nomal_mode, null));
-                    chooseList.remove(diaries.get(position));
-                }else{
-                    holder.Root.setBackgroundColor(context.getResources().getColor(R.color.choose_mode, null));
-                    chooseList.add(diaries.get(position));
-                }
-                if(chooseList.size() == 0){
-                    binding.ToolbarView3.setVisibility(View.GONE);
-                    binding.ToolbarView4.setVisibility(View.GONE);
-                    binding.ToolbarView1.setVisibility(View.VISIBLE);
-                    binding.ToolbarView2.setVisibility(View.VISIBLE);
-                    isChooseMode = false;
-                }else{
-                    isChooseMode = true;
-                    binding.ToolbarView1.setVisibility(View.GONE);
-                    binding.ToolbarView2.setVisibility(View.GONE);
-                    binding.ToolbarView3.setVisibility(View.VISIBLE);
-                    binding.ToolbarView4.setVisibility(View.VISIBLE);
+                if(!isSearchMode){
+                    if(chooseList.size() == 0){
+                        binding.ToolbarView3.setVisibility(View.GONE);
+                        binding.ToolbarView4.setVisibility(View.GONE);
+                        binding.ToolbarView1.setVisibility(View.VISIBLE);
+                        binding.ToolbarView2.setVisibility(View.VISIBLE);
+                        isChooseMode = false;
+                    }else{
+                        isChooseMode = true;
+                    }
+                    if(chooseList.contains(diaries.get(position))){
+                        holder.Root.setBackgroundColor(context.getResources().getColor(R.color.nomal_mode, null));
+                        chooseList.remove(diaries.get(position));
+                    }else{
+                        holder.Root.setBackgroundColor(context.getResources().getColor(R.color.choose_mode, null));
+                        chooseList.add(diaries.get(position));
+                    }
+                    if(chooseList.size() == 0){
+                        binding.ToolbarView3.setVisibility(View.GONE);
+                        binding.ToolbarView4.setVisibility(View.GONE);
+                        binding.ToolbarView1.setVisibility(View.VISIBLE);
+                        binding.ToolbarView2.setVisibility(View.VISIBLE);
+                        isChooseMode = false;
+                    }else{
+                        isChooseMode = true;
+                        binding.ToolbarView1.setVisibility(View.GONE);
+                        binding.ToolbarView2.setVisibility(View.GONE);
+                        binding.ToolbarView3.setVisibility(View.VISIBLE);
+                        binding.ToolbarView4.setVisibility(View.VISIBLE);
+                    }
                 }
                 return true;
             }

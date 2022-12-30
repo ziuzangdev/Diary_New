@@ -32,6 +32,13 @@
             android:orientation="horizontal"
             android:gravity="right|center">
             <ImageButton
+                android:id="@+id/remove"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_remove_for_diary"
+                android:layout_marginRight="10dp"
+                android:background="?selectableItemBackgroundBorderless"/>
+            <ImageButton
                 android:id="@+id/editMode"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -87,7 +94,7 @@
             android:id="@+id/llRichEditor1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="90dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:orientation="vertical">

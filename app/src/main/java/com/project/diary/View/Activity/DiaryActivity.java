@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.gson.Gson;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -73,7 +75,7 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     public static final int REQUEST_CODE_DRAW_CANVAS = 2;
 
     private ActivityDiaryBinding binding;
-    private boolean isOpenFromMain = false;
+    private boolean isOpenFromMain = true;
     private ActivityDiaryControl control;
     private SQLite sqLite;
     private RichEditor richEditor;
@@ -278,7 +280,7 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         binding.imgWatchMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enableWatchMode(true);
+              enableWatchMode(true);
             }
         });
 
@@ -412,7 +414,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                     sqLite.getSqLiteControl().updateData(diary, "Diary");
                     Toast.makeText(DiaryActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -506,46 +507,18 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 
     private void enableWatchMode(boolean isEnable){
         if(isEnable){
-            binding.llLoadingScene.setVisibility(View.VISIBLE);
-            binding.editMode.setVisibility(View.VISIBLE);
-            isWatchMode = !isWatchMode;
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
-            layoutParams.setMargins(dpToPx(20), dpToPx(100), dpToPx(20), dpToPx(0));
-            LinearLayout linearLayout = findViewById(R.id.llRichEditor1);
-            linearLayout.setLayoutParams(layoutParams);
-            binding.txtTittle.setClickable(false);
-            binding.txtTittle.setEnabled(false);
-            binding.ToolSave.setVisibility(View.GONE);
-            binding.ToolTextTool.setVisibility(View.GONE);
-            binding.dateLayout.txtDate.setClickable(false);
-            binding.dateLayout.txtDate.setEnabled(false);
-            binding.cvStatus.setClickable(false);
-            binding.cvStatus.setEnabled(false);
-            binding.cvTextTool.setVisibility(View.GONE);
-            binding.cvBackgroundDiary.setVisibility(View.GONE);
-            richEditor.setInputEnabled(false);
+            if(diary != null){
+                Intent intent = new Intent(DiaryActivity.this, ViewDiaryActivity.class);
+                String diaryStr = new Gson().toJson(diary);
+                Bundle bundle = new Bundle();
+                intent.putExtra("Diary", diaryStr);
+                if(isOpenFromMain){
+                    intent.putExtra("finish", "FINISH");
+                }
+                startActivity(intent);
+            }
         }else{
             isWatchMode = false;
-            binding.editMode.setVisibility(View.GONE);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
-            layoutParams.setMargins(dpToPx(20), dpToPx(100), dpToPx(20), dpToPx(65));
-            LinearLayout linearLayout = findViewById(R.id.llRichEditor1);
-            linearLayout.setLayoutParams(layoutParams);
-            binding.txtTittle.setClickable(true);
-            binding.txtTittle.setEnabled(true);
-            binding.ToolSave.setVisibility(View.VISIBLE);
-            binding.ToolTextTool.setVisibility(View.VISIBLE);
-            binding.dateLayout.txtDate.setClickable(true);
-            binding.dateLayout.txtDate.setEnabled(true);
-            binding.cvStatus.setClickable(true);
-            binding.cvStatus.setEnabled(true);
-            richEditor.setInputEnabled(true);
         }
     }
 
@@ -602,6 +575,10 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     private void initDiaryObject() {
         Log.d(TAG, "==================== initDiaryObject task started ==================");
         Bundle bundle = getIntent().getExtras();
+        String mode = null;
+        try{
+            mode = bundle.getString("mode");
+        }catch (Exception e){}
         String id = null;
         try{
             id = bundle.getString("ID_DIARY");
@@ -611,8 +588,17 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
             diary = sqLite.getSqLiteControl().readData("Diary", id);
             Log.d(TAG, "Real data of ID from database co pleated with data: " + diary.getDiaryData().getData());
             addDataToDiary();
-            enableWatchMode(true);
+            if(mode == null){
+                enableWatchMode(true);
+                if(isOpenFromMain){
+                    finish();
+                }
+            }else{
+                isOpenFromMain = false;
+                enableWatchMode(false);
+            }
         }else{
+            isOpenFromMain = false;
             diary = new Diary.Builder()
                     .tittle(binding.txtTittle.getText().toString())
                     .date(CalendarDay.today())

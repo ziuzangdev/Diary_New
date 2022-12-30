@@ -23,6 +23,7 @@
         android:weightSum="1"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/txtChooseTheme"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
@@ -31,7 +32,7 @@
             android:layout_marginTop="20dp"
             android:textSize="22sp"
             android:fontFamily="@font/source_serif_pro_bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/Fresh_Guacamole_04"/>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpTheme"
             android:layout_width="match_parent"

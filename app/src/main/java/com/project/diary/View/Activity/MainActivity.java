@@ -100,6 +100,19 @@ public class MainActivity extends AppCompatActivity implements IThemeManager {
     protected void onResume() {
         super.onResume();
         initRcvDiary();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (control.getRcvDiaryAdapter() == null){}
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        isDisplaySearchView(false);
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 
     private void addEvents() {
@@ -251,15 +264,18 @@ public class MainActivity extends AppCompatActivity implements IThemeManager {
         });
     }
 
-    private void isDisplaySearchView(boolean b) {
+    public void isDisplaySearchView(boolean b) {
         if(b){
             binding.ToolbarView1.setVisibility(View.GONE);
             binding.ToolbarView2.setVisibility(View.GONE);
             binding.searchView.setVisibility(View.VISIBLE);
+            binding.edtxtSearch.clearComposingText();
+            control.getRcvDiaryAdapter().setSearchMode(true);
         }else{
             binding.searchView.setVisibility(View.GONE);
             binding.ToolbarView1.setVisibility(View.VISIBLE);
             binding.ToolbarView2.setVisibility(View.VISIBLE);
+            control.getRcvDiaryAdapter().setSearchMode(false);
         }
     }
 
@@ -285,6 +301,12 @@ public class MainActivity extends AppCompatActivity implements IThemeManager {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.rcvDiary.removeAllViews();
+                    }
+                });
                 control.InitRcvDiaryItem();
                 control.setRcvDiaryAdapter(new RcvDiaryAdapter(control.getDiaries(), binding, MainActivity.this));
                 runOnUiThread(new Runnable() {
@@ -298,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements IThemeManager {
                         }else{
                             binding.animationView.setVisibility(View.VISIBLE);
                         }
-
                     }
                 });
             }
