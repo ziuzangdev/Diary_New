@@ -32,17 +32,17 @@
             android:orientation="horizontal"
             android:gravity="right|center">
             <ImageButton
-                android:id="@+id/remove"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/icon_remove_for_diary"
-                android:layout_marginRight="10dp"
-                android:background="?selectableItemBackgroundBorderless"/>
-            <ImageButton
                 android:id="@+id/editMode"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/baseline_edit_note_24"
+                android:layout_marginRight="10dp"
+                android:background="?selectableItemBackgroundBorderless"/>
+            <ImageButton
+                android:id="@+id/remove"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_remove_for_diary"
                 android:layout_marginRight="20dp"
                 android:background="?selectableItemBackgroundBorderless"/>
         </LinearLayout>

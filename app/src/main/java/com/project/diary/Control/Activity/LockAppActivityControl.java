@@ -8,6 +8,13 @@ import com.project.diary.Model.Lock.SecurityPassword;
 import com.project.diary.Model.SQLite.SQLite;
 import com.project.diary.Model.ThemeManager.AppThemeManager;
 
+/**
+ * The LockAppActivityControl class extends the RootControl class and is responsible for managing the lock mode for the app.
+ * It also provides access to an instance of the AppThemeManager and ISecurityPassword classes.
+ *
+ * @author [TrikayDev]
+ * @since [12/30/2022]
+ */
 public class LockAppActivityControl extends RootControl {
     private boolean isLockMode;
 
@@ -17,18 +24,38 @@ public class LockAppActivityControl extends RootControl {
 
     private AppThemeManager appThemeManager;
 
+    /**
+     * Returns an instance of the AppThemeManager class.
+     *
+     * @return an AppThemeManager instance
+     */
     public AppThemeManager getAppThemeManager() {
         return appThemeManager;
     }
 
+    /**
+     * Returns an instance of the ISecurityPassword class.
+     *
+     * @return an ISecurityPassword instance
+     */
     public ISecurityPassword getiSecurityPassword() {
         return iSecurityPassword;
     }
 
+    /**
+     * Sets an instance of the ISecurityPassword class.
+     *
+     * @param iSecurityPassword an instance of the ISecurityPassword class
+     */
     public void setiSecurityPassword(ISecurityPassword iSecurityPassword) {
         this.iSecurityPassword = iSecurityPassword;
     }
 
+    /**
+     * Constructs a new LockAppActivityControl object and initializes the sqLite and appThemeManager fields.
+     *
+     * @param context a Context object used to access application-specific resources
+     */
     public LockAppActivityControl(Context context) {
         super(context);
         sqLite = new SQLite(context);
@@ -37,10 +64,20 @@ public class LockAppActivityControl extends RootControl {
         appThemeManager =  new AppThemeManager(context);
     }
 
+    /**
+     * Returns the current lock mode.
+     *
+     * @return true if the lock mode is enabled, false otherwise
+     */
     public boolean isLockMode() {
         return isLockMode;
     }
 
+    /**
+     * Sets the lock mode and updates the value in the SQLite database.
+     *
+     * @param lockMode true to enable lock mode, false to disable it
+     */
     public void setLockMode(boolean lockMode) {
         isLockMode = lockMode;
         if(lockMode){

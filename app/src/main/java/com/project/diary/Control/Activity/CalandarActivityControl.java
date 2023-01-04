@@ -11,7 +11,13 @@ import com.project.diary.Model.ThemeManager.AppThemeManager;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
-
+/**
+ * Class for controlling the CalandarActivity. Extends MainActivityControl to have access to its
+ * diary management methods.
+ *
+ * @author [TrikayDev]
+ * @since [12/30/2022]
+ */
 public class CalandarActivityControl extends MainActivityControl {
     private RcvCalandarDiaryAdapter rcvCalandarDiaryAdapter;
 
@@ -24,6 +30,12 @@ public class CalandarActivityControl extends MainActivityControl {
         return appThemeManager;
     }
 
+    /**
+     * Initializes the list of diaries on the selected date. This method should be called in a
+     * background thread.
+     *
+     * @param calendarDay The CalendarDay object representing the selected date
+     */
     @WorkerThread
     public void initDiariesOnDate(CalendarDay calendarDay) {
         System.out.println("root: " + calendarDay.toString());
@@ -60,6 +72,12 @@ public class CalandarActivityControl extends MainActivityControl {
         this.rcvCalandarDiaryAdapter = rcvCalandarDiaryAdapter;
     }
 
+
+    /**
+     * Constructor for the CalandarActivityControl. Initializes the AppThemeManager for this control.
+     *
+     * @param context The context of the CalandarActivity
+     */
     public CalandarActivityControl(Context context) {
         super(context);
         appThemeManager = new AppThemeManager(context);

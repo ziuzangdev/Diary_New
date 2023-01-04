@@ -84,10 +84,10 @@ public class LockAppActivity extends LockscreenHandler {
     private void initCurrentStateSwEnablePassword(boolean isChecked) {
         if(isChecked){
             binding.llSettupPassword.setVisibility(View.VISIBLE);
-            binding.llSecurityQuestion.setVisibility(View.VISIBLE);
+            //binding.llSecurityQuestion.setVisibility(View.VISIBLE);
         }else{
             binding.llSettupPassword.setVisibility(View.GONE);
-            binding.llSecurityQuestion.setVisibility(View.GONE);
+            //binding.llSecurityQuestion.setVisibility(View.GONE);
         }
     }
 

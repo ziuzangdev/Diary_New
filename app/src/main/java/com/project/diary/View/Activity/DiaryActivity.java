@@ -111,11 +111,12 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
 
             }
         }else if(requestCode == REQUEST_CODE_DRAW_CANVAS){
-            if(resultCode == RESULT_OK){
+            if(resultCode == RESULT_OK) {
                 String path = Objects.requireNonNull(data).getStringExtra("pathDraw");
                 String alt = "alt\" style=\"max-width:50%; height:auto";
                 String html = "<img src=\"" + path + "\" alt=\"" + alt + "\" />";
-                richEditor.insertHtml("<BR>" + html +"<BR>");
+                richEditor.insertHtml("<BR>" + html + "<BR>");
+                richEditor.insertHtml("" + "<BR>" + "<BR>");
             }
         }else if(requestCode == DiaryActivity.REQUEST_TEMPLATE){
             if(resultCode == RESULT_OK){
@@ -460,7 +461,6 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
     }
 
     private void addControls() {
-        binding.mEditor.focusEditor();
         initTheme();
         initSQLite();
         initStatus();
@@ -623,10 +623,13 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
         try{
             htmlData = bundle.getString("HTML_DATA");
         }catch (Exception e){}
-        if(htmlData != null){
+        if(htmlData != null && !htmlData.equals("")){
+            binding.mEditor.focusEditor();
             diaryData.setData(htmlData);
             diary.setDiaryData(diaryData);
             addDataToDiary();
+        }else{
+            binding.mEditor.setPlaceholder("Write some thing here...");
         }
     }
 
@@ -677,6 +680,12 @@ public class DiaryActivity extends AppCompatActivity  implements BSImagePicker.O
                         }
                     });
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        richEditor.insertHtml("" +"<BR>" + "<BR>");
+                    }
+                });
             }
         });
         thread.start();

@@ -15,8 +15,14 @@ import com.project.diary.Control.RootControl;
 
 import java.util.ArrayList;
 
+/**
+ * The MediaActivityControl class extends the RootControl class and is responsible for managing the data and functionality related to media in the MediaActivity.
+ * It provides access to lists of paths for images and videos, and methods for generating these lists.
+ *
+ * @author [TrikayDev]
+ * @since [12/30/2022]
+ */
 public class MediaActivityControl extends RootControl {
-
     private ArrayList<String> arrPathImage;
 
     private ArrayList<String> arrPathVideo;
@@ -26,6 +32,11 @@ public class MediaActivityControl extends RootControl {
     private boolean isGenerateVideoPath;
     private static final int PICK_FROM_GALLERY = 0;
 
+    /**
+     * Constructs a new MediaActivityControl object and initializes the arrPathImage and arrPathVideo fields.
+     *
+     * @param context a Context object used to access application-specific resources
+     */
     public MediaActivityControl(Context context) {
         super(context);
         arrPathImage = new ArrayList<>();
@@ -34,22 +45,46 @@ public class MediaActivityControl extends RootControl {
         isGenerateVideoPath = false;
     }
 
+    /**
+     * Returns the status of the image path generation process.
+     *
+     * @return true if the process is currently running, false otherwise
+     */
     public boolean isGenerateImagePath() {
         return isGenerateImagePath;
     }
 
+    /**
+     * Sets the status of the image path generation process.
+     *
+     * @param generateImagePath true to set the process as running, false otherwise
+     */
     public void setGenerateImagePath(boolean generateImagePath) {
         isGenerateImagePath = generateImagePath;
     }
 
+    /**
+     * Returns the status of the video path generation process.
+     *
+     * @return true if the process is currently running, false otherwise
+     */
     public boolean isGenerateVideoPath() {
         return isGenerateVideoPath;
     }
-
+    /**
+     * Sets the status of the video path generation process.
+     *
+     * @param generateVideoPath true to set the process as running, false otherwise
+     */
     public void setGenerateVideoPath(boolean generateVideoPath) {
         isGenerateVideoPath = generateVideoPath;
     }
 
+    /**
+     * Returns the list of image paths.
+     *
+     * @return an ArrayList of strings containing the paths to images
+     */
     public ArrayList<String> getArrPathImage() {
         if(arrPathImage == null){
             arrPathImage = new ArrayList<>();
@@ -57,6 +92,11 @@ public class MediaActivityControl extends RootControl {
         return arrPathImage;
     }
 
+    /**
+     * Returns the list of video paths.
+     *
+     * @return an ArrayList of strings containing the paths to videos
+     */
     public ArrayList<String> getArrPathVideo() {
         if(arrPathVideo == null){
             arrPathVideo = new ArrayList<>();
@@ -65,7 +105,10 @@ public class MediaActivityControl extends RootControl {
     }
 
     /**
+     * Generates a list of all image paths in the device's external storage and updates the arrPathImage field with the list.
+     * This method should be called on a worker thread.
      * You can get live data while this Thread are working by using method {@link MediaActivityControl#getArrPathImage()}
+     *
      * @return {@link MediaActivityControl#isGenerateImagePath()} will be "false" if Thread completed reading, otherwise it will be "true"
      */
     @WorkerThread
@@ -101,7 +144,10 @@ public class MediaActivityControl extends RootControl {
     }
 
     /**
+     * Generates a list of all video paths in the device's external storage and updates the arrPathVideo field with the list.
+     * This method should be called on a worker thread.
      * You can get live data while this Thread are working by using method {@link MediaActivityControl#getArrPathVideo()}
+     *
      * @return {@link MediaActivityControl#isGenerateVideoPath()} will be "false" if Thread completed reading, otherwise it will be "true"
      */
     @WorkerThread

@@ -29,7 +29,15 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The BackupRestoreActivityControl class is a subclass of RootControl that manages the display and functionality of a backup and restore feature in an application.
+ *
+ * It has properties for an instance of the AppThemeManager class and an instance of the SQLite class. It also has a constructor that takes in a Context object and an ActivityBackupRestoreBinding object and initializes the appThemeManager and sqLite instances. It has methods for backing up and restoring diary entries, generating a note on the SD card, and displaying a toast message.
+ *
+ * @author [TrikayDev]
+ * @since [12/30/2022]
+ *
+ */
 public class BackupRestoreActivityControl extends RootControl {
     private ActivityBackupRestoreBinding binding;
 
@@ -40,6 +48,13 @@ public class BackupRestoreActivityControl extends RootControl {
     }
 
     private SQLite sqLite;
+
+    /**
+     * Constructs a new BackupRestoreActivityControl object.
+     *
+     * @param context The Context object to be used for initialization
+     * @param binding The ActivityBackupRestoreBinding object to be used for data binding
+     */
     public BackupRestoreActivityControl(Context context, ActivityBackupRestoreBinding binding) {
         super(context);
         this.binding = binding;
@@ -47,6 +62,9 @@ public class BackupRestoreActivityControl extends RootControl {
         appThemeManager = new AppThemeManager(context);
     }
 
+    /**
+     * Back up the diary entries using a PermissionListener object to request permissions and save the data to the SD card.
+     */
     public void backupDiaries() {
         PermissionListener permissionListener = new PermissionListener() {
             @Override
@@ -77,6 +95,11 @@ public class BackupRestoreActivityControl extends RootControl {
     }
 
 
+    /**
+     * Restores the diary entries from the file at the provided path. Displays a toast message indicating the success or failure of the operation.
+     *
+     * @param path The file path to the backup data
+     */
     public void restoreDiaries(String path) {
         File file = new File(path);
         try{
@@ -107,6 +130,13 @@ public class BackupRestoreActivityControl extends RootControl {
 
     }
 
+    /**
+     * Generates a note with the provided file name and body on the SD card.
+     *
+     * @param context The Context object to be used for file operations
+     * @param sFileName The file name for the note
+     * @param sBody The body text for the note
+     */
     public void generateNoteOnSD(Context context, String sFileName, String sBody) {
         try {
             int index = 0;

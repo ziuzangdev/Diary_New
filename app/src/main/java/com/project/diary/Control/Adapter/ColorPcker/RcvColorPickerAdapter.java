@@ -17,6 +17,12 @@ import com.project.diary.R;
 
 import java.util.ArrayList;
 
+/**
+ * A RecyclerView.Adapter for displaying a list of colors as items in a RecyclerView.
+ * Allows the user to select a color from the list to use for either text color in a RichEditor or paint color in a DrawView.
+ * @author [TrikayDev]
+ * @since [12/30/2022]
+ */
 public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAdapter.ViewHolder> {
     private ArrayList<String> color;
     private Context context;
@@ -25,11 +31,23 @@ public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAd
 
     private DrawView drawView;
 
+    /**
+     * Constructor for the RcvColorPickerAdapter for use with a DrawView.
+     * Initializes the list of colors to a default list.
+     *
+     * @param drawView the DrawView to apply the selected color to
+     */
     public RcvColorPickerAdapter(DrawView drawView) {
         this.drawView = drawView;
         inutColor();
     }
 
+    /**
+     * Constructor for the RcvColorPickerAdapter for use with a RichEditor.
+     * Initializes the list of colors to a default list.
+     *
+     * @param richEditor the RichEditor to apply the selected color to
+     */
     public RcvColorPickerAdapter(RichEditor richEditor) {
         this.richEditor = richEditor;
         inutColor();
@@ -37,6 +55,9 @@ public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAd
 
 
 
+    /**
+     * Initializes the list of colors based on which constructor was used.
+     */
     private void inutColor() {
         if(richEditor != null){
             color = new ArrayList<>();
@@ -61,6 +82,13 @@ public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAd
 
     }
 
+    /**
+     * Creates a new ViewHolder when a new item is added to the RecyclerView.
+     *
+     * @param parent the parent ViewGroup
+     * @param viewType the type of the View
+     * @return the new ViewHolder
+     */
     @NonNull
     @Override
     public RcvColorPickerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -70,6 +98,14 @@ public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAd
         return new RcvColorPickerAdapter.ViewHolder(view);
     }
 
+    /**
+     * Binds the data at the given position to the ViewHolder.
+     * Sets the background color of the item View to the color at the given position in the list,
+     * and sets an OnClickListener on the item View that applies the color to either a RichEditor or DrawView.
+     *
+     * @param holder the ViewHolder to bind the data to
+     * @param position the position of the data in the list
+     */
     @Override
     public void onBindViewHolder(@NonNull RcvColorPickerAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if(richEditor != null){
@@ -92,15 +128,24 @@ public class RcvColorPickerAdapter extends RecyclerView.Adapter<RcvColorPickerAd
 
     }
 
+    /**
+     * @return the size of the list of colors
+     */
     @Override
     public int getItemCount() {
         return color.size();
     }
 
+    /**
+     * @return the list of colors
+     */
     public ArrayList<String> getColor() {
         return color;
     }
 
+    /**
+     * A ViewHolder for the RcvColorPickerAdapter.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout color_item;
         public ViewHolder(@NonNull View itemView) {
