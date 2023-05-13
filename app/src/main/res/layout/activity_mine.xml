@@ -5,7 +5,7 @@
     android:id="@+id/Root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Activity.CalandarActivity"
+    tools:context="sontungmtp.project.diary.View.Activity.CalandarActivity"
     android:background="@color/Fresh_Guacamole_05"
     android:fitsSystemWindows="true">
     <LinearLayout
@@ -247,7 +247,7 @@
                         </LinearLayout>
 
                     </RelativeLayout>
-                    <com.project.diary.Model.Chart.ColumnChartView
+                    <sontungmtp.project.diary.Model.Chart.ColumnChartView
                         android:id="@+id/ColumnChartView"
                         android:layout_margin="20dp"
                         android:layout_width="match_parent"

@@ -2,9 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -13,53 +11,53 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary"
         tools:targetApi="31">
         <activity
-            android:name=".View.Activity.ViewDiaryActivity"
+            android:name="sontungmtp.project.diary.View.Activity.ViewDiaryActivity"
             android:exported="true"
             android:label="@string/title_activity_lock_app"
             android:theme="@style/Theme.Diary.NoActionBar" />
 
-        <receiver android:name=".Control.Notification.NotificationPublisher" />
+        <receiver android:name="sontungmtp.project.diary.Control.Notification.NotificationPublisher" />
 
         <activity
-            android:name=".View.Activity.SettingActivity"
+            android:name="sontungmtp.project.diary.View.Activity.SettingActivity"
             android:exported="true"
             android:label="@string/title_activity_lock_app"
             android:theme="@style/Theme.Diary.NoActionBar" />
         <activity
-            android:name=".View.Activity.TemplateActivity"
+            android:name="sontungmtp.project.diary.View.Activity.TemplateActivity"
             android:exported="true"
             android:label="@string/title_activity_lock_app"
             android:theme="@style/Theme.Diary.NoActionBar" />
         <activity
-            android:name=".View.Activity.ThemeActivity"
+            android:name="sontungmtp.project.diary.View.Activity.ThemeActivity"
             android:exported="true"
             android:label="@string/title_activity_lock_app"
             android:theme="@style/Theme.Diary.NoActionBar" />
         <activity
-            android:name=".View.Activity.MineActivity"
+            android:name="sontungmtp.project.diary.View.Activity.MineActivity"
             android:exported="true"
             android:label="@string/title_activity_lock_app"
             android:theme="@style/Theme.Diary.NoActionBar" />
         <activity
-            android:name=".View.Activity.BackupRestoreActivity"
+            android:name="sontungmtp.project.diary.View.Activity.BackupRestoreActivity"
             android:exported="true"
             android:label="@string/title_activity_lock_app"
             android:theme="@style/Theme.Diary.NoActionBar" />
         <activity
-            android:name=".View.Activity.SecurityPasswordActivity"
+            android:name="sontungmtp.project.diary.View.Activity.SecurityPasswordActivity"
             android:exported="false"
             android:label="@string/title_activity_lock_app"
             android:theme="@style/Theme.Diary.NoActionBar" />
         <activity
-            android:name=".View.Activity.MyLockScreenActivity"
+            android:name="sontungmtp.project.diary.View.Activity.MyLockScreenActivity"
             android:exported="false"
             android:label="@string/title_activity_lock_app"
             android:theme="@style/Theme.Diary.NoActionBar" />
@@ -81,7 +79,7 @@
         </provider>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.project.diary.fileprovider"
+            android:authorities="sontungmtp.project.diary.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -90,7 +88,7 @@
         </provider>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.project.diary.FileProvider"
+            android:authorities="sontungmtp.project.diary.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -99,33 +97,33 @@
         </provider>
 
         <activity
-            android:name=".View.Activity.LockAppActivity"
+            android:name="sontungmtp.project.diary.View.Activity.LockAppActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
             tools:node="merge" />
         <activity
-            android:name=".View.Activity.CanvasActivity"
+            android:name="sontungmtp.project.diary.View.Activity.CanvasActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
             tools:node="merge" />
         <activity
-            android:name=".View.Activity.MediaActivity"
+            android:name="sontungmtp.project.diary.View.Activity.MediaActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
             tools:node="merge" />
         <activity
-            android:name=".View.Activity.DiaryActivity"
+            android:name="sontungmtp.project.diary.View.Activity.DiaryActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
             android:windowSoftInputMode="adjustResize"
             tools:node="merge" />
         <activity
-            android:name=".View.Activity.CalandarActivity"
+            android:name="sontungmtp.project.diary.View.Activity.CalandarActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
             tools:node="merge" />
         <activity
-            android:name=".View.Activity.MainActivity"
+            android:name="sontungmtp.project.diary.View.Activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Diary.NoActionBar"
             android:windowSoftInputMode="adjustPan"
@@ -140,6 +138,11 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ads_app_id"/>
+
     </application>
 
 </manifest>

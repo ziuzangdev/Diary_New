@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Fresh_Guacamole_05"
-    tools:context=".View.Activity.MediaActivity"
+    tools:context="sontungmtp.project.diary.View.Activity.MediaActivity"
     android:fitsSystemWindows="true">
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,7 +94,7 @@
         android:layout_marginTop="100dp"
         android:gravity="center |top"
         android:orientation="vertical">
-        <com.project.diary.Model.Painting.DrawView
+        <sontungmtp.project.diary.Model.Painting.DrawView
             android:id="@+id/vDrawView"
             android:layout_margin="20dp"
             android:layout_width="match_parent"

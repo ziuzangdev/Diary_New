@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:background="@color/Fresh_Guacamole_05"
-        tools:context=".View.Activity.DiaryActivity">
+        tools:context="sontungmtp.project.diary.View.Activity.DiaryActivity">
         <!--    Toolbar 1-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                 android:fontFamily="@font/inter"
                 android:textColor="@color/black"
                 android:hint="Tittle"/>
-            <com.project.diary.Model.RichEditor.RichEditor
+            <sontungmtp.project.diary.Model.RichEditor.RichEditor
                 android:id="@+id/mEditor"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"

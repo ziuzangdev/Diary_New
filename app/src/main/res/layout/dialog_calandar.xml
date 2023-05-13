@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.project.diary.Model.Calendar.MyMaterialCalendarView
+            <sontungmtp.project.diary.Model.Calendar.MyMaterialCalendarView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"

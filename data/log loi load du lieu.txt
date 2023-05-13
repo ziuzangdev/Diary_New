@@ -1,0 +1,264 @@
+2023-01-05 22:16:23.363 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8b9c78 : 4(8388608 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:23.363 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+2023-01-05 22:16:24.363 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8e1618 : 5(40960 size) total buffers - 0(0 size) used buffers - 13/19 (recycle/alloc) - 7/19 (fetch/transfer)
+2023-01-05 22:16:24.364 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+2023-01-05 22:16:29.509 17352-17411/sontungmtp.project.diary D/EGL_emulation: app_time_stats: avg=849.56ms min=6.29ms max=9637.79ms count=12
+    
+    --------- beginning of system
+2023-01-05 22:16:29.624 17352-17480/sontungmtp.project.diary D/EGL_emulation: eglCreateContext: 0x79d73b8f2f50: maj 2 min 0 rcv 2
+2023-01-05 22:16:29.645 17352-17352/sontungmtp.project.diary D/DiaryActivity.java: ==================== initDiaryObject task started ==================
+2023-01-05 22:16:29.645 17352-17352/sontungmtp.project.diary D/DiaryActivity.java: get ID completed
+2023-01-05 22:16:29.653 17352-17352/sontungmtp.project.diary D/DiaryActivity.java: Real data of ID from database co pleated with data: Merry Christmas to you!<br><br><img src="/storage/emulated/0/Pictures/1664595481439.jpg" alt="alt" style="max-width:50%; height:auto"><br><br>
+2023-01-05 22:16:29.653 17352-17352/sontungmtp.project.diary D/TAG: addDataToDiary completed
+2023-01-05 22:16:29.654 17352-17352/sontungmtp.project.diary I/System.out: ========0
+2023-01-05 22:16:29.654 17352-17352/sontungmtp.project.diary I/System.out: ========1
+2023-01-05 22:16:29.667 17352-17352/sontungmtp.project.diary D/DynamitePackage: Instantiating com.google.android.gms.ads.ChimeraAdManagerCreatorImpl
+2023-01-05 22:16:29.668 17352-17352/sontungmtp.project.diary I/Ads: This request is sent from a test device.
+2023-01-05 22:16:29.725 17352-18016/sontungmtp.project.diary W/ConnectionStatusConfig: Dynamic lookup for intent failed for action: com.google.android.gms.ads.service.START
+2023-01-05 22:16:29.810 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:29.811 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:30.065 17352-17352/sontungmtp.project.diary I/chromium: [INFO:CONSOLE(281)] "Uncaught TypeError: Failed to execute 'setStart' on 'Range': parameter 1 is not of type 'Node'.", source: file:///android_asset/rich_editor.js (281)
+2023-01-05 22:16:30.326 17352-17411/sontungmtp.project.diary D/OpenGLRenderer: endAllActiveAnimators on 0x79d7bba54260 (RippleDrawable) with handle 0x79d6cb97e000
+2023-01-05 22:16:30.509 17352-17480/sontungmtp.project.diary D/EGL_emulation: eglCreateContext: 0x79d73b8f2350: maj 2 min 0 rcv 2
+2023-01-05 22:16:30.622 17352-17352/sontungmtp.project.diary W/Ads: GET LOCATION COMPILED
+2023-01-05 22:16:30.660 17352-17352/sontungmtp.project.diary I/ExoPlayerImpl: Init 956a275 [AndroidXMedia3/1.0.0-beta02] [emulator64_x86_64_arm64, sdk_gphone64_x86_64, Google, 31]
+2023-01-05 22:16:30.720 17352-18028/sontungmtp.project.diary I/DMCodecAdapterFactory: Creating an asynchronous MediaCodec adapter for track type audio
+2023-01-05 22:16:30.724 17352-18037/sontungmtp.project.diary D/CCodec: allocate(c2.android.aac.decoder)
+2023-01-05 22:16:30.727 17352-18037/sontungmtp.project.diary I/CCodec: setting up 'default' as default (vendor) store
+2023-01-05 22:16:30.730 17352-18037/sontungmtp.project.diary I/CCodec: Created component [c2.android.aac.decoder]
+2023-01-05 22:16:30.731 17352-18037/sontungmtp.project.diary D/CCodecConfig: read media type: audio/mp4a-latm
+2023-01-05 22:16:30.736 17352-18037/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.max-count.values
+2023-01-05 22:16:30.737 17352-18037/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: output.subscribed-indices.values
+2023-01-05 22:16:30.737 17352-18037/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: input.buffers.allocator-ids.values
+2023-01-05 22:16:30.738 17352-18037/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: output.buffers.allocator-ids.values
+2023-01-05 22:16:30.738 17352-18037/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.allocator-ids.values
+2023-01-05 22:16:30.739 17352-18037/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: output.buffers.pool-ids.values
+2023-01-05 22:16:30.739 17352-18037/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.pool-ids.values
+2023-01-05 22:16:30.746 17352-18037/sontungmtp.project.diary I/CCodecConfig: query failed after returning 19 values (BAD_INDEX)
+2023-01-05 22:16:30.746 17352-18037/sontungmtp.project.diary D/CCodecConfig: c2 config diff is Dict {
+      c2::u32 coded.aac-packaging.value = 0
+      c2::u32 coded.bitrate.value = 64000
+      c2::u32 coded.pl.level = 0
+      c2::u32 coded.pl.profile = 8192
+      c2::i32 coding.drc.album-mode.value = 0
+      c2::float coding.drc.attenuation-factor.value = 1
+      c2::float coding.drc.boost-factor.value = 1
+      c2::i32 coding.drc.compression-mode.value = 3
+      c2::i32 coding.drc.effect-type.value = 3
+      c2::float coding.drc.encoded-level.value = 0.25
+      c2::float coding.drc.reference-level.value = -16
+      c2::u32 input.buffers.max-size.value = 8192
+      c2::u32 input.delay.value = 0
+      string input.media-type.value = "audio/mp4a-latm"
+      c2::u32 output.delay.value = 2
+      c2::float output.drc.output-loudness.value = 0.25
+      string output.media-type.value = "audio/raw"
+      c2::u32 raw.channel-count.value = 1
+      c2::u32 raw.max-channel-count.value = 8
+      c2::u32 raw.sample-rate.value = 44100
+    }
+2023-01-05 22:16:30.748 17352-18037/sontungmtp.project.diary I/MediaCodec: MediaCodec will operate in async mode
+2023-01-05 22:16:30.748 17352-18037/sontungmtp.project.diary D/CCodec: [c2.android.aac.decoder] buffers are bound to CCodec for this session
+2023-01-05 22:16:30.748 17352-18037/sontungmtp.project.diary D/CCodecConfig: no c2 equivalents for log-session-id
+2023-01-05 22:16:30.748 17352-18037/sontungmtp.project.diary D/CCodecConfig: no c2 equivalents for flags
+2023-01-05 22:16:30.749 17352-18037/sontungmtp.project.diary D/CCodecConfig: c2 config diff is   c2::u32 raw.channel-count.value = 2
+2023-01-05 22:16:30.751 17352-18037/sontungmtp.project.diary W/Codec2Client: query -- param skipped: index = 1107298332.
+2023-01-05 22:16:30.751 17352-18037/sontungmtp.project.diary D/CCodec: setup formats input: AMessage(what = 0x00000000) = {
+      int32_t aac-drc-album-mode = 0
+      int32_t aac-drc-boost-level = 127
+      int32_t aac-drc-cut-level = 127
+      int32_t aac-drc-effect-type = 3
+      int32_t aac-encoded-target-level = -1
+      int32_t aac-max-output-channel_count = 8
+      int32_t aac-target-ref-level = 64
+      int32_t bitrate = 64000
+      int32_t channel-count = 2
+      int32_t level = 0
+      int32_t max-input-size = 8192
+      string mime = "audio/mp4a-latm"
+      int32_t profile = 2
+      int32_t sample-rate = 44100
+    }
+2023-01-05 22:16:30.751 17352-18037/sontungmtp.project.diary D/CCodec: setup formats output: AMessage(what = 0x00000000) = {
+      int32_t aac-drc-album-mode = 0
+      int32_t aac-drc-boost-level = 127
+      int32_t aac-drc-cut-level = 127
+      int32_t aac-drc-effect-type = 3
+      int32_t aac-drc-output-loudness = -1
+      int32_t aac-encoded-target-level = -1
+      int32_t aac-max-output-channel_count = 8
+      int32_t aac-target-ref-level = 64
+      int32_t channel-count = 2
+      string mime = "audio/raw"
+      int32_t sample-rate = 44100
+    }
+2023-01-05 22:16:30.751 17352-18037/sontungmtp.project.diary I/CCodecConfig: query failed after returning 19 values (BAD_INDEX)
+2023-01-05 22:16:30.752 17352-18028/sontungmtp.project.diary D/MediaCodec: keep callback message for reclaim
+2023-01-05 22:16:30.755 17352-18037/sontungmtp.project.diary W/Codec2Client: query -- param skipped: index = 1342179345.
+2023-01-05 22:16:30.755 17352-18037/sontungmtp.project.diary W/Codec2Client: query -- param skipped: index = 2415921170.
+2023-01-05 22:16:30.755 17352-18037/sontungmtp.project.diary W/Codec2Client: query -- param skipped: index = 1610614798.
+2023-01-05 22:16:30.756 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8be8c8 : 0(0 size) total buffers - 0(0 size) used buffers - 12/18 (recycle/alloc) - 7/18 (fetch/transfer)
+2023-01-05 22:16:30.756 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8ba5b8 : 0(0 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:30.756 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b894338 : 0(0 size) total buffers - 0(0 size) used buffers - 12/19 (recycle/alloc) - 11/19 (fetch/transfer)
+2023-01-05 22:16:30.756 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8b6e38 : 0(0 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:30.756 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8c7a78 : 0(0 size) total buffers - 0(0 size) used buffers - 13/19 (recycle/alloc) - 10/19 (fetch/transfer)
+2023-01-05 22:16:30.756 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b889f08 : 0(0 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:30.756 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8d5f68 : 0(0 size) total buffers - 0(0 size) used buffers - 11/18 (recycle/alloc) - 13/18 (fetch/transfer)
+2023-01-05 22:16:30.757 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8d1ea8 : 0(0 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:30.757 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8c1268 : 0(0 size) total buffers - 0(0 size) used buffers - 12/19 (recycle/alloc) - 13/19 (fetch/transfer)
+2023-01-05 22:16:30.757 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8b5278 : 0(0 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:30.757 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8b0878 : 0(0 size) total buffers - 0(0 size) used buffers - 13/19 (recycle/alloc) - 8/19 (fetch/transfer)
+2023-01-05 22:16:30.757 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8baca8 : 0(0 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:30.757 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8e1618 : 0(0 size) total buffers - 0(0 size) used buffers - 13/19 (recycle/alloc) - 7/19 (fetch/transfer)
+2023-01-05 22:16:30.757 17352-18037/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8b9c78 : 0(0 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:30.757 17352-18037/sontungmtp.project.diary D/CCodecBufferChannel: [c2.android.aac.decoder#651] Created input block pool with allocatorID 16 => poolID 35 - OK (0)
+2023-01-05 22:16:30.759 17352-17610/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8d6658 : 0(0 size) total buffers - 0(0 size) used buffers - 327/338 (recycle/alloc) - 14/329 (fetch/transfer)
+2023-01-05 22:16:30.759 17352-17610/sontungmtp.project.diary D/BufferPoolAccessor2.0: Destruction - bufferpool2 0x79d78b8d6658 cached: 0/0M, 0/0% in use; allocs: 338, 97% recycled; transfers: 329, 96% unfetched
+2023-01-05 22:16:30.759 17352-18037/sontungmtp.project.diary I/CCodecBufferChannel: [c2.android.aac.decoder#651] Created output block pool with allocatorID 16 => poolID 41 - OK
+2023-01-05 22:16:30.760 17352-18037/sontungmtp.project.diary D/CCodecBufferChannel: [c2.android.aac.decoder#651] Configured output block pool ids 41 => OK
+2023-01-05 22:16:30.773 17352-18041/sontungmtp.project.diary D/HostConnection: createUnique: call
+2023-01-05 22:16:30.773 17352-18041/sontungmtp.project.diary D/HostConnection: HostConnection::get() New Host Connection established 0x79d73b8b8e10, tid 18041
+2023-01-05 22:16:30.798 17352-18041/sontungmtp.project.diary D/HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_native_sync_v3 ANDROID_EMU_native_sync_v4 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_vulkan_queue_submit_with_commands ANDROID_EMU_sync_buffer_data ANDROID_EMU_read_color_buffer_dma GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_2 
+2023-01-05 22:16:30.811 17352-18041/sontungmtp.project.diary D/EGL_emulation: eglCreateContext: 0x79d73b8b4c10: maj 2 min 0 rcv 2
+2023-01-05 22:16:30.825 17352-18041/sontungmtp.project.diary D/EGL_emulation: eglMakeCurrent: 0x79d73b8b4c10: ver 2 0 (tinfo 0x79d95a279580) (first time)
+2023-01-05 22:16:30.826 17352-18041/sontungmtp.project.diary E/EGL_emulation: eglQueryContext 32c0  EGL_BAD_ATTRIBUTE
+2023-01-05 22:16:30.827 17352-18041/sontungmtp.project.diary E/EGL_emulation: tid 18041: eglQueryContext(2160): error 0x3004 (EGL_BAD_ATTRIBUTE)
+2023-01-05 22:16:30.828 17352-18028/sontungmtp.project.diary I/DMCodecAdapterFactory: Creating an asynchronous MediaCodec adapter for track type video
+2023-01-05 22:16:30.833 17352-18043/sontungmtp.project.diary D/CCodec: allocate(c2.goldfish.vp9.decoder)
+2023-01-05 22:16:30.840 17352-18043/sontungmtp.project.diary I/CCodec: setting up 'default' as default (vendor) store
+2023-01-05 22:16:30.844 17352-18043/sontungmtp.project.diary I/CCodec: Created component [c2.goldfish.vp9.decoder]
+2023-01-05 22:16:30.845 17352-18043/sontungmtp.project.diary D/CCodecConfig: read media type: video/x-vnd.on2.vp9
+2023-01-05 22:16:30.851 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.max-count.values
+2023-01-05 22:16:30.852 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: output.subscribed-indices.values
+2023-01-05 22:16:30.852 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: input.buffers.allocator-ids.values
+2023-01-05 22:16:30.853 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: output.buffers.allocator-ids.values
+2023-01-05 22:16:30.853 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.allocator-ids.values
+2023-01-05 22:16:30.854 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: output.buffers.pool-ids.values
+2023-01-05 22:16:30.855 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: extent() != 1 for single value type: algo.buffers.pool-ids.values
+2023-01-05 22:16:30.858 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: ignored struct field coded.color-format.locations
+2023-01-05 22:16:30.860 17352-18043/sontungmtp.project.diary D/CCodecConfig: ignoring local param raw.size (0xd2001800) as it is already supported
+2023-01-05 22:16:30.860 17352-18043/sontungmtp.project.diary D/CCodecConfig: ignoring local param default.color (0x5200180b) as it is already supported
+2023-01-05 22:16:30.860 17352-18043/sontungmtp.project.diary D/ReflectedParamUpdater: ignored struct field raw.hdr-static-info.mastering
+2023-01-05 22:16:30.861 17352-18043/sontungmtp.project.diary I/CCodecConfig: query failed after returning 11 values (BAD_INDEX)
+2023-01-05 22:16:30.862 17352-18043/sontungmtp.project.diary D/CCodecConfig: c2 config diff is Dict {
+      c2::u32 coded.pl.level = 28680
+      c2::u32 coded.pl.profile = 28672
+      c2::u32 default.color.matrix = 0
+      c2::u32 default.color.primaries = 0
+      c2::u32 default.color.range = 0
+      c2::u32 default.color.transfer = 0
+      c2::u32 input.buffers.max-size.value = 2097152
+      c2::u32 input.delay.value = 0
+      Buffer input.hdr10-plus-info.value = {
+      }
+      string input.media-type.value = "video/x-vnd.on2.vp9"
+      Buffer output.hdr10-plus-info.value = {
+      }
+      string output.media-type.value = "video/raw"
+      c2::u32 raw.max-size.height = 240
+      c2::u32 raw.max-size.width = 320
+      c2::u32 raw.pixel-format.value = 35
+      c2::i32 raw.rotation.flip = 0
+      c2::i32 raw.rotation.value = 0
+      c2::u32 raw.sar.height = 1
+      c2::u32 raw.sar.width = 1
+      c2::u32 raw.size.height = 240
+      c2::u32 raw.size.width = 320
+      c2::u32 raw.surface-scaling.value = 1
+    }
+2023-01-05 22:16:30.863 17352-18043/sontungmtp.project.diary W/ColorUtils: expected specified color aspects (0:0:0:0)
+2023-01-05 22:16:30.866 17352-18042/sontungmtp.project.diary I/MediaCodec: MediaCodec will operate in async mode
+2023-01-05 22:16:30.867 17352-18042/sontungmtp.project.diary D/SurfaceUtils: connecting to surface 0x79d82b8e3f00, reason connectToSurface
+2023-01-05 22:16:30.867 17352-18042/sontungmtp.project.diary I/MediaCodec: [c2.goldfish.vp9.decoder] setting surface generation to 17768462
+2023-01-05 22:16:30.867 17352-18042/sontungmtp.project.diary D/SurfaceUtils: disconnecting from surface 0x79d82b8e3f00, reason connectToSurface(reconnect)
+2023-01-05 22:16:30.867 17352-18042/sontungmtp.project.diary D/SurfaceUtils: connecting to surface 0x79d82b8e3f00, reason connectToSurface(reconnect)
+2023-01-05 22:16:30.868 17352-18043/sontungmtp.project.diary D/CCodec: [c2.goldfish.vp9.decoder] buffers are bound to CCodec for this session
+2023-01-05 22:16:30.869 17352-18043/sontungmtp.project.diary D/CCodecConfig: no c2 equivalents for log-session-id
+2023-01-05 22:16:30.869 17352-18043/sontungmtp.project.diary D/CCodecConfig: no c2 equivalents for color-standard
+2023-01-05 22:16:30.869 17352-18043/sontungmtp.project.diary D/CCodecConfig: no c2 equivalents for native-window
+2023-01-05 22:16:30.870 17352-18043/sontungmtp.project.diary D/CCodecConfig: no c2 equivalents for flags
+2023-01-05 22:16:30.871 17352-18043/sontungmtp.project.diary D/CCodecConfig: config failed => CORRUPTED
+2023-01-05 22:16:30.871 17352-18043/sontungmtp.project.diary D/CCodecConfig: c2 config diff is   c2::u32 default.color.matrix = 1
+      c2::u32 default.color.primaries = 1
+      c2::u32 default.color.range = 2
+      c2::u32 default.color.transfer = 3
+      c2::u32 raw.max-size.height = 360
+      c2::u32 raw.max-size.width = 640
+      c2::u32 raw.size.height = 360
+      c2::u32 raw.size.width = 640
+2023-01-05 22:16:30.872 17352-18043/sontungmtp.project.diary W/Codec2Client: query -- param skipped: index = 1107298332.
+2023-01-05 22:16:30.872 17352-18043/sontungmtp.project.diary D/CCodec: client requested max input size 86400, which is smaller than what component recommended (2097152); overriding with component recommendation.
+2023-01-05 22:16:30.872 17352-18043/sontungmtp.project.diary W/CCodec: This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+2023-01-05 22:16:30.873 17352-18043/sontungmtp.project.diary D/CCodec: setup formats input: AMessage(what = 0x00000000) = {
+      int32_t height = 360
+      int32_t level = 256
+      int32_t max-input-size = 2097152
+      string mime = "video/x-vnd.on2.vp9"
+      int32_t profile = 1
+      int32_t width = 640
+      Rect crop(0, 0, 639, 359)
+    }
+2023-01-05 22:16:30.873 17352-18043/sontungmtp.project.diary D/CCodec: setup formats output: AMessage(what = 0x00000000) = {
+      int32_t android._color-format = 2135033992
+      int32_t android._video-scaling = 1
+      Rect crop(0, 0, 639, 359)
+      int32_t color-standard = 1
+      int32_t color-range = 2
+      int32_t color-transfer = 3
+      Buffer hdr10-plus-info = {
+      }
+      int32_t height = 360
+      int32_t max-height = 360
+      int32_t max-width = 640
+      string mime = "video/raw"
+      int32_t rotation-degrees = 0
+      int32_t sar-height = 1
+      int32_t sar-width = 1
+      int32_t width = 640
+      int32_t android._dataspace = 260
+      int32_t color-format = 2130708361
+    }
+2023-01-05 22:16:30.873 17352-18043/sontungmtp.project.diary I/CCodecConfig: query failed after returning 11 values (BAD_INDEX)
+2023-01-05 22:16:30.876 17352-18028/sontungmtp.project.diary D/MediaCodec: keep callback message for reclaim
+2023-01-05 22:16:30.878 17352-18043/sontungmtp.project.diary W/Codec2Client: query -- param skipped: index = 1342179345.
+2023-01-05 22:16:30.878 17352-18043/sontungmtp.project.diary W/Codec2Client: query -- param skipped: index = 2415921170.
+2023-01-05 22:16:30.878 17352-18043/sontungmtp.project.diary W/Codec2Client: query -- param skipped: index = 2684356609.
+2023-01-05 22:16:30.880 17352-18043/sontungmtp.project.diary D/CCodecBufferChannel: [c2.goldfish.vp9.decoder#137] Created input block pool with allocatorID 16 => poolID 36 - OK (0)
+2023-01-05 22:16:30.881 17352-18043/sontungmtp.project.diary D/CCodecBufferChannel: [c2.goldfish.vp9.decoder#137] Query output surface allocator returned 0 params => BAD_INDEX (6)
+2023-01-05 22:16:30.882 17352-18043/sontungmtp.project.diary I/CCodecBufferChannel: [c2.goldfish.vp9.decoder#137] Created output block pool with allocatorID 18 => poolID 32 - OK
+2023-01-05 22:16:30.882 17352-18043/sontungmtp.project.diary D/CCodecBufferChannel: [c2.goldfish.vp9.decoder#137] Configured output block pool ids 32 => OK
+2023-01-05 22:16:30.882 17352-18043/sontungmtp.project.diary D/Codec2-OutputBufferQueue: remote graphic buffer migration 0/0
+2023-01-05 22:16:30.883 17352-18043/sontungmtp.project.diary D/Codec2Client: setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+2023-01-05 22:16:30.883 17352-18043/sontungmtp.project.diary D/Codec2Client: setOutputSurface -- generation=17768462 consumer usage=0x900
+2023-01-05 22:16:30.887 17352-18043/sontungmtp.project.diary D/Codec2Client: Surface configure completed
+2023-01-05 22:16:30.900 17352-17610/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8cd948 : 0(0 size) total buffers - 0(0 size) used buffers - 448/457 (recycle/alloc) - 10/902 (fetch/transfer)
+2023-01-05 22:16:30.900 17352-17610/sontungmtp.project.diary D/BufferPoolAccessor2.0: Destruction - bufferpool2 0x79d78b8cd948 cached: 0/0M, 0/0% in use; allocs: 457, 98% recycled; transfers: 902, 99% unfetched
+2023-01-05 22:16:30.924 17352-18043/sontungmtp.project.diary D/CCodecConfig: c2 config diff is   c2::u32 raw.crop.height = 360
+      c2::u32 raw.crop.left = 0
+      c2::u32 raw.crop.top = 0
+      c2::u32 raw.crop.width = 640
+2023-01-05 22:16:30.963 17352-17352/sontungmtp.project.diary I/DynamiteModule: Considering local module com.google.android.gms.ads.dynamite:0 and remote module com.google.android.gms.ads.dynamite:224400003
+2023-01-05 22:16:30.963 17352-17352/sontungmtp.project.diary I/DynamiteModule: Selected remote version of com.google.android.gms.ads.dynamite, version >= 224400003
+2023-01-05 22:16:31.892 17352-18042/sontungmtp.project.diary W/MediaCodec: mapFormat: no mediaType information
+2023-01-05 22:16:35.785 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: evictor expired: 1, evicted: 0
+2023-01-05 22:16:36.787 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8f6318 : 4(8388608 size) total buffers - 0(0 size) used buffers - 3/7 (recycle/alloc) - 4/14 (fetch/transfer)
+2023-01-05 22:16:36.787 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: evictor expired: 2, evicted: 1
+2023-01-05 22:16:38.789 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: bufferpool2 0x79d78b8e21a8 : 5(40960 size) total buffers - 0(0 size) used buffers - 13/19 (recycle/alloc) - 9/19 (fetch/transfer)
+2023-01-05 22:16:38.789 17352-17609/sontungmtp.project.diary D/BufferPoolAccessor2.0: evictor expired: 1, evicted: 1
+2023-01-05 22:16:48.509 17352-17368/sontungmtp.project.diary W/SQLiteConnectionPool: A SQLiteConnection object for database '/data/user/0/sontungmtp.project.diary/databases/Diary.db' was leaked!  Please fix your application to end transactions in progress properly and to close the database when it is no longer needed.
+2023-01-05 22:16:48.510 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.510 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.511 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.519 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.520 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.521 17352-17368/sontungmtp.project.diary W/SQLiteConnectionPool: A SQLiteConnection object for database '/data/user/0/sontungmtp.project.diary/databases/Diary.db' was leaked!  Please fix your application to end transactions in progress properly and to close the database when it is no longer needed.
+2023-01-05 22:16:48.521 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.521 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.521 17352-17368/sontungmtp.project.diary W/SQLiteConnectionPool: A SQLiteConnection object for database '/data/user/0/sontungmtp.project.diary/databases/Diary.db' was leaked!  Please fix your application to end transactions in progress properly and to close the database when it is no longer needed.
+2023-01-05 22:16:48.521 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.522 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.522 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.522 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.522 17352-17368/sontungmtp.project.diary W/SQLiteConnectionPool: A SQLiteConnection object for database '/data/user/0/sontungmtp.project.diary/databases/Diary.db' was leaked!  Please fix your application to end transactions in progress properly and to close the database when it is no longer needed.
+2023-01-05 22:16:48.522 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 
+2023-01-05 22:16:48.523 17352-17368/sontungmtp.project.diary W/System: A resource failed to call close. 

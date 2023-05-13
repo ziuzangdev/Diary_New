@@ -37,4 +37,13 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <string name="ads_app_id">ca-app-pub-7404056052169306~1947863728</string>
+    <string name="ads_banner">ca-app-pub-7404056052169306/3975261268</string>
+    <string name="ads_interstitial">ca-app-pub-7404056052169306/5200142209</string>
+
+<!--    <string name="ads_app_id">ca-app-pub-3940256099942544~3347511713</string>-->
+<!--    <string name="ads_banner">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="ads_interstitial">ca-app-pub-3940256099942544/1033173712</string>-->
+
 </resources>
