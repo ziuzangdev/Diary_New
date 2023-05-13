@@ -227,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements IThemeManager {
                                 public void run() {
                                     binding.rcvDiary.setHasFixedSize(true);
                                     binding.rcvDiary.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+                                   //haha
                                     binding.rcvDiary.setAdapter(control.getRcvDiaryAdapter());
                                 }
                             });
